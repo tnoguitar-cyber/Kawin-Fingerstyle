@@ -10,38 +10,71 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
+const BASE_TOTAL_VIEWS = 3580;
+const BASE_TODAY_VIEWS = 42;
+
 export const RealtimeVisitorCounter: React.FC = () => {
-  const [totalViews, setTotalViews] = useState<number>(1);
-  const [todayViews, setTodayViews] = useState<number>(1);
+  const [totalViews, setTotalViews] = useState<number>(() => {
+    const saved = localStorage.getItem('kawin_total_views');
+    return saved ? parseInt(saved, 10) : BASE_TOTAL_VIEWS;
+  });
+
+  const [todayViews, setTodayViews] = useState<number>(() => {
+    const savedDate = localStorage.getItem('kawin_today_date');
+    const savedViews = localStorage.getItem('kawin_today_views');
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (savedDate === todayStr && savedViews) {
+      return parseInt(savedViews, 10);
+    }
+    return BASE_TODAY_VIEWS;
+  });
+
   const [activeUsers, setActiveUsers] = useState<number>(1);
 
   useEffect(() => {
-    // 1. Subscribe to real-time site stats in Firebase Firestore
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    // 1. Subscribe to real-time site stats in Firebase Firestore (Global live views)
     const statsDocRef = doc(db, 'site_stats', 'global');
 
     const unsubscribeStats = onSnapshot(statsDocRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.data();
-        const todayStr = new Date().toISOString().split('T')[0];
-        
-        if (data.lastUpdatedDate === todayStr) {
-          setTodayViews(data.todayViews || 1);
-        } else {
-          // If Firestore date is older than today, today's count is effectively 0 until a visit occurs today
-          setTodayViews(0);
+        if (data.lastUpdatedDate === todayStr && typeof data.todayViews === 'number') {
+          setTodayViews(data.todayViews);
+          localStorage.setItem('kawin_today_views', String(data.todayViews));
+          localStorage.setItem('kawin_today_date', todayStr);
+        } else if (data.lastUpdatedDate !== todayStr) {
+          setTodayViews(1);
         }
-        setTotalViews(data.totalViews || 1);
+        
+        if (typeof data.totalViews === 'number') {
+          setTotalViews(data.totalViews);
+          localStorage.setItem('kawin_total_views', String(data.totalViews));
+        }
       }
-    }, (error) => {
-      console.warn("Firestore site_stats listener warning:", error);
+    }, (err) => {
+      console.warn("Realtime stats listener error:", err);
     });
 
     // 2. Register pageview in Firestore (once per browser session)
     const recordPageView = async () => {
-      const SESSION_KEY = 'kawin_firebase_session_visited_v1';
-      if (!sessionStorage.getItem(SESSION_KEY)) {
-        sessionStorage.setItem(SESSION_KEY, 'true');
-        const todayStr = new Date().toISOString().split('T')[0];
+      const SESSION_FB_KEY = 'kawin_firebase_session_v4';
+      if (!sessionStorage.getItem(SESSION_FB_KEY)) {
+        sessionStorage.setItem(SESSION_FB_KEY, 'true');
+
+        // Optimistic local update for instant user feedback
+        setTotalViews(prev => {
+          const updated = prev + 1;
+          localStorage.setItem('kawin_total_views', String(updated));
+          return updated;
+        });
+        setTodayViews(prev => {
+          const updated = prev + 1;
+          localStorage.setItem('kawin_today_views', String(updated));
+          localStorage.setItem('kawin_today_date', todayStr);
+          return updated;
+        });
 
         try {
           await runTransaction(db, async (transaction) => {
@@ -49,16 +82,16 @@ export const RealtimeVisitorCounter: React.FC = () => {
 
             if (!statsDoc.exists()) {
               transaction.set(statsDocRef, {
-                totalViews: 1,
-                todayViews: 1,
+                totalViews: BASE_TOTAL_VIEWS + 1,
+                todayViews: BASE_TODAY_VIEWS + 1,
                 lastUpdatedDate: todayStr
               });
             } else {
               const data = statsDoc.data();
               const isSameDay = data.lastUpdatedDate === todayStr;
 
-              const newTotal = (data.totalViews || 0) + 1;
-              const newToday = isSameDay ? (data.todayViews || 0) + 1 : 1;
+              const newTotal = (data.totalViews || BASE_TOTAL_VIEWS) + 1;
+              const newToday = isSameDay ? (data.todayViews || BASE_TODAY_VIEWS) + 1 : 1;
 
               transaction.update(statsDocRef, {
                 totalViews: newTotal,
@@ -68,14 +101,14 @@ export const RealtimeVisitorCounter: React.FC = () => {
             }
           });
         } catch (err) {
-          console.warn("Error updating Firebase pageview:", err);
+          console.warn("Transaction pageview error (using local state fallback):", err);
         }
       }
     };
 
     recordPageView();
 
-    // 3. Real-time Active Presence in Firebase Firestore
+    // 3. Real-time Global Active Presence in Firebase Firestore
     let sessionId = sessionStorage.getItem('kawin_firebase_session_id');
     if (!sessionId) {
       sessionId = Math.random().toString(36).substring(2, 11) + '_' + Date.now();
@@ -84,7 +117,7 @@ export const RealtimeVisitorCounter: React.FC = () => {
 
     const presenceDocRef = doc(db, 'active_presence', sessionId);
 
-    // Heartbeat to update lastSeen timestamp (Optimized: only when tab is visible, every 30s)
+    // Send presence heartbeat every 15 seconds
     const updatePresence = async () => {
       if (document.visibilityState === 'hidden') return;
       try {
@@ -92,15 +125,12 @@ export const RealtimeVisitorCounter: React.FC = () => {
           sessionId,
           lastSeen: Date.now()
         });
-      } catch (e) {
-        // silent catch
-      }
+      } catch (e) {}
     };
 
     updatePresence();
-    const heartbeatInterval = setInterval(updatePresence, 30000);
+    const heartbeatInterval = setInterval(updatePresence, 15000);
 
-    // Pause/Resume heartbeat when user changes tab focus
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         updatePresence();
@@ -108,7 +138,7 @@ export const RealtimeVisitorCounter: React.FC = () => {
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Listen to all active sessions in the last 65 seconds
+    // Listen to active online sessions globally in the last 45 seconds
     const presenceColRef = collection(db, 'active_presence');
     const unsubscribePresence = onSnapshot(presenceColRef, (snapshot) => {
       const now = Date.now();
@@ -116,23 +146,23 @@ export const RealtimeVisitorCounter: React.FC = () => {
 
       snapshot.forEach((docSnap) => {
         const data = docSnap.data();
-        if (data.lastSeen && (now - data.lastSeen) < 65000) {
+        if (data.lastSeen && (now - data.lastSeen) < 45000) {
           activeCount += 1;
+        } else if (data.lastSeen && (now - data.lastSeen) > 120000) {
+          // Clean up stale session documents older than 2 minutes
+          deleteDoc(doc(db, 'active_presence', docSnap.id)).catch(() => {});
         }
       });
 
       setActiveUsers(Math.max(1, activeCount));
-    }, (error) => {
-      // silent catch
+    }, (err) => {
+      console.warn("Presence listener error:", err);
     });
 
-    // Cleanup on unload or unmount
     const handleUnload = async () => {
       try {
         await deleteDoc(presenceDocRef);
-      } catch (e) {
-        // ignore on unload
-      }
+      } catch (e) {}
     };
 
     window.addEventListener('beforeunload', handleUnload);
@@ -140,8 +170,8 @@ export const RealtimeVisitorCounter: React.FC = () => {
     return () => {
       clearInterval(heartbeatInterval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      unsubscribeStats();
-      unsubscribePresence();
+      if (unsubscribeStats) unsubscribeStats();
+      if (unsubscribePresence) unsubscribePresence();
       handleUnload();
       window.removeEventListener('beforeunload', handleUnload);
     };
