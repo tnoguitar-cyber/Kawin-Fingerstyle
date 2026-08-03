@@ -1,6 +1,7 @@
 import React from 'react';
 import { Youtube, Instagram, Facebook, ExternalLink, Mail, MessageCircle, Send } from 'lucide-react';
 import { ARTIST_INFO } from '../data/mockData';
+import { RealtimeVisitorCounter } from './RealtimeVisitorCounter';
 
 interface FooterProps {
   onNavigate: (tab: string) => void;
@@ -242,21 +243,25 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         </div>
 
-        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-4">
-          <p>
-            © {new Date().getFullYear()} {ARTIST_INFO.name}{' '}
-            <span
-              onClick={() => window.dispatchEvent(new CustomEvent('open-admin-modal'))}
-              className="select-none cursor-default"
-            >
-              (Kawin Fingerstyle)
-            </span>
-            . All rights reserved.
-          </p>
+        <div className="pt-6 border-t border-slate-900 flex flex-col items-center justify-center text-slate-500 text-[11px] gap-3">
+          <RealtimeVisitorCounter />
 
-          <p className="text-slate-500">
-            Official Acoustic Fingerstyle Website
-          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full text-slate-500 text-[11px] gap-2 pt-1">
+            <p>
+              © {new Date().getFullYear()} {ARTIST_INFO.name}{' '}
+              <span
+                onClick={() => window.dispatchEvent(new CustomEvent('open-admin-modal'))}
+                className="select-none cursor-default"
+              >
+                (Kawin Fingerstyle)
+              </span>
+              . All rights reserved.
+            </p>
+
+            <p className="text-slate-500">
+              Official Acoustic Fingerstyle Website
+            </p>
+          </div>
         </div>
 
       </div>

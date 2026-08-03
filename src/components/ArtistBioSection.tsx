@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Sliders, Layers, Guitar, Award, Trophy, Star } from 'lucide-react';
+import { Sparkles, Sliders, Layers, Guitar, Award, Trophy, ExternalLink } from 'lucide-react';
 import { ARTIST_INFO, ARTIST_GEARS, ARTIST_ACHIEVEMENTS } from '../data/mockData';
 
 export const ArtistBioSection: React.FC = () => {
@@ -144,8 +144,36 @@ export const ArtistBioSection: React.FC = () => {
                   <span className="text-xs px-2.5 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-300 font-medium">
                     {gear.category}
                   </span>
-                  <h4 className="text-sm font-bold text-white mt-2.5">{gear.name}</h4>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed whitespace-pre-line">{gear.description}</p>
+                  <h4 className="text-sm font-bold text-white mt-2.5 mb-2">{gear.name}</h4>
+                  
+                  {gear.items && gear.items.length > 0 ? (
+                    <ul className="space-y-1.5 text-xs text-slate-300">
+                      {gear.items.map((item, itemIdx) => (
+                        <li key={itemIdx} className="flex items-center gap-2">
+                          {item.url ? (
+                            <a
+                              href={item.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-semibold underline decoration-amber-500/40 hover:decoration-amber-300 transition group"
+                            >
+                              <span>{item.name}</span>
+                              <ExternalLink className="w-3.5 h-3.5 text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
+                              {item.badge && (
+                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-600/30 border border-blue-500/40 text-blue-300 no-underline font-normal">
+                                  {item.badge}
+                                </span>
+                              )}
+                            </a>
+                          ) : (
+                            <span className="text-slate-300">{item.name}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed whitespace-pre-line">{gear.description}</p>
+                  )}
                 </div>
               </div>
             ))}

@@ -368,6 +368,15 @@ export const ARTIST_GEARS: ArtistGear[] = [
     category: 'Acoustic Guitar',
     spec: 'Top: Master Grade Sitka Spruce | Back/Sides: Rosewood',
     description: 'Kirati Guitar K-SJ\nFurch S23 CR\nMayson Mayfair',
+    items: [
+      {
+        name: 'Kirati Guitar K-SJ',
+        url: 'https://www.facebook.com/share/19QSq4oZhM/?mibextid=wwXIfr',
+        badge: 'Facebook'
+      },
+      { name: 'Furch S23 CR' },
+      { name: 'Mayson Mayfair' }
+    ],
     imageUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -375,6 +384,9 @@ export const ARTIST_GEARS: ArtistGear[] = [
     category: 'Guitar Pickup',
     spec: 'Dual Source Pickup',
     description: 'K&K Quantum Trinity',
+    items: [
+      { name: 'K&K Quantum Trinity' }
+    ],
     imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
   },
 ];

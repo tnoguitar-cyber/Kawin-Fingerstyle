@@ -125,12 +125,19 @@ export interface ConcertDate {
   ticketUrl?: string;
 }
 
+export interface GearItem {
+  name: string;
+  url?: string;
+  badge?: string;
+}
+
 export interface ArtistGear {
   id?: string;
   name: string;
   category: string;
   spec: string;
   description: string;
+  items?: GearItem[];
   imageUrl?: string;
   isPrimary?: boolean;
 }
