@@ -220,15 +220,15 @@ export const COURSES: Course[] = [
 
   {
     id: 'course-vip-premium',
-    title: 'VIP PREMIUM PLAN',
-    thaiTitle: 'สมาชิก VIP PREMIUM PLAN',
+    title: 'VIP PREMIUM PLAN - Kawin Fingerstyle Studio',
+    thaiTitle: 'สมาชิก VIP PREMIUM PLAN - Kawin Fingerstyle Studio',
     subtitle: 'ปลดล็อกขีดจำกัด เข้าถึงทุกฟังก์ชันและทุกคอร์สเรียนแบบไม่จำกัด',
     level: 'ทุกระดับ (All Levels)',
     durationHours: 999, // Unlimted
     totalLessons: 999, // Unlimited
     price: 5900,
     discountPrice: 2990,
-    coverUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80',
+    coverUrl: 'https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/731158479_27324123393865341_8637482802721882281_n.jpg?stp=dst-jpg_tt6&cstp=mx1260x892&ctp=s1260x892&_nc_cat=109&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFtxHyhSGRXYK6lfoS09HfOcR5OfaUwpJVxHk59pTCklQDfS20raN3Yk9-MKB2oayTBzk-VYIwUet_o76INxipw&_nc_ohc=DVOjgm22W5MQ7kNvwFg3Vsi&_nc_oc=AdpNkQAKNTq89iXNbw864jIINLz2bQXKzE_x9bwNwnwWIFOfiCC0pC3Q_9GckW1aDzdptzT-dKxw-r6m0a7UDHFs&_nc_zt=23&_nc_ht=scontent.fbkk22-8.fna&_nc_gid=ECmKFV4TCWGPU3YYbGf5yg&_nc_ss=7f2a8&oh=00_AQELDdtOru_T1Vm_yFE3uvmjTEfBTSkmKhVB0kHp6n0gCw&oe=6A7644AE',
     description: 'ปลดล็อกขีดจำกัดด้วยสมาชิก VIP PREMIUM PLAN เข้าชมวิดีโอบทเรียนครบทุกคอร์ส ไม่จำกัดชั่วโมง พร้อมฟังก์ชันครบครันสำหรับนักกีตาร์',
     syllabus: [
       {
