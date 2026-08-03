@@ -10,29 +10,31 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
-const BASE_TOTAL_VIEWS = 3580;
-const BASE_TODAY_VIEWS = 42;
-
 export const RealtimeVisitorCounter: React.FC = () => {
   const [totalViews, setTotalViews] = useState<number>(() => {
-    const saved = localStorage.getItem('kawin_total_views');
-    return saved ? parseInt(saved, 10) : BASE_TOTAL_VIEWS;
+    const saved = localStorage.getItem('kawin_real_total_views_v1');
+    return saved ? parseInt(saved, 10) : 1;
   });
 
   const [todayViews, setTodayViews] = useState<number>(() => {
-    const savedDate = localStorage.getItem('kawin_today_date');
-    const savedViews = localStorage.getItem('kawin_today_views');
+    const savedDate = localStorage.getItem('kawin_real_today_date_v1');
+    const savedViews = localStorage.getItem('kawin_real_today_views_v1');
     const todayStr = new Date().toISOString().split('T')[0];
     if (savedDate === todayStr && savedViews) {
       return parseInt(savedViews, 10);
     }
-    return BASE_TODAY_VIEWS;
+    return 1;
   });
 
   const [activeUsers, setActiveUsers] = useState<number>(1);
 
   useEffect(() => {
     const todayStr = new Date().toISOString().split('T')[0];
+
+    // Clean up old cached fake baseline keys if present
+    localStorage.removeItem('kawin_total_views');
+    localStorage.removeItem('kawin_today_views');
+    localStorage.removeItem('kawin_today_date');
 
     // 1. Subscribe to real-time site stats in Firebase Firestore (Global live views)
     const statsDocRef = doc(db, 'site_stats', 'global');
@@ -42,37 +44,37 @@ export const RealtimeVisitorCounter: React.FC = () => {
         const data = snapshot.data();
         if (data.lastUpdatedDate === todayStr && typeof data.todayViews === 'number') {
           setTodayViews(data.todayViews);
-          localStorage.setItem('kawin_today_views', String(data.todayViews));
-          localStorage.setItem('kawin_today_date', todayStr);
+          localStorage.setItem('kawin_real_today_views_v1', String(data.todayViews));
+          localStorage.setItem('kawin_real_today_date_v1', todayStr);
         } else if (data.lastUpdatedDate !== todayStr) {
           setTodayViews(1);
         }
         
         if (typeof data.totalViews === 'number') {
           setTotalViews(data.totalViews);
-          localStorage.setItem('kawin_total_views', String(data.totalViews));
+          localStorage.setItem('kawin_real_total_views_v1', String(data.totalViews));
         }
       }
     }, (err) => {
-      console.warn("Realtime stats listener error:", err);
+      console.warn("Realtime stats listener warning:", err);
     });
 
-    // 2. Register pageview in Firestore (once per browser session)
+    // 2. Register real pageview in Firestore (once per browser session)
     const recordPageView = async () => {
-      const SESSION_FB_KEY = 'kawin_firebase_session_v4';
+      const SESSION_FB_KEY = 'kawin_real_session_v1';
       if (!sessionStorage.getItem(SESSION_FB_KEY)) {
         sessionStorage.setItem(SESSION_FB_KEY, 'true');
 
         // Optimistic local update for instant user feedback
         setTotalViews(prev => {
           const updated = prev + 1;
-          localStorage.setItem('kawin_total_views', String(updated));
+          localStorage.setItem('kawin_real_total_views_v1', String(updated));
           return updated;
         });
         setTodayViews(prev => {
           const updated = prev + 1;
-          localStorage.setItem('kawin_today_views', String(updated));
-          localStorage.setItem('kawin_today_date', todayStr);
+          localStorage.setItem('kawin_real_today_views_v1', String(updated));
+          localStorage.setItem('kawin_real_today_date_v1', todayStr);
           return updated;
         });
 
@@ -82,26 +84,33 @@ export const RealtimeVisitorCounter: React.FC = () => {
 
             if (!statsDoc.exists()) {
               transaction.set(statsDocRef, {
-                totalViews: BASE_TOTAL_VIEWS + 1,
-                todayViews: BASE_TODAY_VIEWS + 1,
+                totalViews: 1,
+                todayViews: 1,
                 lastUpdatedDate: todayStr
               });
             } else {
               const data = statsDoc.data();
               const isSameDay = data.lastUpdatedDate === todayStr;
 
-              const newTotal = (data.totalViews || BASE_TOTAL_VIEWS) + 1;
-              const newToday = isSameDay ? (data.todayViews || BASE_TODAY_VIEWS) + 1 : 1;
+              // If legacy document had old artificial baseline > 3000, reset to real count progression
+              const rawTotal = typeof data.totalViews === 'number' ? data.totalViews : 0;
+              const rawToday = typeof data.todayViews === 'number' ? data.todayViews : 0;
 
-              transaction.update(statsDocRef, {
+              const currentTotal = rawTotal > 3000 ? 1 : rawTotal;
+              const currentToday = (isSameDay && rawToday < 3000) ? rawToday : 0;
+
+              const newTotal = currentTotal + 1;
+              const newToday = isSameDay ? currentToday + 1 : 1;
+
+              transaction.set(statsDocRef, {
                 totalViews: newTotal,
                 todayViews: newToday,
                 lastUpdatedDate: todayStr
-              });
+              }, { merge: true });
             }
           });
         } catch (err) {
-          console.warn("Transaction pageview error (using local state fallback):", err);
+          console.warn("Transaction pageview warning:", err);
         }
       }
     };
@@ -211,3 +220,4 @@ export const RealtimeVisitorCounter: React.FC = () => {
     </div>
   );
 };
+
