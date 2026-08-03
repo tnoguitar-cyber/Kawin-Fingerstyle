@@ -1,0 +1,6 @@
+{
+  "name": "Kawin Fingerstyle - Guitarist & Official Store",
+  "description": "เว็บไซต์โปรไฟล์ศิลปิน Kawin Fingerstyle กีตาร์บรรเลง อัลบั้มเพลง ลิงก์ TAB และคอร์สเรียนกีตาร์",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

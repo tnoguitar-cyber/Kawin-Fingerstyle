@@ -1,0 +1,139 @@
+import React, { useState } from 'react';
+import { Navbar } from './components/Navbar';
+import { HeroSection } from './components/HeroSection';
+import { ArtistBioSection } from './components/ArtistBioSection';
+import { DiscographySection } from './components/DiscographySection';
+import { OriginalTabsSection } from './components/OriginalTabsSection';
+import { CoursesSection } from './components/CoursesSection';
+import { MerchSection } from './components/MerchSection';
+import { TourBookingSection } from './components/TourBookingSection';
+import { CartDrawer } from './components/CartDrawer';
+import { Footer } from './components/Footer';
+import { Course, Product, CartItem } from './types';
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState<string>('home');
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+
+  const handleAddToCart = (item: Course | Product) => {
+    const itemId = item.id;
+    const itemType = 'level' in item ? 'course' : 'product';
+    const title = 'thaiTitle' in item ? item.thaiTitle : item.thaiName;
+    const price = 'discountPrice' in item && item.discountPrice ? item.discountPrice : item.price;
+    const imageUrl = 'coverUrl' in item ? item.coverUrl : item.imageUrl;
+
+    setCartItems((prev) => {
+      const existing = prev.find((i) => i.itemId === itemId);
+      if (existing) {
+        return prev.map((i) => (i.itemId === itemId ? { ...i, quantity: i.quantity + 1 } : i));
+      }
+      return [
+        ...prev,
+        {
+          id: `${itemType}-${itemId}-${Date.now()}`,
+          type: itemType,
+          itemId,
+          title,
+          price,
+          imageUrl,
+          quantity: 1,
+        },
+      ];
+    });
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
+  const handleOpenBooking = () => {
+    setActiveTab('tour');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  React.useEffect(() => {
+    const handleOpenAdmin = () => {
+      setActiveTab((prev) => (prev === 'home' || prev === 'tabs' ? prev : 'tabs'));
+    };
+    window.addEventListener('open-admin-modal', handleOpenAdmin);
+    return () => window.removeEventListener('open-admin-modal', handleOpenAdmin);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-amber-400 selection:text-slate-950">
+      
+      {/* Navigation Header */}
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        cartCount={cartItems.reduce((a, b) => a + b.quantity, 0)}
+        onOpenCart={() => setIsCartOpen(true)}
+        onOpenBooking={handleOpenBooking}
+      />
+
+      {/* Main Page Views */}
+      <main className="min-h-[80vh]">
+        {activeTab === 'home' && (
+          <>
+            <HeroSection
+              onNavigate={setActiveTab}
+            />
+            <ArtistBioSection />
+            <DiscographySection />
+            <OriginalTabsSection />
+            <CoursesSection onAddToCart={handleAddToCart} />
+            <MerchSection onAddToCart={handleAddToCart} />
+            <TourBookingSection />
+          </>
+        )}
+
+        {activeTab === 'albums' && (
+          <div className="pt-4">
+            <DiscographySection />
+          </div>
+        )}
+
+        {activeTab === 'tabs' && (
+          <div className="pt-4">
+            <OriginalTabsSection />
+          </div>
+        )}
+
+        {activeTab === 'courses' && (
+          <div className="pt-4">
+            <CoursesSection onAddToCart={handleAddToCart} />
+          </div>
+        )}
+
+        {activeTab === 'products' && (
+          <div className="pt-4">
+            <MerchSection onAddToCart={handleAddToCart} />
+          </div>
+        )}
+
+        {activeTab === 'tour' && (
+          <div className="pt-4">
+            <TourBookingSection />
+          </div>
+        )}
+      </main>
+
+      {/* Shopping Cart Slide-over Drawer */}
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onRemoveItem={handleRemoveFromCart}
+        onClearCart={handleClearCart}
+      />
+
+      {/* Global Footer */}
+      <Footer onNavigate={setActiveTab} />
+    </div>
+  );
+}
