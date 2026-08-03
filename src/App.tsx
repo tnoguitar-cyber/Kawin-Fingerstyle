@@ -64,6 +64,33 @@ export default function App() {
     return () => window.removeEventListener('open-admin-modal', handleOpenAdmin);
   }, []);
 
+  // Dynamic SEO page title and meta description update
+  React.useEffect(() => {
+    const titleMap: Record<string, string> = {
+      home: 'Kawin Fingerstyle | กีตาร์บรรเลง แท็บกีตาร์ คอร์สเรียนออนไลน์ & Official Store',
+      albums: 'อัลบั้มเพลง & ผลงานดนตรีบรรเลง | Kawin Fingerstyle',
+      tabs: 'แท็บกีตาร์ฟิงเกอร์สไตล์ (Guitar TAB) | Kawin Fingerstyle',
+      courses: 'คอร์สเรียนกีตาร์ออนไลน์ | Kawin Fingerstyle',
+      products: 'สินค้าออฟฟิเชียล & เสื้อยืด | Kawin Fingerstyle Store',
+      tour: 'ติดต่องานแสดง & ตารางทัวร์ | Kawin Fingerstyle',
+    };
+
+    const descMap: Record<string, string> = {
+      home: 'เว็บไซต์อย่างเป็นทางการของ Kawin Fingerstyle รวมผลงานเพลงอัลบั้มกีตาร์บรรเลง แจกและจำหน่ายแท็บกีตาร์ คอร์สเรียนกีตาร์ออนไลน์ และสินค้าออฟฟิเชียล',
+      albums: 'ฟังเพลงและดูอัลบั้มผลงานกีตาร์บรรเลงฟิงเกอร์สไตล์ โดย Kawin Fingerstyle พร้อมลิงก์ฟังบน Streaming Platform',
+      tabs: 'ดาวน์โหลดและซื้อแท็บกีตาร์ (Guitar TAB) เพลงออริจินัลและเพลงเรียบเรียงฟิงเกอร์สไตล์ คุณภาพสูง รวบรวมโดย Kawin Fingerstyle',
+      courses: 'เรียนกีตาร์ฟิงเกอร์สไตล์ตั้งแต่พื้นฐานจนถึงระดับสูง คอร์สเรียนออนไลน์แบบวิดีโอเข้าเรียนได้ตลอดชีวิต พร้อมแท็บประกอบ',
+      products: 'สินค้าอย่างเป็นทางการจาก Kawin Fingerstyle เสื้อยืดลายเอ็กซ์คลูซีฟ ปิ๊กกีตาร์ และอุปกรณ์สำหรับคนรักกีตาร์',
+      tour: 'จองคิวงานแสดง มินิคอนเสิร์ต เวิร์กช็อป หรือติดต่องานดนตรีกับ Kawin Fingerstyle เช็กตารางงานแสดงล่าสุดได้ที่นี่',
+    };
+
+    document.title = titleMap[activeTab] || titleMap.home;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', descMap[activeTab] || descMap.home);
+    }
+  }, [activeTab]);
+
   return (
     <div className="min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-amber-400 selection:text-slate-950">
       

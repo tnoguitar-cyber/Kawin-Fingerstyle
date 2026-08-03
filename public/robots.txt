@@ -1,0 +1,6 @@
+# robots.txt for Kawin Fingerstyle
+User-agent: *
+Allow: /
+
+# Sitemap URL
+Sitemap: https://kawinfingerstyle.com/sitemap.xml
