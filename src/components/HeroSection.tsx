@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Music, ArrowRight, Youtube, Sparkles, Guitar } from 'lucide-react';
+import { Play, ArrowRight, Youtube, Sparkles, Guitar } from 'lucide-react';
 import { ARTIST_INFO, TRACKS } from '../data/mockData';
 
 interface HeroSectionProps {
@@ -67,7 +67,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('albums')}
                   className="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-sm rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center gap-2"
                 >
-                  <Music className="w-4 h-4 fill-slate-950" />
                   <span>ฟังเพลงทั้งหมด</span>
                 </button>
 
