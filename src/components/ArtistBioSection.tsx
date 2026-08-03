@@ -83,19 +83,24 @@ export const ArtistBioSection: React.FC = () => {
 
           {/* Achievements Grid */}
           <div className="lg:col-span-6 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-amber-400" />
-              <h3 className="text-base font-bold text-white">ACHIEVEMENTS & HONORS</h3>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-amber-400" />
+                <h3 className="text-base font-bold text-white">ACHIEVEMENTS & HONORS</h3>
+              </div>
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-medium">
+                {ARTIST_ACHIEVEMENTS.length} รายการ
+              </span>
             </div>
             
-            <div className="space-y-3">
+            <div className="space-y-2.5 max-h-[460px] overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
               {ARTIST_ACHIEVEMENTS.map((ach, idx) => (
                 <div key={idx} className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl flex items-start gap-3 hover:border-amber-500/30 transition">
                   <div className="px-2.5 py-1 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-300 font-extrabold text-xs font-mono shrink-0">
                     {ach.year}
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white">{ach.title}</h4>
+                    <h4 className="text-xs font-bold text-white leading-snug">{ach.title}</h4>
                     <span className="text-[10px] text-amber-400/80 font-medium">{ach.category}</span>
                   </div>
                 </div>

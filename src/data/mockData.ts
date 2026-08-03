@@ -127,8 +127,23 @@ export const CHILL_GROOVE_BAND = {
 export const ARTIST_ACHIEVEMENTS = [
   {
     year: '2023',
+    title: 'Artist & Jury Thailand International Guitar Festival Fingerstyle Guitar Competition',
+    category: 'Artist & Jury',
+  },
+  {
+    year: '2023',
     title: '(Artist OPENING ACT) Tommy Emmanuel CGP LIVE IN BANGKOK @M THEATRE',
     category: 'Concert Opening Act',
+  },
+  {
+    year: '2023',
+    title: 'FINALIST NATASHA INTERNATIONAL FINGERSTYLE COMPETITION',
+    category: 'International Finalist',
+  },
+  {
+    year: '2022',
+    title: 'Artist & Jury Phitsanuloke Classical Music Challenge (Fingerstyle Guitar)',
+    category: 'Artist & Jury',
   },
   {
     year: '2021',
@@ -144,6 +159,36 @@ export const ARTIST_ACHIEVEMENTS = [
     year: '2019',
     title: '1ST Place CRAFTER GUITAR CONTEST',
     category: 'Contest Winner',
+  },
+  {
+    year: '2018',
+    title: 'Endorser of Rotosound Strings',
+    category: 'Brand Endorser',
+  },
+  {
+    year: '2017',
+    title: 'Composed Music (Run in Space) 6x10 : 10 fingerstyle Thai Guitarists With Their 6 String Guitars (Baichasong Record)',
+    category: 'Music Composition & Record',
+  },
+  {
+    year: '2017',
+    title: 'The Final 5 Finalists Overdrive Acoustic Guitar Contest NO.1',
+    category: 'Contest Finalist',
+  },
+  {
+    year: '2017',
+    title: '1ST Place Thailand Isan Guitar Festival Guitar Non Classic Solo (Fingerstyle)',
+    category: 'Contest Winner',
+  },
+  {
+    year: '2009',
+    title: 'Outstanding Honor Award National classical guitar competition Yamaha Thailand Institute',
+    category: 'National Honor Award',
+  },
+  {
+    year: '2008',
+    title: '1ST Place Northern Classical Guitar Competition Yamaha Thailand Institute',
+    category: 'Regional Winner',
   },
 ];
 
