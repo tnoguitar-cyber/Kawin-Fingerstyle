@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Users, Eye, TrendingUp } from 'lucide-react';
 
 export const RealtimeVisitorCounter: React.FC = () => {
-  const [totalViews, setTotalViews] = useState<number>(1280);
-  const [todayViews, setTodayViews] = useState<number>(42);
+  const [totalViews, setTotalViews] = useState<number>(1);
+  const [todayViews, setTodayViews] = useState<number>(1);
   const [activeUsers, setActiveUsers] = useState<number>(1);
 
   useEffect(() => {
-    // 1. Real Pageviews Counter using localStorage
-    const STORAGE_KEY_TOTAL = 'kawin_views_total_v2';
-    const STORAGE_KEY_TODAY = 'kawin_views_today_v2';
-    const STORAGE_KEY_DATE = 'kawin_views_date_v2';
+    // 1. Real Pageviews Counter starting clean for fresh site launch
+    const STORAGE_KEY_TOTAL = 'kawin_real_views_total_v3';
+    const STORAGE_KEY_TODAY = 'kawin_real_views_today_v3';
+    const STORAGE_KEY_DATE = 'kawin_real_views_date_v3';
 
     const todayStr = new Date().toISOString().split('T')[0];
     const savedDate = localStorage.getItem(STORAGE_KEY_DATE);
 
-    let currentTotal = 1280;
-    let currentToday = 42;
+    let currentTotal = 0;
+    let currentToday = 0;
 
     const savedTotal = localStorage.getItem(STORAGE_KEY_TOTAL);
     if (savedTotal) {
@@ -30,12 +30,12 @@ export const RealtimeVisitorCounter: React.FC = () => {
       }
     } else {
       // New day: reset today views
-      currentToday = 1;
+      currentToday = 0;
       localStorage.setItem(STORAGE_KEY_DATE, todayStr);
     }
 
-    // Only increment view count once per browser session
-    const SESSION_VISITED = 'kawin_session_counted';
+    // Increment count for current session if not counted yet
+    const SESSION_VISITED = 'kawin_session_counted_v3';
     if (!sessionStorage.getItem(SESSION_VISITED)) {
       currentTotal += 1;
       currentToday += 1;
@@ -43,6 +43,10 @@ export const RealtimeVisitorCounter: React.FC = () => {
       localStorage.setItem(STORAGE_KEY_TOTAL, currentTotal.toString());
       localStorage.setItem(STORAGE_KEY_TODAY, currentToday.toString());
       localStorage.setItem(STORAGE_KEY_DATE, todayStr);
+    } else {
+      // If already visited in this session, ensure at least 1
+      if (currentTotal === 0) currentTotal = 1;
+      if (currentToday === 0) currentToday = 1;
     }
 
     setTotalViews(currentTotal);
