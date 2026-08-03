@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "site_stats": {
+      "title": "Site Statistics",
+      "description": "Global pageview statistics for Kawin Fingerstyle website",
+      "type": "object",
+      "properties": {
+        "totalViews": {
+          "type": "number",
+          "description": "Total site views"
+        },
+        "todayViews": {
+          "type": "number",
+          "description": "Today site views"
+        },
+        "lastUpdatedDate": {
+          "type": "string",
+          "description": "Date string format YYYY-MM-DD"
+        }
+      },
+      "required": [
+        "totalViews",
+        "todayViews"
+      ]
+    },
+    "active_presence": {
+      "title": "Active Realtime Presence",
+      "description": "Active online users presence heartbeats",
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        },
+        "lastSeen": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "sessionId"
+      ]
+    }
+  }
+}

@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Eye, TrendingUp } from 'lucide-react';
+import { 
+  doc, 
+  collection, 
+  onSnapshot, 
+  runTransaction, 
+  setDoc, 
+  deleteDoc 
+} from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 export const RealtimeVisitorCounter: React.FC = () => {
   const [totalViews, setTotalViews] = useState<number>(1);
@@ -7,102 +16,135 @@ export const RealtimeVisitorCounter: React.FC = () => {
   const [activeUsers, setActiveUsers] = useState<number>(1);
 
   useEffect(() => {
-    // 1. Real Pageviews Counter starting clean for fresh site launch
-    const STORAGE_KEY_TOTAL = 'kawin_real_views_total_v3';
-    const STORAGE_KEY_TODAY = 'kawin_real_views_today_v3';
-    const STORAGE_KEY_DATE = 'kawin_real_views_date_v3';
+    // 1. Subscribe to real-time site stats in Firebase Firestore
+    const statsDocRef = doc(db, 'site_stats', 'global');
 
-    const todayStr = new Date().toISOString().split('T')[0];
-    const savedDate = localStorage.getItem(STORAGE_KEY_DATE);
-
-    let currentTotal = 0;
-    let currentToday = 0;
-
-    const savedTotal = localStorage.getItem(STORAGE_KEY_TOTAL);
-    if (savedTotal) {
-      currentTotal = parseInt(savedTotal, 10);
-    }
-
-    if (savedDate === todayStr) {
-      const savedToday = localStorage.getItem(STORAGE_KEY_TODAY);
-      if (savedToday) {
-        currentToday = parseInt(savedToday, 10);
-      }
-    } else {
-      // New day: reset today views
-      currentToday = 0;
-      localStorage.setItem(STORAGE_KEY_DATE, todayStr);
-    }
-
-    // Increment count for current session if not counted yet
-    const SESSION_VISITED = 'kawin_session_counted_v3';
-    if (!sessionStorage.getItem(SESSION_VISITED)) {
-      currentTotal += 1;
-      currentToday += 1;
-      sessionStorage.setItem(SESSION_VISITED, 'true');
-      localStorage.setItem(STORAGE_KEY_TOTAL, currentTotal.toString());
-      localStorage.setItem(STORAGE_KEY_TODAY, currentToday.toString());
-      localStorage.setItem(STORAGE_KEY_DATE, todayStr);
-    } else {
-      // If already visited in this session, ensure at least 1
-      if (currentTotal === 0) currentTotal = 1;
-      if (currentToday === 0) currentToday = 1;
-    }
-
-    setTotalViews(currentTotal);
-    setTodayViews(currentToday);
-
-    // 2. Real Active Tabs/Sessions tracking via BroadcastChannel
-    if ('BroadcastChannel' in window) {
-      const channel = new BroadcastChannel('kawin_visitor_presence');
-      const myTabId = Math.random().toString(36).substring(2, 9);
-      const activeTabs = new Set<string>([myTabId]);
-
-      const pingOthers = () => {
-        channel.postMessage({ type: 'PING', tabId: myTabId });
-      };
-
-      channel.onmessage = (event) => {
-        const { type, tabId } = event.data || {};
-        if (type === 'PING') {
-          if (tabId && tabId !== myTabId) {
-            activeTabs.add(tabId);
-            setActiveUsers(activeTabs.size);
-            // Respond back so sender knows we are online
-            channel.postMessage({ type: 'PONG', tabId: myTabId });
-          }
-        } else if (type === 'PONG') {
-          if (tabId && tabId !== myTabId) {
-            activeTabs.add(tabId);
-            setActiveUsers(activeTabs.size);
-          }
-        } else if (type === 'BYE') {
-          if (tabId) {
-            activeTabs.delete(tabId);
-            setActiveUsers(Math.max(1, activeTabs.size));
-          }
+    const unsubscribeStats = onSnapshot(statsDocRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        if (data.lastUpdatedDate === todayStr) {
+          setTodayViews(data.todayViews || 1);
+        } else {
+          // If Firestore date is older than today, today's count is effectively 0 until a visit occurs today
+          setTodayViews(0);
         }
-      };
+        setTotalViews(data.totalViews || 1);
+      }
+    }, (error) => {
+      console.warn("Firestore site_stats listener warning:", error);
+    });
 
-      // Announce presence
-      pingOthers();
-      const pingInterval = setInterval(pingOthers, 4000);
+    // 2. Register pageview in Firestore (once per browser session)
+    const recordPageView = async () => {
+      const SESSION_KEY = 'kawin_firebase_session_visited_v1';
+      if (!sessionStorage.getItem(SESSION_KEY)) {
+        sessionStorage.setItem(SESSION_KEY, 'true');
+        const todayStr = new Date().toISOString().split('T')[0];
 
-      const handleUnload = () => {
-        channel.postMessage({ type: 'BYE', tabId: myTabId });
-        channel.close();
-      };
+        try {
+          await runTransaction(db, async (transaction) => {
+            const statsDoc = await transaction.get(statsDocRef);
 
-      window.addEventListener('beforeunload', handleUnload);
+            if (!statsDoc.exists()) {
+              transaction.set(statsDocRef, {
+                totalViews: 1,
+                todayViews: 1,
+                lastUpdatedDate: todayStr
+              });
+            } else {
+              const data = statsDoc.data();
+              const isSameDay = data.lastUpdatedDate === todayStr;
 
-      return () => {
-        clearInterval(pingInterval);
-        handleUnload();
-        window.removeEventListener('beforeunload', handleUnload);
-      };
-    } else {
-      setActiveUsers(1);
+              const newTotal = (data.totalViews || 0) + 1;
+              const newToday = isSameDay ? (data.todayViews || 0) + 1 : 1;
+
+              transaction.update(statsDocRef, {
+                totalViews: newTotal,
+                todayViews: newToday,
+                lastUpdatedDate: todayStr
+              });
+            }
+          });
+        } catch (err) {
+          console.warn("Error updating Firebase pageview:", err);
+        }
+      }
+    };
+
+    recordPageView();
+
+    // 3. Real-time Active Presence in Firebase Firestore
+    let sessionId = sessionStorage.getItem('kawin_firebase_session_id');
+    if (!sessionId) {
+      sessionId = Math.random().toString(36).substring(2, 11) + '_' + Date.now();
+      sessionStorage.setItem('kawin_firebase_session_id', sessionId);
     }
+
+    const presenceDocRef = doc(db, 'active_presence', sessionId);
+
+    // Heartbeat to update lastSeen timestamp (Optimized: only when tab is visible, every 30s)
+    const updatePresence = async () => {
+      if (document.visibilityState === 'hidden') return;
+      try {
+        await setDoc(presenceDocRef, {
+          sessionId,
+          lastSeen: Date.now()
+        });
+      } catch (e) {
+        // silent catch
+      }
+    };
+
+    updatePresence();
+    const heartbeatInterval = setInterval(updatePresence, 30000);
+
+    // Pause/Resume heartbeat when user changes tab focus
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        updatePresence();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Listen to all active sessions in the last 65 seconds
+    const presenceColRef = collection(db, 'active_presence');
+    const unsubscribePresence = onSnapshot(presenceColRef, (snapshot) => {
+      const now = Date.now();
+      let activeCount = 0;
+
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.lastSeen && (now - data.lastSeen) < 65000) {
+          activeCount += 1;
+        }
+      });
+
+      setActiveUsers(Math.max(1, activeCount));
+    }, (error) => {
+      // silent catch
+    });
+
+    // Cleanup on unload or unmount
+    const handleUnload = async () => {
+      try {
+        await deleteDoc(presenceDocRef);
+      } catch (e) {
+        // ignore on unload
+      }
+    };
+
+    window.addEventListener('beforeunload', handleUnload);
+
+    return () => {
+      clearInterval(heartbeatInterval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      unsubscribeStats();
+      unsubscribePresence();
+      handleUnload();
+      window.removeEventListener('beforeunload', handleUnload);
+    };
   }, []);
 
   return (
