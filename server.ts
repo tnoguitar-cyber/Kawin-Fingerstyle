@@ -32,12 +32,13 @@ interface StatsData {
   lastUpdatedDate: string;
 }
 
-// Initial default stats baseline
 let stats: StatsData = {
-  totalViews: 3580, // Realistic initial baseline for Kawin Fingerstyle
-  todayViews: 42,
+  totalViews: 0,
+  todayViews: 0,
   lastUpdatedDate: getThailandDateStr(),
 };
+
+let isStatsDirty = false;
 
 // Ensure data directory and file exist
 function loadStats() {
@@ -58,42 +59,55 @@ function loadStats() {
         stats.lastUpdatedDate = parsed.lastUpdatedDate;
       }
     } else {
-      saveStats();
+      saveStatsNow();
     }
   } catch (err) {
     console.error('Error loading stats.json:', err);
   }
 }
 
-function saveStats() {
+function saveStatsNow() {
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     fs.writeFileSync(STATS_FILE, JSON.stringify(stats, null, 2), 'utf-8');
+    isStatsDirty = false;
   } catch (err) {
     console.error('Error saving stats.json:', err);
   }
 }
 
+function scheduleSaveStats() {
+  isStatsDirty = true;
+}
+
+// Periodically write dirty stats to disk every 10 seconds (non-blocking)
+setInterval(() => {
+  if (isStatsDirty) {
+    saveStatsNow();
+  }
+}, 10000);
+
 // Active sessions tracking (sessionId -> lastSeen timestamp in ms)
 const activeSessions = new Map<string, number>();
 
-function cleanStaleSessions() {
+// Background interval to clean sessions older than 60 seconds
+setInterval(() => {
   const now = Date.now();
   for (const [sessionId, lastSeen] of activeSessions.entries()) {
-    if (now - lastSeen > 30000) { // 30 seconds threshold
+    if (now - lastSeen > 60000) {
       activeSessions.delete(sessionId);
     }
   }
-}
+}, 20000);
 
 function checkDateRollover() {
   const todayStr = getThailandDateStr();
   if (stats.lastUpdatedDate !== todayStr) {
     stats.todayViews = 0;
     stats.lastUpdatedDate = todayStr;
-    saveStats();
+    scheduleSaveStats();
   }
 }
 
@@ -102,7 +116,6 @@ loadStats();
 
 // API Routes
 app.get('/api/stats', (req, res) => {
-  cleanStaleSessions();
   checkDateRollover();
   res.json({
     totalViews: stats.totalViews,
@@ -114,7 +127,6 @@ app.get('/api/stats', (req, res) => {
 
 app.post('/api/stats/hit', (req, res) => {
   const { sessionId, isNewSession } = req.body || {};
-  cleanStaleSessions();
   checkDateRollover();
 
   if (sessionId) {
@@ -124,7 +136,7 @@ app.post('/api/stats/hit', (req, res) => {
   if (isNewSession) {
     stats.totalViews += 1;
     stats.todayViews += 1;
-    saveStats();
+    scheduleSaveStats();
   }
 
   res.json({
@@ -140,9 +152,12 @@ app.post('/api/stats/ping', (req, res) => {
   if (sessionId) {
     activeSessions.set(sessionId, Date.now());
   }
-  cleanStaleSessions();
+
+  checkDateRollover();
 
   res.json({
+    totalViews: stats.totalViews,
+    todayViews: stats.todayViews,
     activeUsers: Math.max(1, activeSessions.size),
   });
 });
