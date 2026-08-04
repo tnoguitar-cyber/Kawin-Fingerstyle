@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, TrendingUp } from 'lucide-react';
+import { Eye, TrendingUp, History } from 'lucide-react';
 
 export const RealtimeVisitorCounter: React.FC = () => {
   const [totalViews, setTotalViews] = useState<number>(() => {
@@ -9,6 +9,11 @@ export const RealtimeVisitorCounter: React.FC = () => {
 
   const [todayViews, setTodayViews] = useState<number>(() => {
     const saved = localStorage.getItem('kawin_real_today_views_v3');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
+  const [yesterdayViews, setYesterdayViews] = useState<number>(() => {
+    const saved = localStorage.getItem('kawin_real_yesterday_views_v3');
     return saved ? parseInt(saved, 10) : 0;
   });
 
@@ -48,6 +53,10 @@ export const RealtimeVisitorCounter: React.FC = () => {
             setTodayViews(data.todayViews);
             localStorage.setItem('kawin_real_today_views_v3', String(data.todayViews));
           }
+          if (typeof data.yesterdayViews === 'number') {
+            setYesterdayViews(data.yesterdayViews);
+            localStorage.setItem('kawin_real_yesterday_views_v3', String(data.yesterdayViews));
+          }
           if (typeof data.activeUsers === 'number') {
             setActiveUsers(data.activeUsers);
           }
@@ -79,6 +88,10 @@ export const RealtimeVisitorCounter: React.FC = () => {
           if (typeof data.todayViews === 'number') {
             setTodayViews(data.todayViews);
             localStorage.setItem('kawin_real_today_views_v3', String(data.todayViews));
+          }
+          if (typeof data.yesterdayViews === 'number') {
+            setYesterdayViews(data.yesterdayViews);
+            localStorage.setItem('kawin_real_yesterday_views_v3', String(data.yesterdayViews));
           }
           if (typeof data.activeUsers === 'number') {
             setActiveUsers(data.activeUsers);
@@ -122,8 +135,8 @@ export const RealtimeVisitorCounter: React.FC = () => {
           </span>
         </div>
 
-        {/* Right Side: Total & Today Stats */}
-        <div className="flex items-center gap-3.5 text-[11px]">
+        {/* Right Side: Total, Today & Yesterday Stats */}
+        <div className="flex flex-wrap items-center gap-3 text-[11px]">
           {/* Today Views */}
           <div className="flex items-center gap-1.5">
             <TrendingUp className="w-3.5 h-3.5 text-amber-400 shrink-0" />
@@ -133,7 +146,18 @@ export const RealtimeVisitorCounter: React.FC = () => {
             </span>
           </div>
 
-          <span className="text-slate-700">|</span>
+          <span className="text-slate-700 hidden sm:inline">|</span>
+
+          {/* Yesterday Views */}
+          <div className="flex items-center gap-1.5">
+            <History className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+            <span className="text-slate-400">เมื่อวาน:</span>
+            <span className="font-semibold text-indigo-300 font-mono">
+              {yesterdayViews.toLocaleString('th-TH')}
+            </span>
+          </div>
+
+          <span className="text-slate-700 hidden sm:inline">|</span>
 
           {/* Total Views */}
           <div className="flex items-center gap-1.5">

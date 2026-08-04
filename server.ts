@@ -29,12 +29,14 @@ function getThailandDateStr(): string {
 interface StatsData {
   totalViews: number;
   todayViews: number;
+  yesterdayViews: number;
   lastUpdatedDate: string;
 }
 
 let stats: StatsData = {
   totalViews: 0,
   todayViews: 0,
+  yesterdayViews: 0,
   lastUpdatedDate: getThailandDateStr(),
 };
 
@@ -54,6 +56,9 @@ function loadStats() {
       }
       if (typeof parsed.todayViews === 'number') {
         stats.todayViews = parsed.todayViews;
+      }
+      if (typeof parsed.yesterdayViews === 'number') {
+        stats.yesterdayViews = parsed.yesterdayViews;
       }
       if (typeof parsed.lastUpdatedDate === 'string') {
         stats.lastUpdatedDate = parsed.lastUpdatedDate;
@@ -105,6 +110,7 @@ setInterval(() => {
 function checkDateRollover() {
   const todayStr = getThailandDateStr();
   if (stats.lastUpdatedDate !== todayStr) {
+    stats.yesterdayViews = stats.todayViews;
     stats.todayViews = 0;
     stats.lastUpdatedDate = todayStr;
     scheduleSaveStats();
@@ -120,6 +126,7 @@ app.get('/api/stats', (req, res) => {
   res.json({
     totalViews: stats.totalViews,
     todayViews: stats.todayViews,
+    yesterdayViews: stats.yesterdayViews,
     activeUsers: Math.max(1, activeSessions.size),
     lastUpdatedDate: stats.lastUpdatedDate,
   });
@@ -142,6 +149,7 @@ app.post('/api/stats/hit', (req, res) => {
   res.json({
     totalViews: stats.totalViews,
     todayViews: stats.todayViews,
+    yesterdayViews: stats.yesterdayViews,
     activeUsers: Math.max(1, activeSessions.size),
     lastUpdatedDate: stats.lastUpdatedDate,
   });
@@ -158,6 +166,7 @@ app.post('/api/stats/ping', (req, res) => {
   res.json({
     totalViews: stats.totalViews,
     todayViews: stats.todayViews,
+    yesterdayViews: stats.yesterdayViews,
     activeUsers: Math.max(1, activeSessions.size),
   });
 });
