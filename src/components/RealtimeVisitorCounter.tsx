@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, TrendingUp, History } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 export const RealtimeVisitorCounter: React.FC = () => {
   const [totalViews, setTotalViews] = useState<number>(() => {
@@ -120,55 +120,14 @@ export const RealtimeVisitorCounter: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full bg-slate-900/60 backdrop-blur-sm border border-slate-800/80 rounded-xl py-2 px-3 sm:px-4 text-white shadow-sm my-1">
-      <div className="flex flex-wrap items-center justify-between gap-2.5 text-xs">
-        
-        {/* Left Side: Realtime Online Badge */}
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span className="text-slate-400 text-[11px] font-medium">ออนไลน์ขณะนี้:</span>
-          <span className="font-bold text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded text-[11px] border border-emerald-500/20">
-            {activeUsers} คน
-          </span>
-        </div>
-
-        {/* Right Side: Total, Today & Yesterday Stats */}
-        <div className="flex flex-wrap items-center gap-3 text-[11px]">
-          {/* Today Views */}
-          <div className="flex items-center gap-1.5">
-            <TrendingUp className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span className="text-slate-400">วันนี้:</span>
-            <span className="font-semibold text-amber-300 font-mono">
-              {todayViews.toLocaleString('th-TH')}
-            </span>
-          </div>
-
-          <span className="text-slate-700 hidden sm:inline">|</span>
-
-          {/* Yesterday Views */}
-          <div className="flex items-center gap-1.5">
-            <History className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-            <span className="text-slate-400">เมื่อวาน:</span>
-            <span className="font-semibold text-indigo-300 font-mono">
-              {yesterdayViews.toLocaleString('th-TH')}
-            </span>
-          </div>
-
-          <span className="text-slate-700 hidden sm:inline">|</span>
-
-          {/* Total Views */}
-          <div className="flex items-center gap-1.5">
-            <Eye className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-            <span className="text-slate-400">เข้าชมทั้งหมด:</span>
-            <span className="font-semibold text-sky-300 font-mono">
-              {totalViews.toLocaleString('th-TH')}
-            </span>
-          </div>
-        </div>
-
+    <div className="w-full flex items-center justify-center py-2.5 px-4 text-xs sm:text-sm text-slate-300">
+      <div className="flex items-center gap-2">
+        <Eye className="w-4 h-4 text-amber-500 shrink-0" />
+        <span className="font-normal text-slate-300">ผู้เข้าชมเว็บไซต์ทั้งหมด:</span>
+        <span className="font-bold text-amber-400 font-mono text-sm sm:text-base">
+          {totalViews.toLocaleString('th-TH')}
+        </span>
+        <span className="font-normal text-slate-300">ครั้ง</span>
       </div>
     </div>
   );
