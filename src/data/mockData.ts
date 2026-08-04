@@ -68,7 +68,7 @@ export const ARTIST_INFO = {
   name: 'KAWIN PHUSRITHET',
   realName: 'กวิน (Kawin Fingerstyle)',
   stageName: 'Kawin Fingerstyle',
-  profileImageUrl: 'https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/499236088_9847823285255289_8915451487891759212_n.jpg?stp=dst-jpg_tt6&cstp=mx667x667&ctp=s667x667&_nc_cat=100&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeF-zKm-53fG8dUD5vYbSR48pEaHw_diSZWkRofD92JJlbADdwxhKm8lHKi2P4PIcXQuSKp-BT1msWcREgetO-Ii&_nc_ohc=nQm_YrG44RgQ7kNvwFEY_a2&_nc_oc=AdrA8zEp3lhOJIo66pomp5RGpWifFiYgVTe2P9bFA-I9cr0_yU9g_phSZdk5hk1a43Xu5nfQ2TX7Z0U45RkfUXDy&_nc_zt=23&_nc_ht=scontent.fbkk22-8.fna&_nc_gid=jww-H5NHPkWoiERCEEAjZw&_nc_ss=7f2a8&oh=00_AQE83Z1m9UJa92_wG6lmXyWMssB8OpVnkWdoGZ9JqmtVEA&oe=6A76348D',
+  profileImageUrl: '/og-image.jpg',
   bio: 'มือกีตาร์ Fingerstyle อะคูสติก ผู้สร้างสรรค์ผลงานเพลงบรรเลง ถ่ายทอดอารมณ์ความรู้สึกอันประณีตผ่านสายกีตาร์ acoustic',
   shortTagline: 'บรรเลงความรู้สึก... ผ่านเสียงกีตาร์อะคูสติก Kawin Fingerstyle',
   lineId: '@535pcjno',
