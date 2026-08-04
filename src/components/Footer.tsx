@@ -146,6 +146,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </button>
               </li>
               <li>
+                <button onClick={() => onNavigate('freetabs')} className="hover:text-amber-300 transition">
+                  แจก TAB ฟรี (FREE TAB)
+                </button>
+              </li>
+              <li>
                 <button onClick={() => onNavigate('courses')} className="hover:text-amber-300 transition">
                   คอร์สเรียนกีตาร์
                 </button>

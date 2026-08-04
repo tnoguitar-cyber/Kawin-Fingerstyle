@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Music, ShoppingBag, Send, Menu, X, BookOpen, User, FileText } from 'lucide-react';
+import { Music, ShoppingBag, Send, Menu, X, BookOpen, User, FileText, Gift } from 'lucide-react';
 import { ARTIST_INFO } from '../data/mockData';
 
 interface NavbarProps {
@@ -22,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'home', label: 'หน้าแรก', icon: User },
     { id: 'albums', label: 'ผลงานเพลง', icon: Music },
     { id: 'tabs', label: 'TAB เพลงแต่ง', icon: FileText },
+    { id: 'freetabs', label: 'แจก TAB ฟรี', icon: Gift },
     { id: 'courses', label: 'คอร์สเรียน', icon: BookOpen },
     { id: 'products', label: 'ร้านค้า', icon: ShoppingBag },
     { id: 'tour', label: 'ติดต่องาน', icon: Send },

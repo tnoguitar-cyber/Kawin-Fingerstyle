@@ -74,6 +74,7 @@ let stats: StatsData = {
 };
 
 let isStatsDirty = false;
+let isFirestoreDisabled = false;
 
 // Load local backup first
 function loadLocalStats() {
@@ -105,6 +106,7 @@ function loadLocalStats() {
 // Ensure data directory and file exist, sync with Firestore
 async function loadStats() {
   loadLocalStats();
+  if (isFirestoreDisabled) return;
   try {
     const docRef = doc(db, 'site_stats', 'global');
     const docSnap = await getDoc(docRef);
@@ -127,13 +129,15 @@ async function loadStats() {
       console.log('No Firestore global stats doc found. Seeding with default/local stats...');
       await saveStatsToFirestore();
     }
-  } catch (err) {
-    console.error('Error connecting or syncing with Firestore on start:', err);
+  } catch (err: any) {
+    console.error('Error connecting or syncing with Firestore on start. Gracefully disabling Firestore integration:', err.message || err);
+    isFirestoreDisabled = true;
   }
 }
 
 // Save to Firestore helper
 async function saveStatsToFirestore() {
+  if (isFirestoreDisabled) return;
   try {
     const docRef = doc(db, 'site_stats', 'global');
     await setDoc(docRef, {
@@ -142,8 +146,9 @@ async function saveStatsToFirestore() {
       yesterdayViews: stats.yesterdayViews,
       lastUpdatedDate: stats.lastUpdatedDate,
     }, { merge: true });
-  } catch (err) {
-    console.error('Error saving stats to Firestore:', err);
+  } catch (err: any) {
+    console.error('Error saving stats to Firestore. Disabling Firestore integration:', err.message || err);
+    isFirestoreDisabled = true;
   }
 }
 
@@ -201,6 +206,7 @@ function checkDateRollover() {
 
 // Sync and pull latest stats from Firestore to avoid stale/divergent values
 async function pullLatestStats() {
+  if (isFirestoreDisabled) return;
   try {
     const docRef = doc(db, 'site_stats', 'global');
     const docSnap = await getDoc(docRef);
@@ -219,8 +225,9 @@ async function pullLatestStats() {
         stats.lastUpdatedDate = data.lastUpdatedDate;
       }
     }
-  } catch (err) {
-    console.error('Error pulling latest stats from Firestore:', err);
+  } catch (err: any) {
+    console.error('Error pulling latest stats from Firestore. Disabling Firestore integration:', err.message || err);
+    isFirestoreDisabled = true;
   }
 }
 

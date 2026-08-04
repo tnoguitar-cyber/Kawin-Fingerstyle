@@ -4,6 +4,7 @@ import { HeroSection } from './components/HeroSection';
 import { ArtistBioSection } from './components/ArtistBioSection';
 import { DiscographySection } from './components/DiscographySection';
 import { OriginalTabsSection } from './components/OriginalTabsSection';
+import { FreeTabsSection } from './components/FreeTabsSection';
 import { CoursesSection } from './components/CoursesSection';
 import { MerchSection } from './components/MerchSection';
 import { TourBookingSection } from './components/TourBookingSection';
@@ -70,6 +71,7 @@ export default function App() {
       home: 'Kawin Fingerstyle | กีตาร์บรรเลง แท็บกีตาร์ คอร์สเรียนออนไลน์ & Official Store',
       albums: 'อัลบั้มเพลง & ผลงานดนตรีบรรเลง | Kawin Fingerstyle',
       tabs: 'แท็บกีตาร์ฟิงเกอร์สไตล์ (Guitar TAB) | Kawin Fingerstyle',
+      freetabs: 'แจก TAB กีตาร์ฟรี (Free Guitar TABs) | Kawin Fingerstyle',
       courses: 'คอร์สเรียนกีตาร์ออนไลน์ | Kawin Fingerstyle',
       products: 'สินค้าออฟฟิเชียล & เสื้อยืด | Kawin Fingerstyle Store',
       tour: 'ติดต่องานแสดง & ตารางทัวร์ | Kawin Fingerstyle',
@@ -79,6 +81,7 @@ export default function App() {
       home: 'เว็บไซต์อย่างเป็นทางการของ Kawin Fingerstyle รวมผลงานเพลงอัลบั้มกีตาร์บรรเลง แจกและจำหน่ายแท็บกีตาร์ คอร์สเรียนกีตาร์ออนไลน์ และสินค้าออฟฟิเชียล',
       albums: 'ฟังเพลงและดูอัลบั้มผลงานกีตาร์บรรเลงฟิงเกอร์สไตล์ โดย Kawin Fingerstyle พร้อมลิงก์ฟังบน Streaming Platform',
       tabs: 'ดาวน์โหลดและซื้อแท็บกีตาร์ (Guitar TAB) เพลงออริจินัลและเพลงเรียบเรียงฟิงเกอร์สไตล์ คุณภาพสูง รวบรวมโดย Kawin Fingerstyle',
+      freetabs: 'คลังโน้ตและแท็บกีตาร์ฟิงเกอร์สไตล์ แจกให้ดาวน์โหลดฟรีเพื่อนำไปใช้ในการฝึกซ้อมและพัฒนาฝีมือการเล่นกีตาร์บรรเลง รวบรวมโดย Kawin Fingerstyle',
       courses: 'เรียนกีตาร์ฟิงเกอร์สไตล์ตั้งแต่พื้นฐานจนถึงระดับสูง คอร์สเรียนออนไลน์แบบวิดีโอเข้าเรียนได้ตลอดชีวิต พร้อมแท็บประกอบ',
       products: 'สินค้าอย่างเป็นทางการจาก Kawin Fingerstyle เสื้อยืดลายเอ็กซ์คลูซีฟ ปิ๊กกีตาร์ และอุปกรณ์สำหรับคนรักกีตาร์',
       tour: 'จองคิวงานแสดง มินิคอนเสิร์ต เวิร์กช็อป หรือติดต่องานดนตรีกับ Kawin Fingerstyle เช็กตารางงานแสดงล่าสุดได้ที่นี่',
@@ -113,6 +116,7 @@ export default function App() {
             <ArtistBioSection />
             <DiscographySection />
             <OriginalTabsSection />
+            <FreeTabsSection />
             <CoursesSection onAddToCart={handleAddToCart} />
             <MerchSection onAddToCart={handleAddToCart} />
             <TourBookingSection />
@@ -128,6 +132,12 @@ export default function App() {
         {activeTab === 'tabs' && (
           <div className="pt-4">
             <OriginalTabsSection />
+          </div>
+        )}
+
+        {activeTab === 'freetabs' && (
+          <div className="pt-4">
+            <FreeTabsSection />
           </div>
         )}
 

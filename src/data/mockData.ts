@@ -1,4 +1,4 @@
-import { Album, Course, Product, ConcertDate, ArtistGear, Track, PopularVideo } from '../types';
+import { Album, Course, Product, ConcertDate, ArtistGear, Track, PopularVideo, FreeTabItem } from '../types';
 
 export const POPULAR_VIDEOS: PopularVideo[] = [
   {
@@ -433,5 +433,19 @@ export const ARTIST_GEARS: ArtistGear[] = [
       { name: 'K&K Quantum Trinity' }
     ],
     imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+  },
+];
+
+export const FREE_TABS: FreeTabItem[] = [
+  {
+    id: 'free-tab-1',
+    title: 'หลงกล - หิน เหล็ก ไฟ (Intro TAB - 2 ไลน์)',
+    fileName: 'หลงกล - หิน เหล็ก ไฟ (Intro TAB).pdf',
+    driveUrl: 'https://drive.google.com/drive/folders/1fltMqlPkQAdc-jnfW2nfX5pMcVkvwuxT?usp=drive_link',
+    badge: '🔥 Rock Ballad',
+    description: 'โน้ตและแท็บกีตาร์ช่วงอินโทร (Intro) เพลงหลงกล ของวง หิน เหล็ก ไฟ แบบเรียบเรียง 2 ไลน์ประสาน เล่นง่ายเสียงเต็มอิ่ม',
+    difficulty: 'ปานกลาง (Intermediate)',
+    tuning: 'Standard (E A D G B E)',
+    capo: 'No Capo',
   },
 ];

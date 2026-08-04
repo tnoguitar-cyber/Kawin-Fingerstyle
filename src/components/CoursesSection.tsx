@@ -104,7 +104,6 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onAddToCart }) =
                       <span className="flex items-center gap-1 text-amber-400 text-xs font-bold">
                         <Star className="w-3.5 h-3.5 fill-current" /> {course.rating.toFixed(1)}
                       </span>
-                      <span className="text-[10px] text-slate-500">{course.studentCount} นักเรียน</span>
                     </div>
                   </div>
 

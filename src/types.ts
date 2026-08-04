@@ -154,3 +154,16 @@ export interface InquiryMessage {
   createdAt: string;
   status: 'unread' | 'read' | 'replied';
 }
+
+export interface FreeTabItem {
+  id: string;
+  title: string;
+  fileName: string;
+  driveUrl: string;
+  youtubeUrl?: string;
+  badge: string;
+  description: string;
+  difficulty: 'ง่าย (Beginner)' | 'ปานกลาง (Intermediate)' | 'ยาก (Advanced)';
+  tuning: string;
+  capo?: string;
+}
