@@ -6,6 +6,31 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Fix iOS Safari native date input & select overflow / box-sizing bugs */
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+  }
+
+  /* Styling WebKit calendar icon for dark mode */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.8);
+    opacity: 0.8;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 /* Custom smooth scrollbar */
