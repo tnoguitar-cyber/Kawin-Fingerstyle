@@ -2,11 +2,44 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
+import dotenv from 'dotenv';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Initialize Firebase Client SDK on Server
+const configPath = path.join(process.cwd(), 'firebase-applet-config.json');
+let appletConfig: Record<string, string> = {};
+if (fs.existsSync(configPath)) {
+  try {
+    appletConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    console.log('Successfully loaded Firebase configuration from firebase-applet-config.json:', {
+      projectId: appletConfig.projectId,
+      firestoreDatabaseId: appletConfig.firestoreDatabaseId
+    });
+  } catch (err) {
+    console.error('Error reading firebase-applet-config.json:', err);
+  }
+}
+
+const firebaseConfig = {
+  apiKey: appletConfig.apiKey || process.env.FIREBASE_API_KEY || process.env.VITE_FIREBASE_API_KEY || '',
+  authDomain: appletConfig.authDomain || process.env.FIREBASE_AUTH_DOMAIN || process.env.VITE_FIREBASE_AUTH_DOMAIN || '',
+  projectId: appletConfig.projectId || process.env.FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID || 'ai-studio-kawinfingerstyle',
+  storageBucket: appletConfig.storageBucket || process.env.FIREBASE_STORAGE_BUCKET || process.env.VITE_FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: appletConfig.messagingSenderId || process.env.FIREBASE_MESSAGING_SENDER_ID || process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: appletConfig.appId || process.env.FIREBASE_APP_ID || process.env.VITE_FIREBASE_APP_ID || '',
+};
+
+const fApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const dbId = appletConfig.firestoreDatabaseId || process.env.FIREBASE_DATABASE_ID || process.env.VITE_FIREBASE_DATABASE_ID || 'ai-studio-kawinfingerstyle-e699da0a-2da0-46dc-ae5c-4d9708c2502f';
+const db = dbId && dbId !== '(default)' ? getFirestore(fApp, dbId) : getFirestore(fApp);
 
 // Path for local persistent stats JSON storage
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -42,8 +75,8 @@ let stats: StatsData = {
 
 let isStatsDirty = false;
 
-// Ensure data directory and file exist
-function loadStats() {
+// Load local backup first
+function loadLocalStats() {
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -63,11 +96,54 @@ function loadStats() {
       if (typeof parsed.lastUpdatedDate === 'string') {
         stats.lastUpdatedDate = parsed.lastUpdatedDate;
       }
-    } else {
-      saveStatsNow();
     }
   } catch (err) {
     console.error('Error loading stats.json:', err);
+  }
+}
+
+// Ensure data directory and file exist, sync with Firestore
+async function loadStats() {
+  loadLocalStats();
+  try {
+    const docRef = doc(db, 'site_stats', 'global');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (typeof data.totalViews === 'number') {
+        stats.totalViews = Math.max(data.totalViews, stats.totalViews, 55);
+      }
+      if (typeof data.todayViews === 'number') {
+        stats.todayViews = Math.max(data.todayViews, stats.todayViews, 0);
+      }
+      if (typeof data.yesterdayViews === 'number') {
+        stats.yesterdayViews = Math.max(data.yesterdayViews, stats.yesterdayViews, 0);
+      }
+      if (typeof data.lastUpdatedDate === 'string') {
+        stats.lastUpdatedDate = data.lastUpdatedDate;
+      }
+      console.log('Successfully initialized stats from Firestore:', stats);
+    } else {
+      console.log('No Firestore global stats doc found. Seeding with default/local stats...');
+      await saveStatsToFirestore();
+    }
+  } catch (err) {
+    console.error('Error connecting or syncing with Firestore on start:', err);
+  }
+}
+
+// Save to Firestore helper
+async function saveStatsToFirestore() {
+  try {
+    const docRef = doc(db, 'site_stats', 'global');
+    await setDoc(docRef, {
+      totalViews: stats.totalViews,
+      todayViews: stats.todayViews,
+      yesterdayViews: stats.yesterdayViews,
+      lastUpdatedDate: stats.lastUpdatedDate,
+    }, { merge: true });
+  } catch (err) {
+    console.error('Error saving stats to Firestore:', err);
   }
 }
 
@@ -79,8 +155,10 @@ function saveStatsNow() {
     fs.writeFileSync(STATS_FILE, JSON.stringify(stats, null, 2), 'utf-8');
     isStatsDirty = false;
   } catch (err) {
-    console.error('Error saving stats.json:', err);
+    console.error('Error saving stats.json backup:', err);
   }
+  // Asynchronously save to Firestore database to persist data immediately across containers
+  saveStatsToFirestore();
 }
 
 function scheduleSaveStats() {
@@ -96,6 +174,9 @@ setInterval(() => {
 
 // Active sessions tracking (sessionId -> lastSeen timestamp in ms)
 const activeSessions = new Map<string, number>();
+
+// Server-authoritative tracking of processed session IDs for the current day
+const processedSessions = new Set<string>();
 
 // Background interval to clean sessions older than 60 seconds
 setInterval(() => {
@@ -113,15 +194,42 @@ function checkDateRollover() {
     stats.yesterdayViews = stats.todayViews;
     stats.todayViews = 0;
     stats.lastUpdatedDate = todayStr;
-    scheduleSaveStats();
+    processedSessions.clear(); // Clear seen sessions on date rollover
+    saveStatsNow();
   }
 }
 
-// Initialize stats from disk
+// Sync and pull latest stats from Firestore to avoid stale/divergent values
+async function pullLatestStats() {
+  try {
+    const docRef = doc(db, 'site_stats', 'global');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (typeof data.totalViews === 'number') {
+        stats.totalViews = Math.max(data.totalViews, stats.totalViews, 55);
+      }
+      if (typeof data.todayViews === 'number') {
+        stats.todayViews = Math.max(data.todayViews, stats.todayViews, 0);
+      }
+      if (typeof data.yesterdayViews === 'number') {
+        stats.yesterdayViews = Math.max(data.yesterdayViews, stats.yesterdayViews, 0);
+      }
+      if (typeof data.lastUpdatedDate === 'string') {
+        stats.lastUpdatedDate = data.lastUpdatedDate;
+      }
+    }
+  } catch (err) {
+    console.error('Error pulling latest stats from Firestore:', err);
+  }
+}
+
+// Initialize stats
 loadStats();
 
 // API Routes
-app.get('/api/stats', (req, res) => {
+app.get('/api/stats', async (req, res) => {
+  await pullLatestStats();
   checkDateRollover();
   res.json({
     totalViews: stats.totalViews,
@@ -132,18 +240,27 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
-app.post('/api/stats/hit', (req, res) => {
+app.post('/api/stats/hit', async (req, res) => {
   const { sessionId, isNewSession } = req.body || {};
+  await pullLatestStats();
   checkDateRollover();
+
+  let shouldIncrement = false;
 
   if (sessionId) {
     activeSessions.set(sessionId, Date.now());
+    if (!processedSessions.has(sessionId)) {
+      processedSessions.add(sessionId);
+      shouldIncrement = true;
+    }
+  } else if (isNewSession) {
+    shouldIncrement = true;
   }
 
-  if (isNewSession) {
+  if (shouldIncrement) {
     stats.totalViews += 1;
     stats.todayViews += 1;
-    scheduleSaveStats();
+    saveStatsNow(); // Save instantly to prevent data loss upon container recycle
   }
 
   res.json({
@@ -155,12 +272,13 @@ app.post('/api/stats/hit', (req, res) => {
   });
 });
 
-app.post('/api/stats/ping', (req, res) => {
+app.post('/api/stats/ping', async (req, res) => {
   const { sessionId } = req.body || {};
   if (sessionId) {
     activeSessions.set(sessionId, Date.now());
   }
 
+  await pullLatestStats();
   checkDateRollover();
 
   res.json({
