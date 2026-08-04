@@ -155,6 +155,15 @@ export interface InquiryMessage {
   status: 'unread' | 'read' | 'replied';
 }
 
+export interface Achievement {
+  year: string;
+  title: string;
+  category: string;
+  imageUrl?: string;
+  fbUrl?: string;
+  caption?: string;
+}
+
 export interface FreeTabItem {
   id: string;
   title: string;

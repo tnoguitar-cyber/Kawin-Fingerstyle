@@ -1,4 +1,4 @@
-import { Album, Course, Product, ConcertDate, ArtistGear, Track, PopularVideo, FreeTabItem } from '../types';
+import { Album, Course, Product, ConcertDate, ArtistGear, Track, PopularVideo, FreeTabItem, Achievement } from '../types';
 
 export const POPULAR_VIDEOS: PopularVideo[] = [
   {
@@ -124,41 +124,62 @@ export const CHILL_GROOVE_BAND = {
   ],
 };
 
-export const ARTIST_ACHIEVEMENTS = [
+export const ARTIST_ACHIEVEMENTS: Achievement[] = [
   {
-    year: '2023',
+    year: '2025',
+    title: 'Korat Guitar Festival 2025 (Artist & Jury)',
+    category: 'Artist & Jury',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1lTHeuhkYsKV0KyfBo3CWVphQNgA1x9u2',
+    caption: 'ภาพบรรยากาศงาน Korat Guitar Festival 2025 ในฐานะ ศิลปิน และ คณะกรรมการตัดสิน (Artist & Jury)',
+  },
+  {
+    year: '2024',
     title: 'Artist & Jury Thailand International Guitar Festival Fingerstyle Guitar Competition',
     category: 'Artist & Jury',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1TlaiQrjqXy4a6lxT3bNYBP0p-dJ6d5Zu',
+    caption: 'Thailand International Guitar Festival 2024 - Fingerstyle Guitar Competition (Artist & Jury)',
   },
   {
     year: '2023',
     title: '(Artist OPENING ACT) Tommy Emmanuel CGP LIVE IN BANGKOK @M THEATRE',
     category: 'Concert Opening Act',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1KJPs66y5JKyUDKQ6wQSyHKVS6EwXFw-p',
+    caption: 'Opening Act performance for Tommy Emmanuel CGP LIVE IN BANGKOK @ M Theatre',
   },
   {
     year: '2023',
     title: 'FINALIST NATASHA INTERNATIONAL FINGERSTYLE COMPETITION',
     category: 'International Finalist',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1IQOqLdOKpCC8O0SYhMidOUc75QUxei9X',
+    caption: 'Finalist - Natasha International Fingerstyle Competition',
   },
   {
     year: '2022',
     title: 'Artist & Jury Phitsanuloke Classical Music Challenge (Fingerstyle Guitar)',
     category: 'Artist & Jury',
+    imageUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=1000&q=80',
+    caption: 'Phitsanuloke Classical Music Challenge (Fingerstyle Guitar Artist & Jury)',
   },
   {
     year: '2021',
     title: 'Endorser of Mayson Guitar (Thailand)',
     category: 'Brand Endorser',
+    imageUrl: 'https://images.unsplash.com/photo-1550291652-6ea9114a47b1?auto=format&fit=crop&w=1000&q=80',
+    caption: 'Official Brand Endorser for Mayson Guitars Thailand',
   },
   {
     year: '2020',
     title: '1ST Place Overdrive Acoustic Guitar Contest 2',
     category: 'Contest Winner',
+    imageUrl: 'https://images.unsplash.com/photo-1525201548942-d8732f6617a0?auto=format&fit=crop&w=1000&q=80',
+    caption: 'ชนะเลิศอันดับ 1 - Overdrive Acoustic Guitar Contest 2',
   },
   {
     year: '2019',
     title: '1ST Place CRAFTER GUITAR CONTEST',
     category: 'Contest Winner',
+    imageUrl: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=1000&q=80',
+    caption: 'ชนะเลิศอันดับ 1 - Crafter Guitar Contest',
   },
   {
     year: '2018',

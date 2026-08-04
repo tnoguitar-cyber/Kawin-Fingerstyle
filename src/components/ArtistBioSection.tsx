@@ -1,8 +1,11 @@
-import React from 'react';
-import { Sparkles, Sliders, Layers, Guitar, Award, Trophy, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles, Sliders, Layers, Guitar, Award, Trophy, ExternalLink, Image as ImageIcon, X } from 'lucide-react';
 import { ARTIST_INFO, ARTIST_GEARS, ARTIST_ACHIEVEMENTS } from '../data/mockData';
+import { Achievement } from '../types';
 
 export const ArtistBioSection: React.FC = () => {
+  const [selectedAch, setSelectedAch] = useState<Achievement | null>(null);
+
   const techniques = [
     {
       title: 'Slap & Natural Harmonics',
@@ -95,20 +98,117 @@ export const ArtistBioSection: React.FC = () => {
             
             <div className="space-y-2.5 max-h-[460px] overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
               {ARTIST_ACHIEVEMENTS.map((ach, idx) => (
-                <div key={idx} className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl flex items-start gap-3 hover:border-amber-500/30 transition">
-                  <div className="px-2.5 py-1 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-300 font-extrabold text-xs font-mono shrink-0">
-                    {ach.year}
+                <div
+                  key={idx}
+                  onClick={() => (ach.imageUrl || ach.fbUrl) && setSelectedAch(ach)}
+                  className={`p-3 bg-slate-950/80 border border-slate-800 rounded-xl flex items-start justify-between gap-3 hover:border-amber-500/30 transition group ${
+                    ach.imageUrl || ach.fbUrl ? 'cursor-pointer' : ''
+                  }`}
+                >
+                  <div className="flex items-start gap-3 min-w-0">
+                    <div className="px-2.5 py-1 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-300 font-extrabold text-xs font-mono shrink-0">
+                      {ach.year}
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-white leading-snug group-hover:text-amber-300 transition">{ach.title}</h4>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        <span className="text-[10px] text-amber-400/80 font-medium">{ach.category}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-white leading-snug">{ach.title}</h4>
-                    <span className="text-[10px] text-amber-400/80 font-medium">{ach.category}</span>
-                  </div>
+
+                  {ach.imageUrl && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedAch(ach);
+                      }}
+                      title="ดูรูปภาพผลงาน / หลักฐาน"
+                      className="px-2 py-1 rounded-lg bg-amber-500/10 group-hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 group-hover:text-amber-200 text-[10px] font-bold flex items-center gap-1 shrink-0 transition"
+                    >
+                      <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                      <span className="hidden sm:inline">รูปภาพ</span>
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
           </div>
 
         </div>
+
+        {/* Achievement Image / Media Modal */}
+        {selectedAch && (
+          <div
+            className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+            onClick={() => setSelectedAch(null)}
+          >
+            <div
+              className="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedAch(null)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition border border-slate-700"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Header */}
+              <div className="space-y-1.5 pr-8">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold text-[10px] font-mono">
+                    {selectedAch.year}
+                  </span>
+                  <span className="text-[10px] text-amber-400/90 font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-700">
+                    {selectedAch.category}
+                  </span>
+                </div>
+                <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                  {selectedAch.title}
+                </h3>
+              </div>
+
+              {/* Image Preview */}
+              {selectedAch.imageUrl ? (
+                <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 relative group">
+                  <img
+                    src={selectedAch.imageUrl}
+                    alt={selectedAch.title}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      // Fallback if local image not found
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1000&q=80';
+                    }}
+                    className="w-full h-auto max-h-[60vh] object-contain bg-black/40"
+                  />
+                </div>
+              ) : (
+                <div className="p-8 rounded-xl bg-slate-950 border border-slate-800 text-center text-slate-400 text-xs">
+                  📷 ไม่มีรูปภาพพรีวิว
+                </div>
+              )}
+
+              {/* Caption / Description text */}
+              {selectedAch.caption && (
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed bg-slate-950/80 p-3.5 rounded-xl border border-slate-800">
+                  💡 {selectedAch.caption}
+                </p>
+              )}
+
+              {/* Actions */}
+              <div className="pt-2">
+                <button
+                  onClick={() => setSelectedAch(null)}
+                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition"
+                >
+                  ปิดหน้าต่าง
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Techniques Grid */}
         <div>
