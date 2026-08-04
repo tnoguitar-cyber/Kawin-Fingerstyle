@@ -10,6 +10,20 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
+// Helper to get consistent date string in Asia/Bangkok (Thailand) timezone (YYYY-MM-DD)
+const getThailandDateStr = (): string => {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Bangkok',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(new Date());
+  } catch (e) {
+    return new Date().toISOString().split('T')[0];
+  }
+};
+
 export const RealtimeVisitorCounter: React.FC = () => {
   const [totalViews, setTotalViews] = useState<number>(() => {
     const saved = localStorage.getItem('kawin_real_total_views_v1');
@@ -19,7 +33,7 @@ export const RealtimeVisitorCounter: React.FC = () => {
   const [todayViews, setTodayViews] = useState<number>(() => {
     const savedDate = localStorage.getItem('kawin_real_today_date_v1');
     const savedViews = localStorage.getItem('kawin_real_today_views_v1');
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getThailandDateStr();
     if (savedDate === todayStr && savedViews) {
       return parseInt(savedViews, 10);
     }
@@ -29,9 +43,9 @@ export const RealtimeVisitorCounter: React.FC = () => {
   const [activeUsers, setActiveUsers] = useState<number>(1);
 
   useEffect(() => {
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getThailandDateStr();
 
-    // Clean up old cached fake baseline keys if present
+    // Clean up legacy cached keys if present
     localStorage.removeItem('kawin_total_views');
     localStorage.removeItem('kawin_today_views');
     localStorage.removeItem('kawin_today_date');
@@ -42,18 +56,18 @@ export const RealtimeVisitorCounter: React.FC = () => {
     const unsubscribeStats = onSnapshot(statsDocRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.data();
-        if (data.lastUpdatedDate === todayStr && typeof data.todayViews === 'number') {
-          setTodayViews(data.todayViews);
-          localStorage.setItem('kawin_real_today_views_v1', String(data.todayViews));
-          localStorage.setItem('kawin_real_today_date_v1', todayStr);
-        } else if (data.lastUpdatedDate !== todayStr) {
-          setTodayViews(1);
-        }
-        
+        const currentTodayStr = getThailandDateStr();
+        const isSameDay = data.lastUpdatedDate === currentTodayStr;
+
         if (typeof data.totalViews === 'number') {
           setTotalViews(data.totalViews);
           localStorage.setItem('kawin_real_total_views_v1', String(data.totalViews));
         }
+
+        const currentToday = (isSameDay && typeof data.todayViews === 'number') ? data.todayViews : 0;
+        setTodayViews(currentToday);
+        localStorage.setItem('kawin_real_today_views_v1', String(currentToday));
+        localStorage.setItem('kawin_real_today_date_v1', currentTodayStr);
       }
     }, (err) => {
       console.warn("Realtime stats listener warning:", err);
@@ -65,47 +79,31 @@ export const RealtimeVisitorCounter: React.FC = () => {
       if (!sessionStorage.getItem(SESSION_FB_KEY)) {
         sessionStorage.setItem(SESSION_FB_KEY, 'true');
 
-        // Optimistic local update for instant user feedback
-        setTotalViews(prev => {
-          const updated = prev + 1;
-          localStorage.setItem('kawin_real_total_views_v1', String(updated));
-          return updated;
-        });
-        setTodayViews(prev => {
-          const updated = prev + 1;
-          localStorage.setItem('kawin_real_today_views_v1', String(updated));
-          localStorage.setItem('kawin_real_today_date_v1', todayStr);
-          return updated;
-        });
-
         try {
           await runTransaction(db, async (transaction) => {
             const statsDoc = await transaction.get(statsDocRef);
+            const currentTodayStr = getThailandDateStr();
 
             if (!statsDoc.exists()) {
               transaction.set(statsDocRef, {
                 totalViews: 1,
                 todayViews: 1,
-                lastUpdatedDate: todayStr
+                lastUpdatedDate: currentTodayStr
               });
             } else {
               const data = statsDoc.data();
-              const isSameDay = data.lastUpdatedDate === todayStr;
+              const isSameDay = data.lastUpdatedDate === currentTodayStr;
 
-              // If legacy document had old artificial baseline > 3000, reset to real count progression
               const rawTotal = typeof data.totalViews === 'number' ? data.totalViews : 0;
-              const rawToday = typeof data.todayViews === 'number' ? data.todayViews : 0;
+              const rawToday = (isSameDay && typeof data.todayViews === 'number') ? data.todayViews : 0;
 
-              const currentTotal = rawTotal > 3000 ? 1 : rawTotal;
-              const currentToday = (isSameDay && rawToday < 3000) ? rawToday : 0;
-
-              const newTotal = currentTotal + 1;
-              const newToday = isSameDay ? currentToday + 1 : 1;
+              const newTotal = rawTotal + 1;
+              const newToday = rawToday + 1;
 
               transaction.set(statsDocRef, {
                 totalViews: newTotal,
                 todayViews: newToday,
-                lastUpdatedDate: todayStr
+                lastUpdatedDate: currentTodayStr
               }, { merge: true });
             }
           });
@@ -126,7 +124,7 @@ export const RealtimeVisitorCounter: React.FC = () => {
 
     const presenceDocRef = doc(db, 'active_presence', sessionId);
 
-    // Send presence heartbeat every 15 seconds
+    // Send presence heartbeat every 10 seconds
     const updatePresence = async () => {
       if (document.visibilityState === 'hidden') return;
       try {
@@ -138,7 +136,7 @@ export const RealtimeVisitorCounter: React.FC = () => {
     };
 
     updatePresence();
-    const heartbeatInterval = setInterval(updatePresence, 15000);
+    const heartbeatInterval = setInterval(updatePresence, 10000);
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
@@ -147,7 +145,7 @@ export const RealtimeVisitorCounter: React.FC = () => {
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Listen to active online sessions globally in the last 45 seconds
+    // Listen to active online sessions globally in the last 30 seconds
     const presenceColRef = collection(db, 'active_presence');
     const unsubscribePresence = onSnapshot(presenceColRef, (snapshot) => {
       const now = Date.now();
@@ -155,10 +153,10 @@ export const RealtimeVisitorCounter: React.FC = () => {
 
       snapshot.forEach((docSnap) => {
         const data = docSnap.data();
-        if (data.lastSeen && (now - data.lastSeen) < 45000) {
+        if (data.lastSeen && (now - data.lastSeen) < 30000) {
           activeCount += 1;
-        } else if (data.lastSeen && (now - data.lastSeen) > 120000) {
-          // Clean up stale session documents older than 2 minutes
+        } else if (data.lastSeen && (now - data.lastSeen) > 90000) {
+          // Clean up stale session documents older than 90 seconds
           deleteDoc(doc(db, 'active_presence', docSnap.id)).catch(() => {});
         }
       });
