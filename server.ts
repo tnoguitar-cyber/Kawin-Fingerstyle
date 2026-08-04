@@ -34,9 +34,9 @@ interface StatsData {
 }
 
 let stats: StatsData = {
-  totalViews: 1356,
-  todayViews: 42,
-  yesterdayViews: 38,
+  totalViews: 55,
+  todayViews: 0,
+  yesterdayViews: 0,
   lastUpdatedDate: getThailandDateStr(),
 };
 
@@ -52,7 +52,7 @@ function loadStats() {
       const fileData = fs.readFileSync(STATS_FILE, 'utf-8');
       const parsed = JSON.parse(fileData);
       if (typeof parsed.totalViews === 'number') {
-        stats.totalViews = Math.max(parsed.totalViews, 1356);
+        stats.totalViews = Math.max(parsed.totalViews, 55);
       }
       if (typeof parsed.todayViews === 'number') {
         stats.todayViews = Math.max(parsed.todayViews, 0);

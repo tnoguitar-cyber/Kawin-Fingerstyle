@@ -3,9 +3,9 @@ import { Eye } from 'lucide-react';
 
 export const RealtimeVisitorCounter: React.FC = () => {
   const [totalViews, setTotalViews] = useState<number>(() => {
-    const saved = localStorage.getItem('kawin_real_total_views_v4');
-    const parsed = saved ? parseInt(saved, 10) : 1356;
-    return isNaN(parsed) || parsed < 1356 ? 1356 : parsed;
+    const saved = localStorage.getItem('kawin_real_total_views_v5');
+    const parsed = saved ? parseInt(saved, 10) : 55;
+    return isNaN(parsed) || parsed < 55 ? 55 : parsed;
   });
 
   const [todayViews, setTodayViews] = useState<number>(() => {
@@ -47,9 +47,9 @@ export const RealtimeVisitorCounter: React.FC = () => {
         if (res.ok) {
           const data = await res.json();
           if (typeof data.totalViews === 'number') {
-            const finalCount = Math.max(data.totalViews, 1356);
+            const finalCount = Math.max(data.totalViews, 55);
             setTotalViews(finalCount);
-            localStorage.setItem('kawin_real_total_views_v4', String(finalCount));
+            localStorage.setItem('kawin_real_total_views_v5', String(finalCount));
           }
           if (typeof data.todayViews === 'number') {
             setTodayViews(data.todayViews);
@@ -84,9 +84,9 @@ export const RealtimeVisitorCounter: React.FC = () => {
         if (res.ok) {
           const data = await res.json();
           if (typeof data.totalViews === 'number') {
-            const finalCount = Math.max(data.totalViews, 1356);
+            const finalCount = Math.max(data.totalViews, 55);
             setTotalViews(finalCount);
-            localStorage.setItem('kawin_real_total_views_v4', String(finalCount));
+            localStorage.setItem('kawin_real_total_views_v5', String(finalCount));
           }
           if (typeof data.todayViews === 'number') {
             setTodayViews(data.todayViews);
