@@ -481,6 +481,17 @@ export const FREE_TABS: FreeTabItem[] = [
     tuning: 'Standard (E A D G B E)',
     capo: 'No Capo',
   },
+  {
+    id: 'free-tab-2',
+    title: 'ลอยกระทง - Loy Krathong (Boom Chick Technique)',
+    fileName: 'ลอยกระทง - Loy Krathong.pdf',
+    driveUrl: 'https://drive.google.com/drive/folders/11PexQX5KU07drqYSLHz50oV0Y93DtvYt?usp=drive_link',
+    badge: '✨ Boom Chick',
+    description: 'โน้ตและแท็บกีตาร์เพลง ลอยกระทง ฝึกฝนด้วยเทคนิคยอดนิยม Boom Chick Technique จังหวะกระชับสนุกสนาน ความยากระดับปานกลาง ตั้งสายปกติ',
+    difficulty: 'ปานกลาง (Intermediate)',
+    tuning: 'Standard (E A D G B E)',
+    capo: 'No Capo',
+  },
 ];
 
 export const CONCERT_DATES: ConcertDate[] = [
