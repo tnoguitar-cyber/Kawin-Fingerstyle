@@ -488,16 +488,6 @@ export const OriginalTabsSection: React.FC = () => {
                       <span>สั่งซื้อ / กรอกรหัสปลดล็อก ({tab.price})</span>
                     </button>
                   )}
-
-                  <a
-                    href={tab.driveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                    <span>ดูตัวอย่างใน Google Drive</span>
-                  </a>
                 </div>
               </div>
             );
