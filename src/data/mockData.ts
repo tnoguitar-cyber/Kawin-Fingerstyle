@@ -157,14 +157,14 @@ export const ARTIST_ACHIEVEMENTS: Achievement[] = [
     year: '2022',
     title: 'Artist & Jury Phitsanuloke Classical Music Challenge (Fingerstyle Guitar)',
     category: 'Artist & Jury',
-    imageUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1naa1QgN01kY4OJTldtrxexhzHbIoz4Jf',
     caption: 'Phitsanuloke Classical Music Challenge (Fingerstyle Guitar Artist & Jury)',
   },
   {
     year: '2021',
     title: 'Endorser of Mayson Guitar (Thailand)',
     category: 'Brand Endorser',
-    imageUrl: 'https://images.unsplash.com/photo-1550291652-6ea9114a47b1?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://lh3.googleusercontent.com/d/1oGvhxItgh51hM4KV47hsee1rUpGfM5FP',
     caption: 'Official Brand Endorser for Mayson Guitars Thailand',
   },
   {
@@ -469,4 +469,31 @@ export const FREE_TABS: FreeTabItem[] = [
     tuning: 'Standard (E A D G B E)',
     capo: 'No Capo',
   },
+];
+
+export const CONCERT_DATES: ConcertDate[] = [
+  {
+    id: 'concert-1',
+    date: '15 พ.ย. 2026',
+    city: 'นครราชสีมา (Korat)',
+    venue: 'Korat Guitar Festival 2026',
+    eventTitle: 'Solo Recital & Masterclass',
+    ticketStatus: 'เปิดขายบัตร',
+  },
+  {
+    id: 'concert-2',
+    date: '28 ธ.ค. 2026',
+    city: 'กรุงเทพฯ (Bangkok)',
+    venue: 'Thailand International Guitar Festival',
+    eventTitle: 'Opening Special Guest Performance',
+    ticketStatus: 'เหลือน้อย',
+  },
+  {
+    id: 'concert-3',
+    date: '14 ม.ค. 2027',
+    city: 'พิษณุโลก (Phitsanuloke)',
+    venue: 'Classical Music Challenge Gala Concert',
+    eventTitle: 'Feature Acoustic Session',
+    ticketStatus: 'เข้าชมฟรี',
+  }
 ];

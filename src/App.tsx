@@ -16,6 +16,33 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('home');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('theme');
+    return (saved === 'dark' || saved === 'light') ? saved : 'light';
+  });
+
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      return next;
+    });
+  };
+
+  React.useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.style.setProperty('--calendar-icon-filter', 'invert(0.8)');
+      root.style.setProperty('--scrollbar-track', '#020617');
+      root.style.setProperty('--scrollbar-thumb', '#334155');
+    } else {
+      root.classList.remove('dark');
+      root.style.setProperty('--calendar-icon-filter', 'none');
+      root.style.setProperty('--scrollbar-track', '#fafaf9');
+      root.style.setProperty('--scrollbar-thumb', '#d6d3d1');
+    }
+  }, [theme]);
 
   const handleAddToCart = (item: Course | Product) => {
     const itemId = item.id;
@@ -95,7 +122,7 @@ export default function App() {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-amber-400 selection:text-slate-950 overflow-x-hidden w-full max-w-full">
+    <div className="min-h-screen bg-stone-50 text-stone-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-amber-400 selection:text-slate-950 overflow-x-hidden w-full max-w-full transition-colors duration-300">
       
       {/* Navigation Header */}
       <Navbar
@@ -104,6 +131,8 @@ export default function App() {
         cartCount={cartItems.reduce((a, b) => a + b.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenBooking={handleOpenBooking}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       {/* Main Page Views */}

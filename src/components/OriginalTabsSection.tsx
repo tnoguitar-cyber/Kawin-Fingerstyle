@@ -349,33 +349,33 @@ export const OriginalTabsSection: React.FC = () => {
   const isUnlocked = (id: string) => unlockedTabs.includes(id);
 
   return (
-    <section className="py-12 bg-slate-950 text-slate-100 border-b border-amber-500/10" id="original-tabs">
+    <section className="py-12 bg-stone-50 dark:bg-slate-950 text-stone-900 dark:text-slate-100 transition-colors duration-300" id="original-tabs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Header Title */}
-        <div className="border-b border-slate-800 pb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest mb-2">
+        <div className="pb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-bold uppercase tracking-widest mb-2">
             <Sparkles className="w-3.5 h-3.5" />
             <span>ORIGINAL GUITAR TABS</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 dark:text-white tracking-tight">
             TAB เพลงแต่งของฉัน (Kawin Original Songs)
           </h2>
-          <p className="text-slate-400 text-sm mt-1">
-            โน้ตและ TAB บรรเลงกีตาร์ฟิงเกอร์สไตล์ (ไฟล์ .pdf) — ราคาเพลงละ <strong className="text-amber-400">150 บาท</strong>
+          <p className="text-stone-500 dark:text-slate-400 text-sm mt-1">
+            โน้ตและ TAB บรรเลงกีตาร์ฟิงเกอร์สไตล์ (ไฟล์ .pdf) — ราคาเพลงละ <strong className="text-amber-600 dark:text-amber-400">150 บาท</strong>
           </p>
         </div>
 
         {/* Contact Payment Bar / Banner */}
-        <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/30 shadow-2xl relative overflow-hidden">
+        <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-gradient-to-r dark:from-slate-900 dark:via-slate-900 dark:to-amber-950/40 border border-stone-200 dark:border-none shadow-sm dark:shadow-2xl relative overflow-hidden">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
-                <ShieldCheck className="w-5 h-5 text-amber-400" />
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
+                <ShieldCheck className="w-5 h-5" />
                 <span>สั่งซื้อและปลดล็อกด้วยรหัสใช้งาน 1 ครั้ง (Single-Use Code System)</span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-                เมื่อโอนชำระเงินเรียบร้อยแล้ว แอดมินจะส่ง <strong className="text-amber-300">"รหัสปลดล็อก 1 ครั้ง"</strong> ให้คุณ นำมาระบุในเว็บเพื่อเปิดสิทธิ์ดาวน์โหลดไฟล์ .pdf ได้ทันที (แต่ละรหัสใช้งานได้เพียงครั้งเดียวเท่านั้น)
+              <p className="text-xs sm:text-sm text-stone-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                เมื่อโอนชำระเงินเรียบร้อยแล้ว แอดมินจะส่ง <strong className="text-amber-700 dark:text-amber-300">"รหัสปลดล็อก 1 ครั้ง"</strong> ให้คุณ นำมาระบุในเว็บเพื่อเปิดสิทธิ์ดาวน์โหลดไฟล์ .pdf ได้ทันที (แต่ละรหัสใช้งานได้เพียงครั้งเดียวเท่านั้น)
               </p>
             </div>
 
@@ -414,27 +414,27 @@ export const OriginalTabsSection: React.FC = () => {
             return (
               <div
                 key={tab.id}
-                className={`bg-slate-900/90 border rounded-2xl p-6 flex flex-col justify-between transition duration-300 shadow-xl group relative overflow-hidden ${
-                  unlocked ? 'border-emerald-500/50 bg-emerald-950/10' : 'border-slate-800 hover:border-amber-500/40'
+                className={`bg-white dark:bg-slate-900/40 border border-stone-200 dark:border-none rounded-2xl p-6 flex flex-col justify-between transition duration-300 shadow-sm dark:shadow-md group relative overflow-hidden ${
+                  unlocked ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-300' : 'hover:bg-stone-100 dark:hover:bg-slate-900/60'
                 }`}
               >
                 {/* Card Watermark Icon */}
-                <FileText className="absolute -right-4 -bottom-4 w-28 h-28 text-slate-800/20 group-hover:text-amber-500/10 transition duration-500 pointer-events-none" />
+                <FileText className="absolute -right-4 -bottom-4 w-28 h-28 text-stone-200/20 dark:text-slate-800/20 group-hover:text-amber-500/10 transition duration-500 pointer-events-none" />
 
                 <div className="space-y-4 relative z-10">
                   {/* Badge & Lock/Unlocked Tag */}
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold rounded-lg">
+                    <span className="px-3 py-1 bg-amber-500/10 text-amber-800 dark:text-amber-300 text-xs font-bold rounded-lg">
                       {tab.badge}
                     </span>
                     {unlocked ? (
-                      <span className="px-2.5 py-1 bg-emerald-950/80 border border-emerald-500/50 text-emerald-400 text-[11px] font-bold rounded-md flex items-center gap-1 shadow">
-                        <Unlock className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold rounded-md flex items-center gap-1 shadow">
+                        <Unlock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>ปลดล็อกแล้ว</span>
                       </span>
                     ) : (
-                      <span className="px-2.5 py-1 bg-red-950/60 border border-red-500/30 text-red-400 text-[11px] font-bold rounded-md flex items-center gap-1">
-                        <Lock className="w-3 h-3" />
+                      <span className="px-2.5 py-1 bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-400 text-[11px] font-bold rounded-md flex items-center gap-1">
+                        <Lock className="w-3 h-3 text-red-500" />
                         <span>Locked PDF</span>
                       </span>
                     )}
@@ -442,28 +442,28 @@ export const OriginalTabsSection: React.FC = () => {
 
                   {/* Title */}
                   <div>
-                    <h3 className="text-base font-bold text-white group-hover:text-amber-300 transition leading-snug">
+                    <h3 className="text-base font-bold text-stone-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition leading-snug">
                       {tab.title}
                     </h3>
-                    <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                    <p className="text-xs text-stone-500 dark:text-slate-400 mt-1.5 leading-relaxed">
                       {tab.description}
                     </p>
                   </div>
 
                   {/* File Details Box */}
-                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 text-xs font-mono text-slate-300 space-y-1.5">
+                  <div className="p-3 rounded-xl bg-stone-50 dark:bg-slate-950/60 border border-stone-200/50 dark:border-none text-xs font-mono text-stone-600 dark:text-slate-300 space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] text-slate-500 uppercase font-sans font-bold">รูปแบบไฟล์: .pdf</span>
-                      <span className="text-amber-400 font-sans font-extrabold text-sm bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                      <span className="text-[11px] text-stone-400 dark:text-slate-500 uppercase font-sans font-bold">รูปแบบไฟล์: .pdf</span>
+                      <span className="text-amber-700 dark:text-amber-400 font-sans font-extrabold text-sm bg-amber-500/10 px-2 py-0.5 rounded">
                         {tab.price}
                       </span>
                     </div>
-                    <div className="truncate font-semibold text-amber-200/90 text-[11px]">{tab.fileName}</div>
+                    <div className="truncate font-semibold text-amber-800 dark:text-amber-200/90 text-[11px]">{tab.fileName}</div>
                   </div>
                 </div>
 
                 {/* Actions Footer */}
-                <div className="pt-6 mt-6 border-t border-slate-800/80 space-y-2 relative z-10">
+                <div className="pt-6 mt-6 space-y-2 relative z-10">
                   {unlocked ? (
                     <a
                       href={tab.driveUrl}
@@ -482,7 +482,7 @@ export const OriginalTabsSection: React.FC = () => {
                         setCodeError('');
                         setInputCode('');
                       }}
-                      className="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs transition shadow-md flex items-center justify-center gap-2"
+                      className="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Lock className="w-4 h-4 text-slate-950" />
                       <span>สั่งซื้อ / กรอกรหัสปลดล็อก ({tab.price})</span>
@@ -493,9 +493,9 @@ export const OriginalTabsSection: React.FC = () => {
                     href={tab.driveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition border border-slate-700 flex items-center justify-center gap-1.5"
+                    className="w-full py-2 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
                   >
-                    <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+                    <ExternalLink className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                     <span>ดูตัวอย่างใน Google Drive</span>
                   </a>
                 </div>
