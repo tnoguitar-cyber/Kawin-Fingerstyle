@@ -16,33 +16,60 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('home');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    const saved = localStorage.getItem('theme');
-    return (saved === 'dark' || saved === 'light') ? saved : 'light';
+  const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('themeMode') || localStorage.getItem('theme');
+    if (saved === 'system' || saved === 'light' || saved === 'dark') {
+      return saved as 'system' | 'light' | 'dark';
+    }
+    return 'system';
   });
 
+  const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('light');
+
   const toggleTheme = () => {
-    setTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('theme', next);
+    setThemeMode((prev) => {
+      let next: 'system' | 'light' | 'dark' = 'system';
+      if (prev === 'system') next = 'light';
+      else if (prev === 'light') next = 'dark';
+      else next = 'system';
+
+      localStorage.setItem('themeMode', next);
       return next;
     });
   };
 
   React.useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-      root.style.setProperty('--calendar-icon-filter', 'invert(0.8)');
-      root.style.setProperty('--scrollbar-track', '#020617');
-      root.style.setProperty('--scrollbar-thumb', '#334155');
-    } else {
-      root.classList.remove('dark');
-      root.style.setProperty('--calendar-icon-filter', 'none');
-      root.style.setProperty('--scrollbar-track', '#fafaf9');
-      root.style.setProperty('--scrollbar-thumb', '#d6d3d1');
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applyTheme = () => {
+      const active: 'light' | 'dark' =
+        themeMode === 'system'
+          ? mediaQuery.matches ? 'dark' : 'light'
+          : themeMode;
+
+      setEffectiveTheme(active);
+
+      const root = document.documentElement;
+      if (active === 'dark') {
+        root.classList.add('dark');
+        root.style.setProperty('--calendar-icon-filter', 'invert(0.8)');
+        root.style.setProperty('--scrollbar-track', '#020617');
+        root.style.setProperty('--scrollbar-thumb', '#334155');
+      } else {
+        root.classList.remove('dark');
+        root.style.setProperty('--calendar-icon-filter', 'none');
+        root.style.setProperty('--scrollbar-track', '#fafaf9');
+        root.style.setProperty('--scrollbar-thumb', '#d6d3d1');
+      }
+    };
+
+    applyTheme();
+
+    if (themeMode === 'system') {
+      mediaQuery.addEventListener('change', applyTheme);
+      return () => mediaQuery.removeEventListener('change', applyTheme);
     }
-  }, [theme]);
+  }, [themeMode]);
 
   const handleAddToCart = (item: Course | Product) => {
     const itemId = item.id;
@@ -131,7 +158,8 @@ export default function App() {
         cartCount={cartItems.reduce((a, b) => a + b.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenBooking={handleOpenBooking}
-        theme={theme}
+        themeMode={themeMode}
+        effectiveTheme={effectiveTheme}
         toggleTheme={toggleTheme}
       />
 

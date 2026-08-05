@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Music, ShoppingBag, Send, Menu, X, BookOpen, User, FileText, Gift, Sun, Moon } from 'lucide-react';
+import { Music, ShoppingBag, Send, Menu, X, BookOpen, User, FileText, Gift, Sun, Moon, Monitor } from 'lucide-react';
 import { ARTIST_INFO } from '../data/mockData';
 
 interface NavbarProps {
@@ -8,7 +8,8 @@ interface NavbarProps {
   cartCount: number;
   onOpenCart: () => void;
   onOpenBooking: () => void;
-  theme: 'light' | 'dark';
+  themeMode: 'system' | 'light' | 'dark';
+  effectiveTheme: 'light' | 'dark';
   toggleTheme: () => void;
 }
 
@@ -17,7 +18,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveTab,
   cartCount,
   onOpenCart,
-  theme,
+  themeMode,
+  effectiveTheme,
   toggleTheme,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -93,13 +95,30 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 border border-stone-200/60 text-stone-800 dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-100 transition flex items-center justify-center shadow-sm dark:shadow-md"
-              title={theme === 'dark' ? 'เปลี่ยนเป็นโหมดสว่าง' : 'เปลี่ยนเป็นโหมดมืด'}
+              className="px-2.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 border border-stone-200/60 text-stone-800 dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-100 transition flex items-center gap-1.5 shadow-sm dark:shadow-md text-xs font-semibold"
+              title={
+                themeMode === 'system'
+                  ? 'โหมดธีม: อัตโนมัติ (ตามการตั้งค่าเครื่อง) - คลิกเพื่อเปลี่ยน'
+                  : themeMode === 'light'
+                  ? 'โหมดธีม: สว่าง - คลิกเพื่อเปลี่ยน'
+                  : 'โหมดธีม: มืด - คลิกเพื่อเปลี่ยน'
+              }
             >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-amber-400" />
+              {themeMode === 'system' ? (
+                <>
+                  <Monitor className="w-4 h-4 text-amber-500" />
+                  <span className="hidden sm:inline text-[11px] text-amber-600 dark:text-amber-400 font-bold">Auto</span>
+                </>
+              ) : themeMode === 'light' ? (
+                <>
+                  <Sun className="w-4 h-4 text-amber-500" />
+                  <span className="hidden sm:inline text-[11px] text-amber-600 dark:text-amber-400 font-bold">Light</span>
+                </>
               ) : (
-                <Moon className="w-5 h-5 text-slate-600" />
+                <>
+                  <Moon className="w-4 h-4 text-indigo-400" />
+                  <span className="hidden sm:inline text-[11px] text-indigo-400 font-bold">Dark</span>
+                </>
               )}
             </button>
 
