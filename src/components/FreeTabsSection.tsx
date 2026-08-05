@@ -106,7 +106,7 @@ export const FreeTabsSection: React.FC = () => {
                     className="w-full sm:flex-1 py-2.5 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 font-bold text-xs transition flex items-center justify-center gap-1.5"
                   >
                     <Youtube className="w-4 h-4 text-rose-600 dark:text-rose-500 shrink-0" />
-                    <span>ฟัง / ดูวิดีโอสอน</span>
+                    <span>ดูวิดีโอ</span>
                   </a>
                 )}
               </div>
