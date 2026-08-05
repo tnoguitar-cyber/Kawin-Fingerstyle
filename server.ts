@@ -28,18 +28,30 @@ if (fs.existsSync(configPath)) {
   }
 }
 
-const firebaseConfig = {
-  apiKey: appletConfig.apiKey || process.env.FIREBASE_API_KEY || process.env.VITE_FIREBASE_API_KEY || '',
-  authDomain: appletConfig.authDomain || process.env.FIREBASE_AUTH_DOMAIN || process.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-  projectId: appletConfig.projectId || process.env.FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID || 'ai-studio-kawinfingerstyle',
-  storageBucket: appletConfig.storageBucket || process.env.FIREBASE_STORAGE_BUCKET || process.env.VITE_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: appletConfig.messagingSenderId || process.env.FIREBASE_MESSAGING_SENDER_ID || process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: appletConfig.appId || process.env.FIREBASE_APP_ID || process.env.VITE_FIREBASE_APP_ID || '',
-};
+let fApp: any = null;
+let db: any = null;
+let isFirestoreDisabled = true;
 
-const fApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const dbId = appletConfig.firestoreDatabaseId || process.env.FIREBASE_DATABASE_ID || process.env.VITE_FIREBASE_DATABASE_ID || 'ai-studio-kawinfingerstyle-e699da0a-2da0-46dc-ae5c-4d9708c2502f';
-const db = dbId && dbId !== '(default)' ? getFirestore(fApp, dbId) : getFirestore(fApp);
+const hasFirebaseKey = !!(appletConfig.apiKey || process.env.FIREBASE_API_KEY || process.env.VITE_FIREBASE_API_KEY);
+
+if (hasFirebaseKey) {
+  try {
+    const firebaseConfig = {
+      apiKey: appletConfig.apiKey || process.env.FIREBASE_API_KEY || process.env.VITE_FIREBASE_API_KEY || '',
+      authDomain: appletConfig.authDomain || process.env.FIREBASE_AUTH_DOMAIN || process.env.VITE_FIREBASE_AUTH_DOMAIN || '',
+      projectId: appletConfig.projectId || process.env.FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID || 'ai-studio-kawinfingerstyle',
+      storageBucket: appletConfig.storageBucket || process.env.FIREBASE_STORAGE_BUCKET || process.env.VITE_FIREBASE_STORAGE_BUCKET || '',
+      messagingSenderId: appletConfig.messagingSenderId || process.env.FIREBASE_MESSAGING_SENDER_ID || process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+      appId: appletConfig.appId || process.env.FIREBASE_APP_ID || process.env.VITE_FIREBASE_APP_ID || '',
+    };
+    fApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    const dbId = appletConfig.firestoreDatabaseId || process.env.FIREBASE_DATABASE_ID || process.env.VITE_FIREBASE_DATABASE_ID || 'ai-studio-kawinfingerstyle-e699da0a-2da0-46dc-ae5c-4d9708c2502f';
+    db = dbId && dbId !== '(default)' ? getFirestore(fApp, dbId) : getFirestore(fApp);
+    isFirestoreDisabled = false;
+  } catch (err) {
+    console.warn('Failed to initialize Firebase on server, disabling Firestore stats:', err);
+  }
+}
 
 // Path for local persistent stats JSON storage
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -74,7 +86,6 @@ let stats: StatsData = {
 };
 
 let isStatsDirty = false;
-let isFirestoreDisabled = false;
 
 // Load local backup first
 function loadLocalStats() {
@@ -103,39 +114,94 @@ function loadLocalStats() {
   }
 }
 
-// Ensure data directory and file exist, sync with Firestore
-async function loadStats() {
-  loadLocalStats();
-  if (isFirestoreDisabled) return;
+const COUNTER_PROJECT = 'kawinfingerstyle_site_v6_stats';
+
+// Helper to fetch/increment from counterapi.dev
+async function fetchCounterValue(name: string, defaultVal: number): Promise<number> {
   try {
-    const docRef = doc(db, 'site_stats', 'global');
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if (typeof data.totalViews === 'number') {
-        stats.totalViews = Math.max(data.totalViews, stats.totalViews, 55);
-      }
-      if (typeof data.todayViews === 'number') {
-        stats.todayViews = Math.max(data.todayViews, stats.todayViews, 0);
-      }
-      if (typeof data.yesterdayViews === 'number') {
-        stats.yesterdayViews = Math.max(data.yesterdayViews, stats.yesterdayViews, 0);
-      }
-      if (typeof data.lastUpdatedDate === 'string') {
-        stats.lastUpdatedDate = data.lastUpdatedDate;
-      }
-      console.log('Successfully initialized stats from Firestore:', stats);
-    } else {
-      console.log('No Firestore global stats doc found. Seeding with default/local stats...');
-      await saveStatsToFirestore();
+    const res = await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}`);
+    if (res.status === 404) {
+      // Counter doesn't exist yet, initialize it
+      await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${defaultVal}`);
+      return defaultVal;
     }
-  } catch (err: any) {
-    console.error('Error connecting or syncing with Firestore on start. Gracefully disabling Firestore integration:', err.message || err);
-    isFirestoreDisabled = true;
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    const data = await res.json();
+    const count = typeof data.count === 'number' ? data.count : (typeof data.value === 'number' ? data.value : defaultVal);
+    return count;
+  } catch (err) {
+    console.warn(`Counter API get failed for ${name}, using local fallback:`, err);
+    return defaultVal;
   }
 }
 
-// Save to Firestore helper
+async function setCounterValue(name: string, value: number): Promise<void> {
+  try {
+    const res = await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${value}`);
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+  } catch (err) {
+    console.warn(`Counter API set failed for ${name} = ${value}:`, err);
+  }
+}
+
+async function incrementCounterValue(name: string, defaultVal: number): Promise<number> {
+  try {
+    const res = await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/up`);
+    if (res.status === 404) {
+      // Initialize if not exists, then increment
+      await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${defaultVal + 1}`);
+      return defaultVal + 1;
+    }
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    const data = await res.json();
+    return typeof data.count === 'number' ? data.count : (typeof data.value === 'number' ? data.value : defaultVal + 1);
+  } catch (err) {
+    console.warn(`Counter API increment failed for ${name}:`, err);
+    return defaultVal + 1;
+  }
+}
+
+// Ensure data directory and file exist, sync with global Counter API
+async function loadStats() {
+  loadLocalStats();
+  
+  try {
+    const todayStr = getThailandDateStr();
+    const todayNum = parseInt(todayStr.replace(/-/g, ''), 10);
+
+    const dbLastDateNum = await fetchCounterValue('last_updated_date', todayNum);
+    const dbTotal = await fetchCounterValue('total_views', stats.totalViews);
+    const dbToday = await fetchCounterValue('today_views', stats.todayViews);
+    const dbYesterday = await fetchCounterValue('yesterday_views', stats.yesterdayViews);
+
+    stats.totalViews = Math.max(dbTotal, stats.totalViews, 55);
+
+    // Roll date parsing
+    const dbLastDateStr = String(dbLastDateNum).slice(0, 4) + '-' + String(dbLastDateNum).slice(4, 6) + '-' + String(dbLastDateNum).slice(6, 8);
+
+    if (dbLastDateNum !== todayNum) {
+      // Date rollover!
+      stats.yesterdayViews = dbToday;
+      stats.todayViews = 0;
+      stats.lastUpdatedDate = todayStr;
+
+      await setCounterValue('yesterday_views', dbToday);
+      await setCounterValue('today_views', 0);
+      await setCounterValue('last_updated_date', todayNum);
+    } else {
+      stats.todayViews = dbToday;
+      stats.yesterdayViews = dbYesterday;
+      stats.lastUpdatedDate = dbLastDateStr;
+    }
+
+    console.log('Successfully initialized stats from global Counter API:', stats);
+    saveStatsNow(); // update local backup
+  } catch (err) {
+    console.error('Failed to sync stats with global Counter API on start, running with local:', err);
+  }
+}
+
+// Save to Firestore helper (kept as optional client/server logging fallback)
 async function saveStatsToFirestore() {
   if (isFirestoreDisabled) return;
   try {
@@ -147,7 +213,7 @@ async function saveStatsToFirestore() {
       lastUpdatedDate: stats.lastUpdatedDate,
     }, { merge: true });
   } catch (err: any) {
-    console.error('Error saving stats to Firestore. Disabling Firestore integration:', err.message || err);
+    console.error('Error saving stats to Firestore:', err.message || err);
     isFirestoreDisabled = true;
   }
 }
@@ -162,7 +228,6 @@ function saveStatsNow() {
   } catch (err) {
     console.error('Error saving stats.json backup:', err);
   }
-  // Asynchronously save to Firestore database to persist data immediately across containers
   saveStatsToFirestore();
 }
 
@@ -204,30 +269,36 @@ function checkDateRollover() {
   }
 }
 
-// Sync and pull latest stats from Firestore to avoid stale/divergent values
+// Sync and pull latest stats from global Counter API to avoid stale/divergent values
 async function pullLatestStats() {
-  if (isFirestoreDisabled) return;
   try {
-    const docRef = doc(db, 'site_stats', 'global');
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if (typeof data.totalViews === 'number') {
-        stats.totalViews = Math.max(data.totalViews, stats.totalViews, 55);
-      }
-      if (typeof data.todayViews === 'number') {
-        stats.todayViews = Math.max(data.todayViews, stats.todayViews, 0);
-      }
-      if (typeof data.yesterdayViews === 'number') {
-        stats.yesterdayViews = Math.max(data.yesterdayViews, stats.yesterdayViews, 0);
-      }
-      if (typeof data.lastUpdatedDate === 'string') {
-        stats.lastUpdatedDate = data.lastUpdatedDate;
-      }
+    const todayStr = getThailandDateStr();
+    const todayNum = parseInt(todayStr.replace(/-/g, ''), 10);
+
+    const dbLastDateNum = await fetchCounterValue('last_updated_date', todayNum);
+    const dbTotal = await fetchCounterValue('total_views', stats.totalViews);
+    const dbToday = await fetchCounterValue('today_views', stats.todayViews);
+    const dbYesterday = await fetchCounterValue('yesterday_views', stats.yesterdayViews);
+
+    stats.totalViews = Math.max(dbTotal, stats.totalViews, 55);
+
+    const dbLastDateStr = String(dbLastDateNum).slice(0, 4) + '-' + String(dbLastDateNum).slice(4, 6) + '-' + String(dbLastDateNum).slice(6, 8);
+
+    if (dbLastDateNum !== todayNum) {
+      stats.yesterdayViews = dbToday;
+      stats.todayViews = 0;
+      stats.lastUpdatedDate = todayStr;
+
+      await setCounterValue('yesterday_views', dbToday);
+      await setCounterValue('today_views', 0);
+      await setCounterValue('last_updated_date', todayNum);
+    } else {
+      stats.todayViews = dbToday;
+      stats.yesterdayViews = dbYesterday;
+      stats.lastUpdatedDate = dbLastDateStr;
     }
-  } catch (err: any) {
-    console.error('Error pulling latest stats from Firestore. Disabling Firestore integration:', err.message || err);
-    isFirestoreDisabled = true;
+  } catch (err) {
+    console.warn('Failed to pull latest stats from global Counter API:', err);
   }
 }
 
@@ -265,8 +336,10 @@ app.post('/api/stats/hit', async (req, res) => {
   }
 
   if (shouldIncrement) {
-    stats.totalViews += 1;
-    stats.todayViews += 1;
+    const newTotal = await incrementCounterValue('total_views', stats.totalViews);
+    const newToday = await incrementCounterValue('today_views', stats.todayViews);
+    stats.totalViews = Math.max(newTotal, stats.totalViews + 1, 55);
+    stats.todayViews = Math.max(newToday, stats.todayViews + 1, 0);
     saveStatsNow(); // Save instantly to prevent data loss upon container recycle
   }
 

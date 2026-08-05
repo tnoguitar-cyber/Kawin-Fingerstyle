@@ -148,8 +148,8 @@ export const RealtimeVisitorCounter: React.FC = () => {
     // Tier 3: Zero-Setup Public counterapi.dev (Runs on Vercel with no configuration at all)
     const tryPublicCounterStats = async () => {
       const url = isNewSession
-        ? 'https://api.counterapi.dev/v1/projects/kawinfingerstyle_site_v3/counters/visits/up'
-        : 'https://api.counterapi.dev/v1/projects/kawinfingerstyle_site_v3/counters/visits';
+        ? 'https://api.counterapi.dev/v1/projects/kawinfingerstyle_site_v6_stats/counters/total_views/up'
+        : 'https://api.counterapi.dev/v1/projects/kawinfingerstyle_site_v6_stats/counters/total_views';
         
       const res = await fetch(url);
       if (!res.ok) throw new Error('Public Counter API responded with error');
@@ -158,10 +158,29 @@ export const RealtimeVisitorCounter: React.FC = () => {
       const rawVal = typeof data.count === 'number' ? data.count : (typeof data.value === 'number' ? data.value : undefined);
       const val = typeof rawVal === 'number' ? Math.max(rawVal, 55) : 55;
       
+      let todayVal = Math.max(1, Math.round(val * 0.12));
+      let yesterdayVal = Math.max(1, Math.round(val * 0.1));
+      try {
+        const tRes = await fetch('https://api.counterapi.dev/v1/projects/kawinfingerstyle_site_v6_stats/counters/today_views');
+        if (tRes.ok) {
+          const tData = await tRes.json();
+          const tCount = typeof tData.count === 'number' ? tData.count : tData.value;
+          if (typeof tCount === 'number') todayVal = tCount;
+        }
+        const yRes = await fetch('https://api.counterapi.dev/v1/projects/kawinfingerstyle_site_v6_stats/counters/yesterday_views');
+        if (yRes.ok) {
+          const yData = await yRes.json();
+          const yCount = typeof yData.count === 'number' ? yData.count : yData.value;
+          if (typeof yCount === 'number') yesterdayVal = yCount;
+        }
+      } catch (e) {
+        // ignore and fallback to percentage
+      }
+      
       applyStatsData({
         totalViews: val,
-        todayViews: Math.max(1, Math.round(val * 0.12)),
-        yesterdayViews: Math.max(1, Math.round(val * 0.1)),
+        todayViews: todayVal,
+        yesterdayViews: yesterdayVal,
         activeUsers: 1,
       });
       setIsConnected(true);
