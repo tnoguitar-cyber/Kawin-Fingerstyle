@@ -25,6 +25,7 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [tabFilter, setTabFilter] = useState<'all' | 'original' | 'freetab'>('all');
   const [expandedSyllabus, setExpandedSyllabus] = useState<string | null>(null);
+  const [activeVideoModal, setActiveVideoModal] = useState<{ title: string; embedUrl: string } | null>(null);
 
   // Filter free and store tabs based on query
   const filteredFreeTabs = FREE_TABS.filter(tab => 
@@ -729,6 +730,19 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
                         <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{item.category}</span>
                         <h4 className="text-sm font-bold text-[#191919] leading-tight">{item.thaiName}</h4>
                         <p className="text-xs text-[#5F5E5B] line-clamp-2 leading-relaxed">{item.description}</p>
+
+                        {item.youtubeEmbedUrl && (
+                          <button
+                            onClick={() => setActiveVideoModal({
+                              title: '🎬 วิดีโอแนะนำเว็บไซต์ ChordScale Master',
+                              embedUrl: item.youtubeEmbedUrl!
+                            })}
+                            className="mt-2 w-full px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold flex items-center justify-center gap-1 transition cursor-pointer"
+                          >
+                            <Play className="w-3.5 h-3.5 fill-current" />
+                            <span>🎬 ดูวิดีโอแนะนำเว็บไซต์</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
@@ -879,6 +893,45 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
         </div>
 
       </div>
+
+      {/* Standalone Video Player Modal */}
+      {activeVideoModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-stone-900 border border-amber-500/30 rounded-2xl w-full max-w-sm sm:max-w-md overflow-hidden shadow-2xl relative space-y-3">
+            <div className="p-3 bg-stone-950 border-b border-stone-800 flex items-center justify-between">
+              <div className="flex items-center gap-2 pr-2 overflow-hidden">
+                <Play className="w-4 h-4 text-amber-400 fill-current shrink-0" />
+                <h3 className="text-xs font-bold text-white truncate">{activeVideoModal.title}</h3>
+              </div>
+              <button
+                onClick={() => setActiveVideoModal(null)}
+                className="p-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white transition cursor-pointer shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4 flex justify-center bg-black">
+              <div className="w-full max-w-[320px] aspect-[9/16] rounded-xl overflow-hidden border border-stone-800 bg-stone-950 shadow-2xl">
+                <iframe
+                  src={activeVideoModal.embedUrl}
+                  title={activeVideoModal.title}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+            <div className="p-3 pt-0 text-center flex justify-center">
+              <button
+                onClick={() => setActiveVideoModal(null)}
+                className="px-5 py-2 bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold rounded-xl transition cursor-pointer"
+              >
+                ปิดวิดีโอ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

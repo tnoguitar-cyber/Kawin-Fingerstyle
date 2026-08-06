@@ -102,6 +102,10 @@ export interface Product {
   details?: string[];
   badge?: string;
   externalUrl?: string;
+  youtubeVideoUrl?: string;
+  youtubeEmbedUrl?: string;
+  registrationUrl?: string;
+  tiktokEmbedUrl?: string;
 }
 
 export interface CartItem {

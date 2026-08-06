@@ -397,10 +397,13 @@ export const PRODUCTS: Product[] = [
     rating: 5.0,
     reviewsCount: 320,
     externalUrl: 'https://chord-scale-master.vercel.app/',
+    youtubeVideoUrl: 'https://youtube.com/shorts/z805slX9QmY?feature=share',
+    youtubeEmbedUrl: 'https://www.youtube.com/embed/z805slX9QmY',
     details: [
       '✅ คลังคอร์ดสมบูรณ์แบบ: ค้นหาคอร์ด จับนิ้วถูกต้อง แม่นยำ สวยงาม',
       '✅ สำรวจสเกลอัจฉริยะ: ค้นพบและจำลองโน้ตบนคอกีตาร์ได้อย่างละเอียด',
       '✅ รักษาวินัยการฝึก: บันทึกประวัติชั่วโมงฝึกซ้อม',
+      '📹 วิดีโอแนะนำเว็บไซต์',
     ],
     badge: 'RECOMMENDED',
   },

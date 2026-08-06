@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Check, X, Sparkles, ExternalLink, Store } from 'lucide-react';
+import { ShoppingBag, Check, X, Sparkles, ExternalLink, Store, Play, Film } from 'lucide-react';
 import { PRODUCTS, ARTIST_INFO } from '../data/mockData';
 import { Product } from '../types';
 
@@ -9,6 +9,7 @@ interface MerchSectionProps {
 
 export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
   const [detailProduct, setDetailProduct] = useState<Product | null>(null);
+  const [activeVideoModal, setActiveVideoModal] = useState<{ title: string; embedUrl: string } | null>(null);
   const [addedNotice, setAddedNotice] = useState<string | null>(null);
 
   const handleAdd = (product: Product) => {
@@ -94,7 +95,20 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
               </div>
 
               <div className="p-5 pt-0 mt-2 space-y-3">
-                <div className="flex items-center justify-between pt-3 font-mono">
+                {product.youtubeEmbedUrl && (
+                  <button
+                    onClick={() => setActiveVideoModal({
+                      title: '🎬 วิดีโอแนะนำเว็บไซต์ ChordScale Master',
+                      embedUrl: product.youtubeEmbedUrl!
+                    })}
+                    className="w-full px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/20 text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+                  >
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <span>🎬 ดูวิดีโอแนะนำเว็บไซต์</span>
+                  </button>
+                )}
+
+                <div className="flex items-center justify-between pt-2 font-mono">
                   {product.externalUrl ? (
                     <>
                       <div className="flex items-baseline gap-2">
@@ -156,8 +170,8 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
       {/* Product Detail Modal */}
       {detailProduct && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl space-y-4 border border-stone-200 dark:border-none">
-            <div className="p-4 bg-stone-50 dark:bg-slate-950 border-b border-stone-200 dark:border-none flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl space-y-4 border border-stone-200 dark:border-none max-h-[90vh] flex flex-col">
+            <div className="p-4 bg-stone-50 dark:bg-slate-950 border-b border-stone-200 dark:border-none flex items-center justify-between shrink-0">
               <h3 className="text-base font-bold text-stone-900 dark:text-white">{detailProduct.thaiName}</h3>
               <button
                 onClick={() => setDetailProduct(null)}
@@ -167,15 +181,35 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
-              <div className="h-52 rounded-xl overflow-hidden bg-stone-100 dark:bg-slate-950 shadow-md">
-                <img
-                  src={detailProduct.imageUrl}
-                  alt={detailProduct.name}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+            <div className="p-6 space-y-4 overflow-y-auto">
+              {detailProduct.youtubeEmbedUrl ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-stone-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <Play className="w-3.5 h-3.5 text-red-500 fill-current" />
+                      <span>วิดีโอแนะนำเว็บไซต์ (ดูในหน้าเว็บได้ทันที):</span>
+                    </span>
+                  </div>
+                  <div className="w-full max-w-[260px] mx-auto aspect-[9/16] rounded-xl overflow-hidden border border-stone-200 dark:border-slate-800 shadow-lg bg-slate-950">
+                    <iframe
+                      src={detailProduct.youtubeEmbedUrl}
+                      title="ChordScale Master Video Preview"
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="h-52 rounded-xl overflow-hidden bg-stone-100 dark:bg-slate-950 shadow-md">
+                  <img
+                    src={detailProduct.imageUrl}
+                    alt={detailProduct.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
 
               <p className="text-xs text-stone-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                 {detailProduct.description}
@@ -183,11 +217,11 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
 
               <div className="p-3.5 rounded-xl bg-stone-50 dark:bg-slate-950/80 border border-stone-200/50 dark:border-none space-y-2 text-xs text-amber-700 dark:text-amber-300 font-sans">
                 {(detailProduct.specifications || detailProduct.details || []).map((spec, idx) => (
-                  <div key={idx} className="leading-snug">{spec.startsWith('✅') || spec.startsWith('•') ? spec : `• ${spec}`}</div>
+                  <div key={idx} className="leading-snug">{spec.startsWith('✅') || spec.startsWith('•') || spec.startsWith('📹') ? spec : `• ${spec}`}</div>
                 ))}
               </div>
 
-              <div className="flex items-center justify-between pt-3">
+              <div className="flex items-center justify-between pt-3 border-t border-stone-100 dark:border-slate-800">
                 {detailProduct.externalUrl ? (
                   <>
                     <div className="flex items-baseline gap-2">
@@ -218,6 +252,45 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
                   </>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Standalone Video Player Modal */}
+      {activeVideoModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-stone-900 border border-amber-500/30 rounded-2xl w-full max-w-sm sm:max-w-md overflow-hidden shadow-2xl relative space-y-3">
+            <div className="p-3 bg-stone-950 border-b border-stone-800 flex items-center justify-between">
+              <div className="flex items-center gap-2 pr-2 overflow-hidden">
+                <Film className="w-4 h-4 text-amber-400 shrink-0" />
+                <h3 className="text-xs font-bold text-white truncate">{activeVideoModal.title}</h3>
+              </div>
+              <button
+                onClick={() => setActiveVideoModal(null)}
+                className="p-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white transition cursor-pointer shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-4 flex justify-center bg-black">
+              <div className="w-full max-w-[320px] aspect-[9/16] rounded-xl overflow-hidden border border-stone-800 bg-stone-950 shadow-2xl">
+                <iframe
+                  src={activeVideoModal.embedUrl}
+                  title={activeVideoModal.title}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+            <div className="p-3 pt-0 text-center flex justify-center">
+              <button
+                onClick={() => setActiveVideoModal(null)}
+                className="px-5 py-2 bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold rounded-xl transition cursor-pointer"
+              >
+                ปิดวิดีโอ
+              </button>
             </div>
           </div>
         </div>
