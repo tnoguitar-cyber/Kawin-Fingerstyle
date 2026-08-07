@@ -675,6 +675,19 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
                             </span>
                           ))}
                         </div>
+
+                        {course.youtubeEmbedUrl && (
+                          <button
+                            onClick={() => setActiveVideoModal({
+                              title: `🎬 วิดีโอแนะนำ ${course.thaiTitle}`,
+                              embedUrl: course.youtubeEmbedUrl!
+                            })}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 text-xs font-bold flex items-center justify-center gap-1 transition cursor-pointer mt-2"
+                          >
+                            <Play className="w-3.5 h-3.5 text-red-600 fill-current" />
+                            <span>🎬 ดูวิดีโอแนะนำเว็บไซต์</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
@@ -688,15 +701,31 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
                         ) : (
                           <span className="font-extrabold text-base text-[#191919]">{course.price} ฿</span>
                         )}
-                        <span className="block text-[10px] text-[#5F5E5B]">⏱️ รวม {course.durationHours} ชั่วโมง ({course.totalLessons} บทเรียน)</span>
+                        {course.durationHours === 999 ? (
+                          <span className="block text-[10px] text-[#5F5E5B]">⏱️ ใช้งานได้ไม่จำกัด (ตลอดชีพ)</span>
+                        ) : (
+                          <span className="block text-[10px] text-[#5F5E5B]">⏱️ รวม {course.durationHours} ชั่วโมง ({course.totalLessons} บทเรียน)</span>
+                        )}
                       </div>
                       
-                      <button 
-                        onClick={() => onAddToCart(course)}
-                        className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-lg transition shadow-sm"
-                      >
-                        สมัครเรียนด่วน
-                      </button>
+                      {course.externalUrl ? (
+                        <a
+                          href={course.externalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-bold rounded-lg transition shadow-sm flex items-center gap-1"
+                        >
+                          <span>เข้าใช้งานเครื่องมือ</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      ) : (
+                        <button 
+                          onClick={() => onAddToCart(course)}
+                          className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-lg transition shadow-sm cursor-pointer"
+                        >
+                          สมัครเรียนด่วน
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}

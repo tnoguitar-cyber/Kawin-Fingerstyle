@@ -67,7 +67,7 @@ export interface Course {
   title: string;
   thaiTitle: string;
   subtitle: string;
-  level: 'มือใหม่ (Beginner)' | 'ปานกลาง (Intermediate)' | 'ขั้นสูง (Advanced)' | 'ทุกระดับ (All Levels)' | 'เรียนสด Online (Private)';
+  level: 'มือใหม่ (Beginner)' | 'ปานกลาง (Intermediate)' | 'ขั้นสูง (Advanced)' | 'ทุกระดับ (All Levels)' | 'เรียนสด Online (Private)' | 'เครื่องมือฝึกซ้อมกีตาร์';
   durationHours: number;
   totalLessons: number;
   price: number;
@@ -84,6 +84,9 @@ export interface Course {
   studentCount: number;
   includesTabBook?: boolean;
   badge?: string;
+  externalUrl?: string;
+  youtubeVideoUrl?: string;
+  youtubeEmbedUrl?: string;
 }
 
 export interface Product {

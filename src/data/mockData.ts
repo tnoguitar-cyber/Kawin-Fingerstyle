@@ -346,6 +346,8 @@ export const COURSES: Course[] = [
     studentCount: 2340,
     includesTabBook: true,
     badge: '👑 VIP PREMIUM PLAN',
+    youtubeVideoUrl: 'https://youtu.be/uFSOEGSJKUc',
+    youtubeEmbedUrl: 'https://www.youtube.com/embed/uFSOEGSJKUc',
   },
 
   {
@@ -366,6 +368,7 @@ export const COURSES: Course[] = [
           { id: 'p1', title: 'ปูพื้นฐานและระบบความคิดการจัดทางคอร์ดบรรเลง Fingerstyle', duration: '60 นาที' },
           { id: 'p3', title: 'แนวทางการแต่งเพลง และการเรียบเรียงเพลงป๊อปให้เป็น Fingerstyle ในสไตล์ของคุณ', duration: '60 นาที' },
           { id: 'p4', title: 'วิเคราะห์บทเพลงจริง และรับโจทย์ฝึกฝนส่วนบุคคล', duration: '60 นาที' },
+          { id: 'p5', title: 'เช็กการซ้อม แนะนำแนวคิดการเรียบเรียง และปรับปรุงแก้ไขเทคนิคต่างๆ ในการเล่น', duration: '60 นาที' },
         ],
       },
     ],
@@ -381,32 +384,46 @@ export const COURSES: Course[] = [
     studentCount: 520,
     badge: '🔥 คอร์สเรียนสด Online (Private)',
   },
-];
 
-export const PRODUCTS: Product[] = [
   {
-    id: 'prod-chordscale',
-    name: 'ChordScale Master',
-    thaiName: 'Website ChordScale Master - คลังสเกลและคอร์ดกีตาร์',
-    category: 'เว็บแอป & คลังสเกล (Web App & Tools)',
-    price: 199,
-    originalPrice: 390,
-    imageUrl: 'https://scontent.fbkk22-3.fna.fbcdn.net/v/t39.30808-6/763119827_1391227076485687_8617708197903407396_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1920&ctp=s1080x1920&_nc_cat=105&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=127cfc&_nc_ohc=F5uex1lcSlwQ7kNvwEfheuD&_nc_oc=AdrpSBWAokAY64WJPo9wSadeopgNR5nJY5Ld97s5FQ0skQV1KYl9LvvvQJr33oOqcealXev70w84vpqjC3bt906m&_nc_zt=23&_nc_ht=scontent.fbkk22-3.fna&_nc_gid=ApOgXcZPF7JYsbsx4s3zCQ&_nc_ss=7f2a8&oh=00_AQETJjQmReBT3J-f1DVKV8wvlv227bGZDmK-c1XdrJEhpQ&oe=6A7635DA',
-    description: '🎸 ChordScale Master ซ้อมกีตาร์อย่างมีเป้าหมาย ด้วยเครื่องมือฝึกซ้อมอัจฉริยะสำหรับนักดนตรี หากคุณกำลังมองหาระบบที่จะช่วยจัดระเบียบการฝึกซ้อมกีตาร์ให้มีทิศทาง พัฒนาฝีมือได้รวดเร็วและเห็นภาพชัดเจนที่สุด... เว็บไซต์นี้ถูกออกแบบมาเพื่อสิ่งนั้นครับ:',
-    inStock: true,
-    rating: 5.0,
-    reviewsCount: 320,
+    id: 'course-chordscale-master',
+    title: 'ChordScale Master - Guitar Practice Web App',
+    thaiTitle: 'ChordScale Master - เครื่องมือฝึกซ้อมกีตาร์อัจฉริยะ',
+    subtitle: 'เครื่องมือฝึกซ้อมกีตาร์ คลังคอร์ด สเกล และระบบบันทึกประวัติชั่วโมงฝึกซ้อมแบบ Interactive',
+    level: 'เครื่องมือฝึกซ้อมกีตาร์',
+    durationHours: 999,
+    totalLessons: 1,
+    price: 390,
+    discountPrice: 199,
+    coverUrl: 'https://scontent.fbkk22-3.fna.fbcdn.net/v/t39.30808-6/763119827_1391227076485687_8617708197903407396_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1920&ctp=s1080x1920&_nc_cat=105&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=127cfc&_nc_ohc=F5uex1lcSlwQ7kNvwEfheuD&_nc_oc=AdrpSBWAokAY64WJPo9wSadeopgNR5nJY5Ld97s5FQ0skQV1KYl9LvvvQJr33oOqcealXev70w84vpqjC3bt906m&_nc_zt=23&_nc_ht=scontent.fbkk22-3.fna&_nc_gid=ApOgXcZPF7JYsbsx4s3zCQ&_nc_ss=7f2a8&oh=00_AQETJjQmReBT3J-f1DVKV8wvlv227bGZDmK-c1XdrJEhpQ&oe=6A7635DA',
+    description: '🎸 ChordScale Master เครื่องมือฝึกซ้อมกีตาร์อัจฉริยะ ซ้อมกีตาร์อย่างมีเป้าหมาย ด้วยเครื่องมือฝึกซ้อมอัจฉริยะสำหรับนักดนตรี หากคุณกำลังมองหาระบบที่จะช่วยจัดระเบียบการฝึกซ้อมกีตาร์ให้มีทิศทาง พัฒนาฝีมือได้รวดเร็วและเห็นภาพชัดเจนที่สุด... เว็บไซต์นี้ถูกออกแบบมาเพื่อสิ่งนั้นครับ:',
     externalUrl: 'https://chord-scale-master.vercel.app/',
     youtubeVideoUrl: 'https://youtube.com/shorts/z805slX9QmY?feature=share',
     youtubeEmbedUrl: 'https://www.youtube.com/embed/z805slX9QmY',
-    details: [
-      '✅ คลังคอร์ดสมบูรณ์แบบ: ค้นหาคอร์ด จับนิ้วถูกต้อง แม่นยำ สวยงาม',
-      '✅ สำรวจสเกลอัจฉริยะ: ค้นพบและจำลองโน้ตบนคอกีตาร์ได้อย่างละเอียด',
-      '✅ รักษาวินัยการฝึก: บันทึกประวัติชั่วโมงฝึกซ้อม',
-      '📹 วิดีโอแนะนำเว็บไซต์',
+    syllabus: [
+      {
+        sectionTitle: 'ฟังก์ชันเครื่องมือฝึกซ้อมกีตาร์ (ChordScale Master)',
+        lessons: [
+          { id: 'cs1', title: 'คลังคอร์ดสมบูรณ์แบบ: ค้นหาคอร์ด จับนิ้วถูกต้อง แม่นยำ สวยงาม', duration: 'Feature', isFreePreview: true },
+          { id: 'cs2', title: 'สำรวจสเกลอัจฉริยะ: ค้นพบและจำลองโน้ตบนคอกีตาร์ได้อย่างละเอียด', duration: 'Feature' },
+          { id: 'cs3', title: 'รักษาวินัยการฝึก: บันทึกประวัติชั่วโมงฝึกซ้อม', duration: 'Feature' },
+        ],
+      },
     ],
-    badge: 'RECOMMENDED',
+    features: [
+      'เครื่องมือฝึกซ้อมกีตาร์แบบ Web App ไม่ต้องติดตั้งแอปพลิเคชัน',
+      'คลังคอร์ดสมบูรณ์แบบ: ค้นหาคอร์ด จับนิ้วถูกต้อง แม่นยำ',
+      'สำรวจสเกลอัจฉริยะ: ค้นพบและจำลองโน้ตบนคอกีตาร์แบบ Interactive',
+      'รักษาวินัยการฝึก: ระบบบันทึกประวัติชั่วโมงฝึกซ้อมส่วนบุคคล',
+    ],
+    rating: 5.0,
+    reviewsCount: 320,
+    studentCount: 1450,
+    badge: '🎸 เครื่องมือฝึกซ้อมกีตาร์',
   },
+];
+
+export const PRODUCTS: Product[] = [
   {
     id: 'prod-2',
     name: 'Kawin Signature Capo',
