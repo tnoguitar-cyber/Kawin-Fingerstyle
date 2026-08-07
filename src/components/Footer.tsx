@@ -1,7 +1,6 @@
 import React from 'react';
 import { Youtube, Instagram, Facebook, ExternalLink, Mail, MessageCircle, Send } from 'lucide-react';
 import { ARTIST_INFO } from '../data/mockData';
-import { RealtimeVisitorCounter } from './RealtimeVisitorCounter';
 
 interface FooterProps {
   onNavigate: (tab: string) => void;
@@ -249,8 +248,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         <div className="pt-6 border-t border-stone-200 dark:border-slate-900 flex flex-col items-center justify-center text-stone-400 dark:text-slate-500 text-[11px] gap-3">
-          <RealtimeVisitorCounter />
-
           <div className="flex flex-col sm:flex-row items-center justify-between w-full text-stone-400 dark:text-slate-500 text-[11px] gap-2 pt-1">
             <p>
               © {new Date().getFullYear()} {ARTIST_INFO.name}{' '}
