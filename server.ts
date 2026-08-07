@@ -115,48 +115,71 @@ function loadLocalStats() {
 }
 
 const COUNTER_PROJECT = 'kawinfingerstyle_site_v6_stats';
+let counterApiDisabledUntil = 0;
+
+function isCounterApiAvailable(): boolean {
+  return Date.now() > counterApiDisabledUntil;
+}
+
+function disableCounterApiTemporarily(reason?: string) {
+  if (isCounterApiAvailable()) {
+    console.info(`Counter API temporarily paused (10 mins local mode)${reason ? `: ${reason}` : ''}`);
+  }
+  counterApiDisabledUntil = Date.now() + 10 * 60 * 1000; // Pause for 10 minutes
+}
 
 // Helper to fetch/increment from counterapi.dev
 async function fetchCounterValue(name: string, defaultVal: number): Promise<number> {
+  if (!isCounterApiAvailable()) return defaultVal;
   try {
     const res = await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}`);
     if (res.status === 404) {
       // Counter doesn't exist yet, initialize it
-      await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${defaultVal}`);
+      await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${defaultVal}`).catch(() => {});
       return defaultVal;
     }
-    if (!res.ok) throw new Error(`Status ${res.status}`);
+    if (!res.ok) {
+      disableCounterApiTemporarily(`Status ${res.status}`);
+      return defaultVal;
+    }
     const data = await res.json();
     const count = typeof data.count === 'number' ? data.count : (typeof data.value === 'number' ? data.value : defaultVal);
     return count;
   } catch (err) {
-    console.warn(`Counter API get failed for ${name}, using local fallback:`, err);
+    disableCounterApiTemporarily(String(err));
     return defaultVal;
   }
 }
 
 async function setCounterValue(name: string, value: number): Promise<void> {
+  if (!isCounterApiAvailable()) return;
   try {
     const res = await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${value}`);
-    if (!res.ok) throw new Error(`Status ${res.status}`);
+    if (!res.ok) {
+      disableCounterApiTemporarily(`Status ${res.status}`);
+    }
   } catch (err) {
-    console.warn(`Counter API set failed for ${name} = ${value}:`, err);
+    disableCounterApiTemporarily(String(err));
   }
 }
 
 async function incrementCounterValue(name: string, defaultVal: number): Promise<number> {
+  if (!isCounterApiAvailable()) return defaultVal + 1;
   try {
     const res = await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/up`);
     if (res.status === 404) {
       // Initialize if not exists, then increment
-      await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${defaultVal + 1}`);
+      await fetch(`https://api.counterapi.dev/v1/projects/${COUNTER_PROJECT}/counters/${name}/set?value=${defaultVal + 1}`).catch(() => {});
       return defaultVal + 1;
     }
-    if (!res.ok) throw new Error(`Status ${res.status}`);
+    if (!res.ok) {
+      disableCounterApiTemporarily(`Status ${res.status}`);
+      return defaultVal + 1;
+    }
     const data = await res.json();
     return typeof data.count === 'number' ? data.count : (typeof data.value === 'number' ? data.value : defaultVal + 1);
   } catch (err) {
-    console.warn(`Counter API increment failed for ${name}:`, err);
+    disableCounterApiTemporarily(String(err));
     return defaultVal + 1;
   }
 }

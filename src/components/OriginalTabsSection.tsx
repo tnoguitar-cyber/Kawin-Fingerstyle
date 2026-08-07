@@ -23,44 +23,7 @@ export interface OneTimeCode {
   usedAt?: string;
 }
 
-export const DEFAULT_INQUIRIES: InquiryMessage[] = [
-  {
-    id: 'inq-sample-1',
-    name: 'คุณสมชาย / บริษัท อีเวนต์ อาร์ต จำกัด',
-    phone: '081-234-5678',
-    email: 'somchai@eventart.co.th',
-    eventType: 'งานแสดงคอนเสิร์ต / อีเวนต์เปิดตัวสินค้า',
-    eventDate: '15 ก.ย. 2026',
-    location: 'ศูนย์การค้าสยามพารากอน กรุงเทพฯ',
-    notes: 'สนใจเชิญคุณกวิน (Kawin Fingerstyle) ร่วมแสดงบรรเลงกีตาร์ฟิงเกอร์สไตล์ช่วงเปิดงานประมาณ 45 นาที รบกวนขอใบเสนอราคาและคิวงานครับ',
-    createdAt: '03/08/2026 10:30',
-    status: 'unread',
-  },
-  {
-    id: 'inq-sample-2',
-    name: 'คุณเมษา (Maysa Acoustic Studio)',
-    phone: '089-876-5432',
-    email: 'maysa.acoustic@gmail.com',
-    eventType: 'คอร์สเรียน Private Online / บรรยายวิทยากร',
-    eventDate: '20 ส.ค. 2026',
-    location: 'ผ่านระบบ Zoom / Online',
-    notes: 'สอบถามรายละเอียดคอร์สเรียนสด Online ตัวต่อตัว เทคนิคการเรียบเรียงเพลง Fingerstyle และการจับคอร์ดสเกลกีตาร์ครับ',
-    createdAt: '02/08/2026 15:45',
-    status: 'read',
-  },
-  {
-    id: 'inq-sample-3',
-    name: 'คุณกิตติศักดิ์ (โรงแรมดุสิตธานี)',
-    phone: '086-555-1234',
-    email: 'kittisak.d@hotelgroup.com',
-    eventType: 'งานแสดงดนตรีบรรเลง Acoustic Dinner',
-    eventDate: '01 ต.ค. 2026',
-    location: 'Dusit Thani Hotel หัวหิน',
-    notes: 'ต้องการสอบถามคิวงานแสดงดนตรีบรรเลงอะคูสติกกีตาร์ต้อนรับแขก VIP ในช่วงมื้อค่ำครับ',
-    createdAt: '01/08/2026 18:20',
-    status: 'replied',
-  },
-];
+export const DEFAULT_INQUIRIES: InquiryMessage[] = [];
 
 export const ORIGINAL_TABS: OriginalTabItem[] = [
   {
@@ -153,13 +116,20 @@ export const OriginalTabsSection: React.FC = () => {
     try {
       const savedInquiries = localStorage.getItem('kawin_inquiries_v1');
       if (savedInquiries) {
-        setInquiriesList(JSON.parse(savedInquiries));
+        const parsed = JSON.parse(savedInquiries);
+        // Filter out sample mock inquiries
+        const realInquiries = Array.isArray(parsed) 
+          ? parsed.filter((i: InquiryMessage) => !i.id.startsWith('inq-sample-'))
+          : [];
+        setInquiriesList(realInquiries);
+        localStorage.setItem('kawin_inquiries_v1', JSON.stringify(realInquiries));
       } else {
-        setInquiriesList(DEFAULT_INQUIRIES);
-        localStorage.setItem('kawin_inquiries_v1', JSON.stringify(DEFAULT_INQUIRIES));
+        setInquiriesList([]);
+        localStorage.setItem('kawin_inquiries_v1', JSON.stringify([]));
       }
     } catch (e) {
       console.error('Error loading inquiries:', e);
+      setInquiriesList([]);
     }
   };
 
@@ -597,19 +567,10 @@ export const OriginalTabsSection: React.FC = () => {
         <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-amber-500/50 rounded-2xl p-5 sm:p-6 max-w-3xl w-full max-h-[92vh] overflow-y-auto space-y-5 shadow-2xl relative">
             
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-white">ระบบจัดการหลังบ้านแอดมิน (Kawin Backoffice)</h3>
-                  <p className="text-xs text-slate-400">เช็กข้อความติดต่องาน & สร้างรหัสปลดล็อก TAB สำหรับลูกค้า</p>
-                </div>
-              </div>
+            <div className="flex items-center justify-end border-b border-slate-800 pb-3">
               <button
                 onClick={() => setShowAdminModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
               >
                 ✕
               </button>
