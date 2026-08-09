@@ -24,7 +24,7 @@ export const POPULAR_VIDEOS: PopularVideo[] = [
     title: 'Kawin Fingerstyle - Acoustic Fingerstyle Cover (TikTok)',
     platform: 'tiktok',
     url: 'https://vt.tiktok.com/ZS4A3RnW1/',
-    thumbnailUrl: 'https://scontent.fphs4-1.fna.fbcdn.net/v/t39.30808-6/751485657_27586741800936831_8519359666925879264_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1080x1080&ctp=s1080x1080&_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGsn0-V9ucElwmO5mfJQdtLiubZXt8dcbWK5tle3x1xtWBPVVQWPyKSdIQ5o6V7N2_KokzJ8WRHXxnZop1uVGZe&_nc_ohc=qVKESga-fOwQ7kNvwFAOQR3&_nc_oc=Ado13rGDohNu2WJhAR5NfpCYWOkF7Uf0_ZAr9-HOCN3lnRTtlrAUfu4snbf6u5bF6da94VG8tP4l14cwYwMKMwWJ&_nc_zt=23&_nc_ht=scontent.fphs4-1.fna&_nc_gid=39MLYHV2UK-WgluHggNMBg&_nc_ss=7f2a8&oh=00_AQH9hI2rRgngUaSg9RLseAOA7yqa5iEt8H8KgnfpbT_NqA&oe=6A74AC76',
+    thumbnailUrl: 'https://lh3.googleusercontent.com/d/1HRPpGDCQqp2FCLl92u-D4eEHuNIHxO0f',
     tag: '⚡ TikTok Clip',
   },
   {
@@ -32,7 +32,7 @@ export const POPULAR_VIDEOS: PopularVideo[] = [
     title: 'Kawin Fingerstyle - Acoustic Lick & Solo Performance (TikTok)',
     platform: 'tiktok',
     url: 'https://vt.tiktok.com/ZS4A3dNcQ/',
-    thumbnailUrl: 'https://scontent.fphs4-1.fna.fbcdn.net/v/t39.30808-6/751485657_27586741800936831_8519359666925879264_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1080x1080&ctp=s1080x1080&_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGsn0-V9ucElwmO5mfJQdtLiubZXt8dcbWK5tle3x1xtWBPVVQWPyKSdIQ5o6V7N2_KokzJ8WRHXxnZop1uVGZe&_nc_ohc=qVKESga-fOwQ7kNvwFAOQR3&_nc_oc=Ado13rGDohNu2WJhAR5NfpCYWOkF7Uf0_ZAr9-HOCN3lnRTtlrAUfu4snbf6u5bF6da94VG8tP4l14cwYwMKMwWJ&_nc_zt=23&_nc_ht=scontent.fphs4-1.fna&_nc_gid=39MLYHV2UK-WgluHggNMBg&_nc_ss=7f2a8&oh=00_AQH9hI2rRgngUaSg9RLseAOA7yqa5iEt8H8KgnfpbT_NqA&oe=6A74AC76',
+    thumbnailUrl: 'https://lh3.googleusercontent.com/d/1HRPpGDCQqp2FCLl92u-D4eEHuNIHxO0f',
     tag: '⚡ TikTok Clip',
   },
   {
