@@ -306,7 +306,7 @@ export const COURSES: Course[] = [
     totalLessons: 999, // Unlimited
     price: 5900,
     discountPrice: 2990,
-    coverUrl: 'https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/731158479_27324123393865341_8637482802721882281_n.jpg?stp=dst-jpg_tt6&cstp=mx1260x892&ctp=s1260x892&_nc_cat=109&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFtxHyhSGRXYK6lfoS09HfOcR5OfaUwpJVxHk59pTCklQDfS20raN3Yk9-MKB2oayTBzk-VYIwUet_o76INxipw&_nc_ohc=DVOjgm22W5MQ7kNvwFg3Vsi&_nc_oc=AdpNkQAKNTq89iXNbw864jIINLz2bQXKzE_x9bwNwnwWIFOfiCC0pC3Q_9GckW1aDzdptzT-dKxw-r6m0a7UDHFs&_nc_zt=23&_nc_ht=scontent.fbkk22-8.fna&_nc_gid=ECmKFV4TCWGPU3YYbGf5yg&_nc_ss=7f2a8&oh=00_AQELDdtOru_T1Vm_yFE3uvmjTEfBTSkmKhVB0kHp6n0gCw&oe=6A7644AE',
+    coverUrl: 'https://lh3.googleusercontent.com/d/1_ElhCAr8j-XcA5pqESusrtZ02CxDXvf2',
     description: 'ปลดล็อกขีดจำกัดด้วยสมาชิก VIP PREMIUM PLAN เข้าชมวิดีโอบทเรียนครบทุกคอร์ส ไม่จำกัดชั่วโมง พร้อมฟังก์ชันครบครันสำหรับนักกีตาร์',
     syllabus: [
       {
@@ -395,7 +395,7 @@ export const COURSES: Course[] = [
     totalLessons: 1,
     price: 390,
     discountPrice: 199,
-    coverUrl: 'https://scontent.fbkk22-3.fna.fbcdn.net/v/t39.30808-6/763119827_1391227076485687_8617708197903407396_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1920&ctp=s1080x1920&_nc_cat=105&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=127cfc&_nc_ohc=F5uex1lcSlwQ7kNvwEfheuD&_nc_oc=AdrpSBWAokAY64WJPo9wSadeopgNR5nJY5Ld97s5FQ0skQV1KYl9LvvvQJr33oOqcealXev70w84vpqjC3bt906m&_nc_zt=23&_nc_ht=scontent.fbkk22-3.fna&_nc_gid=ApOgXcZPF7JYsbsx4s3zCQ&_nc_ss=7f2a8&oh=00_AQETJjQmReBT3J-f1DVKV8wvlv227bGZDmK-c1XdrJEhpQ&oe=6A7635DA',
+    coverUrl: 'https://lh3.googleusercontent.com/d/15aG72NFAZ4-7X1HXYfSuVHcUbvcT-07e',
     description: '🎸 ChordScale Master เครื่องมือฝึกซ้อมกีตาร์อัจฉริยะ ซ้อมกีตาร์อย่างมีเป้าหมาย ด้วยเครื่องมือฝึกซ้อมอัจฉริยะสำหรับนักดนตรี หากคุณกำลังมองหาระบบที่จะช่วยจัดระเบียบการฝึกซ้อมกีตาร์ให้มีทิศทาง พัฒนาฝีมือได้รวดเร็วและเห็นภาพชัดเจนที่สุด... เว็บไซต์นี้ถูกออกแบบมาเพื่อสิ่งนั้นครับ:',
     externalUrl: 'https://chord-scale-master.vercel.app/',
     youtubeVideoUrl: 'https://youtube.com/shorts/z805slX9QmY?feature=share',
