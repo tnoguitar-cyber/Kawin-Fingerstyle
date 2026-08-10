@@ -329,7 +329,7 @@ export const OriginalTabsSection: React.FC = () => {
             <span>ORIGINAL GUITAR TABS</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 dark:text-white tracking-tight">
-            TAB เพลงแต่งของฉัน (Kawin Original Songs)
+            TAB เพลงแต่ง (Kawin Original Songs)
           </h2>
           <p className="text-stone-500 dark:text-slate-400 text-sm mt-1">
             โน้ตและ TAB บรรเลงกีตาร์ฟิงเกอร์สไตล์ (ไฟล์ .pdf) — ราคาเพลงละ <strong className="text-amber-600 dark:text-amber-400">150 บาท</strong>
