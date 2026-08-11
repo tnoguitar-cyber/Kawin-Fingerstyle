@@ -34,7 +34,7 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
               ร้านค้า Kawin Fingerstyle
             </h2>
             <p className="text-stone-500 dark:text-slate-400 text-sm mt-1">
-              หนังสือรวม TAB พร้อมลายเซ็น, คาโป้ premium, ปิ๊ก และอุปกรณ์ดูแลกีตาร์
+              E-Book สอนเล่น Fingerstyle, แท็บเพลงพร้อม Audio, และอุปกรณ์สำหรับคนรักกีตาร์
             </p>
           </div>
 
@@ -109,28 +109,16 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
                 )}
 
                 <div className="flex items-center justify-between pt-2 font-mono">
-                  {product.externalUrl ? (
-                    <>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-xl font-black text-amber-600 dark:text-amber-400">฿{product.price}</span>
-                        {product.originalPrice && (
-                          <span className="text-xs text-stone-400 dark:text-slate-500 line-through">฿{product.originalPrice}</span>
-                        )}
-                      </div>
-                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-500/10 dark:text-emerald-400 dark:bg-emerald-500/10 px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse"></span>
-                        <span>พร้อมใช้งาน</span>
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-base font-extrabold text-amber-600 dark:text-amber-400 tracking-wide">Coming Soon</span>
-                      <span className="text-[11px] font-bold text-amber-700 bg-amber-500/10 dark:text-amber-400/90 dark:bg-amber-500/10 px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse"></span>
-                        <span>เร็วๆ นี้</span>
-                      </span>
-                    </>
-                  )}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-black text-amber-600 dark:text-amber-400">฿{product.price}</span>
+                    {product.originalPrice && (
+                      <span className="text-xs text-stone-400 dark:text-slate-500 line-through">฿{product.originalPrice}</span>
+                    )}
+                  </div>
+                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-500/10 dark:text-emerald-400 dark:bg-emerald-500/10 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse"></span>
+                    <span>พร้อมสั่งซื้อ</span>
+                  </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
@@ -153,10 +141,11 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
                     </a>
                   ) : (
                     <button
-                      disabled
-                      className="px-3 py-2.5 bg-stone-200/80 text-amber-700 dark:bg-slate-800/80 dark:text-amber-300 font-bold text-xs font-mono rounded-xl cursor-not-allowed opacity-90 flex items-center justify-center gap-1 shadow-sm"
+                      onClick={() => handleAdd(product)}
+                      className="px-3 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs font-mono rounded-xl shadow-md hover:shadow-amber-500/20 transition flex items-center justify-center gap-1 cursor-pointer"
                     >
-                      <span>Coming Soon</span>
+                      <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
+                      <span>สั่งซื้อ / ลงตะกร้า</span>
                     </button>
                   )}
                 </div>
@@ -221,36 +210,38 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
                 ))}
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-stone-100 dark:border-slate-800">
-                {detailProduct.externalUrl ? (
-                  <>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-black font-mono text-amber-600 dark:text-amber-400">฿{detailProduct.price}</span>
-                      {detailProduct.originalPrice && (
-                        <span className="text-xs text-stone-400 dark:text-slate-500 line-through">฿{detailProduct.originalPrice}</span>
-                      )}
-                    </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-stone-100 dark:border-slate-800">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xl font-black font-mono text-amber-600 dark:text-amber-400">฿{detailProduct.price}</span>
+                  {detailProduct.originalPrice && (
+                    <span className="text-xs text-stone-400 dark:text-slate-500 line-through">฿{detailProduct.originalPrice}</span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {detailProduct.externalUrl ? (
                     <a
                       href={detailProduct.externalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl font-mono shadow-lg transition flex items-center gap-1.5"
+                      className="w-full sm:w-auto px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl font-mono shadow-lg transition flex items-center justify-center gap-1.5"
                     >
                       <span>เข้าสู่เว็บไซต์ (฿{detailProduct.price})</span>
                       <ExternalLink className="w-4 h-4" />
                     </a>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-xl font-black font-mono text-amber-600 dark:text-amber-400">Coming Soon</span>
+                  ) : (
                     <button
-                      disabled
-                      className="px-5 py-2.5 bg-stone-200 text-amber-700 dark:bg-slate-800 dark:text-amber-300 font-bold text-xs rounded-xl font-mono cursor-not-allowed opacity-90 shadow-md"
+                      onClick={() => {
+                        handleAdd(detailProduct);
+                        setDetailProduct(null);
+                      }}
+                      className="w-full sm:w-auto px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl font-mono shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      Coming Soon (เร็วๆ นี้)
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>สั่งซื้อ / เพิ่มลงตะกร้า (฿{detailProduct.price})</span>
                     </button>
-                  </>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>

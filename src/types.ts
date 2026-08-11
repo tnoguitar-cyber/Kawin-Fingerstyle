@@ -93,7 +93,7 @@ export interface Product {
   id: string;
   name: string;
   thaiName: string;
-  category: 'คาโป้ & ปิ๊ก (Capo & Picks)' | 'สาย & อุปกรณ์ (Strings & Gear)' | 'สินค้าสะสม (Merch)' | 'หนังสือ TAB (Tab Books)' | 'เว็บแอป & คลังสเกล (Web App & Tools)';
+  category: 'E-Book & หนังสือ TAB (E-Books & Tab Books)' | 'คาโป้ & ปิ๊ก (Capo & Picks)' | 'สาย & อุปกรณ์ (Strings & Gear)' | 'สินค้าสะสม (Merch)' | 'หนังสือ TAB (Tab Books)' | 'เว็บแอป & คลังสเกล (Web App & Tools)' | string;
   price: number;
   originalPrice?: number;
   imageUrl: string;

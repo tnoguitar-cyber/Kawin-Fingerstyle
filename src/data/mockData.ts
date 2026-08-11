@@ -425,39 +425,49 @@ export const COURSES: Course[] = [
 
 export const PRODUCTS: Product[] = [
   {
-    id: 'prod-2',
-    name: 'Kawin Signature Capo',
-    thaiName: 'คาโป้พรีเมียม รุ่น Kawin Signature',
-    category: 'คาโป้ & ปิ๊ก (Capo & Picks)',
-    price: 690,
-    originalPrice: 890,
-    imageUrl: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80',
-    description: 'คาโป้คุณภาพสูง หนีบแน่น แรงกดสม่ำเสมอ ช่วยให้สายกีตาร์ไม่เพี้ยน ยางซิลิโคนถนอมคอกีตาร์',
+    id: 'prod-ebook-vol1',
+    name: 'Vol.1 Fingerstyle Shortcut The Essential Foundations - Kawin Fingerstyle Studio',
+    thaiName: 'Vol.1 Fingerstyle Shortcut The Essential Foundations',
+    category: 'E-Book & หนังสือ TAB (E-Books & Tab Books)',
+    price: 199,
+    originalPrice: 350,
+    imageUrl: 'https://lh3.googleusercontent.com/d/1PWoHAtgTJUJWIg1GQSkEzKl9IhDF24Gb',
+    badge: '🔥 ลดพิเศษ 199฿ (จาก 350฿) เฉพาะ 50 ท่านแรก',
+    description: `📖 รายละเอียด E-Book: Fingerstyle Shortcut Volume 1: Foundations
+
+• 🎸 5 บทเรียนพื้นฐาน วางรากฐานการเล่น Fingerstyle อย่างเป็นระบบ
+• 🎼 เน้นพื้นฐาน การแยกประสาทนิ้ว การเดินเบส และการควบคุมมือขวา
+• 📑 Standard 6-Line TAB รูปแบบมาตรฐาน อ่านง่าย
+• 🖨️ จัดรูปแบบสำหรับ พิมพ์ A4
+• 🔊 Interactive Audio Simulator สำหรับเปิดฟังเสียงตัวอย่างประกอบการฝึก
+• 💻 รูปแบบ Interactive E-Book สามารถเรียนและฝึกตามเนื้อหาได้
+
+เหมาะสำหรับ: ผู้เริ่มต้น Fingerstyle และผู้ที่ต้องการจัดระบบพื้นฐานการฝึกให้ถูกต้อง
+รูปแบบ: E-Book • A4 • Standard TAB • Interactive Audio`,
     inStock: true,
     rating: 5.0,
-    reviewsCount: 94,
-    details: [
-      'วัสดุ Zinc Alloy แข็งแรง ทนทาน',
-      'ยางซิลิโคนความหนาแน่นสูง ถนอมคอกีตาร์',
+    reviewsCount: 50,
+    specifications: [
+      '🎸 5 บทเรียนพื้นฐาน วางรากฐานการเล่น Fingerstyle อย่างเป็นระบบ',
+      '🎼 เน้นพื้นฐาน การแยกประสาทนิ้ว การเดินเบส และการควบคุมมือขวา',
+      '📑 Standard 6-Line TAB รูปแบบมาตรฐาน อ่านง่าย',
+      '🖨️ จัดรูปแบบสำหรับ พิมพ์ A4',
+      '🔊 Interactive Audio Simulator สำหรับเปิดฟังเสียงตัวอย่างประกอบการฝึก',
+      '💻 รูปแบบ Interactive E-Book สามารถเรียนและฝึกตามเนื้อหาได้',
+      '🎯 เหมาะสำหรับ: ผู้เริ่มต้น Fingerstyle และผู้ที่ต้องการจัดระบบพื้นฐานการฝึกให้ถูกต้อง',
+      '📄 รูปแบบ: E-Book • A4 • Standard TAB • Interactive Audio'
     ],
-  },
-  {
-    id: 'prod-3',
-    name: 'Phosphor Bronze Acoustic Strings (.012-.053)',
-    thaiName: 'สายกีตาร์โปร่ง Phosphor Bronze (.012-.053)',
-    category: 'สาย & อุปกรณ์ (Strings & Gear)',
-    price: 390,
-    originalPrice: 480,
-    imageUrl: 'https://images.unsplash.com/photo-1525201548942-d8732f6617a0?auto=format&fit=crop&w=800&q=80',
-    description: 'สายกีตาร์เคลือบป้องกันสนิม นุ่มมือ ให้เสียงเบสลึกแน่น ย่านแหลมกังวานสดใส เหมาะสำหรับ Fingerstyle',
-    inStock: true,
-    rating: 4.9,
-    reviewsCount: 180,
     details: [
-      'ขนาด .012, .016, .024w, .032w, .042w, .053w',
-      'อายุการใช้งานยาวนาน',
-    ],
-  },
+      '🎸 5 บทเรียนพื้นฐาน วางรากฐานการเล่น Fingerstyle อย่างเป็นระบบ',
+      '🎼 เน้นพื้นฐาน การแยกประสาทนิ้ว การเดินเบส และการควบคุมมือขวา',
+      '📑 Standard 6-Line TAB รูปแบบมาตรฐาน อ่านง่าย',
+      '🖨️ จัดรูปแบบสำหรับ พิมพ์ A4',
+      '🔊 Interactive Audio Simulator สำหรับเปิดฟังเสียงตัวอย่างประกอบการฝึก',
+      '💻 รูปแบบ Interactive E-Book สามารถเรียนและฝึกตามเนื้อหาได้',
+      '🎯 เหมาะสำหรับ: ผู้เริ่มต้น Fingerstyle และผู้ที่ต้องการจัดระบบพื้นฐานการฝึกให้ถูกต้อง',
+      '📄 รูปแบบ: E-Book • A4 • Standard TAB • Interactive Audio'
+    ]
+  }
 ];
 
 export const ARTIST_GEARS: ArtistGear[] = [
