@@ -183,3 +183,32 @@ export interface FreeTabItem {
   tuning: string;
   capo?: string;
 }
+
+export interface ArticleSectionContent {
+  heading?: string;
+  subheading?: string;
+  body?: string;
+  list?: string[];
+  exercises?: {
+    title: string;
+    strings: string;
+    fingers: string;
+    note?: string;
+  }[];
+  quote?: string;
+}
+
+export interface Article {
+  id: string;
+  title: string;
+  shortTitle: string;
+  coverUrl: string;
+  category: string;
+  readTime: string;
+  publishedDate: string;
+  author: string;
+  excerpt: string;
+  sections: ArticleSectionContent[];
+  keyTakeaway?: string;
+}
+
