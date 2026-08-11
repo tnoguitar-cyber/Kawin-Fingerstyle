@@ -31,7 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'freetabs', label: 'แจก TAB ฟรี', icon: Gift },
     { id: 'courses', label: 'คอร์สเรียน', icon: BookOpen },
     { id: 'articles', label: 'บทความเกร็ดความรู้', icon: BookOpen },
-    { id: 'products', label: 'ร้านค้า', icon: ShoppingBag },
+    { id: 'products', label: 'ร้านค้า E-BOOK และ อื่นๆ', icon: ShoppingBag },
     { id: 'tour', label: 'ติดต่องาน', icon: Send },
   ];
 

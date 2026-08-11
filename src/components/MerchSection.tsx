@@ -31,7 +31,7 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
               OFFICIAL STORE
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-stone-900 dark:text-white tracking-tight">
-              ร้านค้า Kawin Fingerstyle
+              ร้านค้า E-BOOK และ อื่นๆ
             </h2>
             <p className="text-stone-500 dark:text-slate-400 text-sm mt-1">
               E-Book สอนเล่น Fingerstyle, แท็บเพลงพร้อม Audio, และอุปกรณ์สำหรับคนรักกีตาร์
