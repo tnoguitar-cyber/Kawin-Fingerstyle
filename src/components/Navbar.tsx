@@ -44,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="sticky top-0 z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-stone-200/60 dark:border-amber-500/10 text-stone-900 dark:text-slate-100 shadow-xs dark:shadow-xl transition-colors duration-300">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18">
+        <div className="flex items-center justify-between h-16 sm:h-18 gap-3 sm:gap-4">
           
           {/* Logo & Kawin Avatar */}
           <button
@@ -69,8 +69,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5">
+          {/* Desktop Navigation (Scrollable when screen width narrows) */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 overflow-x-auto min-w-0 max-w-full py-1.5 px-1 scroll-smooth nav-scrollbar flex-nowrap">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -79,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-2.5 xl:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap ${
+                  className={`px-2.5 xl:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20'
                       : 'text-stone-600 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100/80 dark:hover:bg-slate-900'
