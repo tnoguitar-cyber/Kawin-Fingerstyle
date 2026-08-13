@@ -237,12 +237,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   <span>ชำระเงินผ่าน LINE OA ({ARTIST_INFO.lineId})</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
-                <button
-                  onClick={() => setStep('checkout')}
-                  className="w-full py-2.5 bg-stone-200 hover:bg-stone-300 text-stone-700 border-stone-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 font-bold text-xs rounded-xl font-mono transition border dark:border-slate-700"
-                >
-                  กรอกข้อมูลชำระเงินบนเว็บ
-                </button>
               </div>
             </>
           )}
