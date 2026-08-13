@@ -444,6 +444,8 @@ export const PRODUCTS: Product[] = [
 
 เหมาะสำหรับ: ผู้เริ่มต้น Fingerstyle และผู้ที่ต้องการจัดระบบพื้นฐานการฝึกให้ถูกต้อง
 รูปแบบ: E-Book • A4 • Standard TAB • Interactive Audio`,
+    youtubeVideoUrl: 'https://youtube.com/shorts/H99-wdGqNnM?feature=share',
+    youtubeEmbedUrl: 'https://www.youtube.com/embed/H99-wdGqNnM',
     inStock: true,
     rating: 5.0,
     reviewsCount: 50,
