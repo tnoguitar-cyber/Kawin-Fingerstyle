@@ -66,16 +66,28 @@ export const POPULAR_VIDEOS: PopularVideo[] = [
 
 export const ARTIST_INFO = {
   name: 'KAWIN PHUSRITHET',
-  realName: 'กวิน (Kawin Fingerstyle)',
+  realName: 'กวิน ภูศรีเทศ (Kawin Fingerstyle)',
   stageName: 'Kawin Fingerstyle',
   profileImageUrl: 'https://lh3.googleusercontent.com/d/1kLdj7Vlv3tvSqgtgjf7TNemz90cRR4DR',
-  bio: 'มือกีตาร์ Fingerstyle อะคูสติก ผู้สร้างสรรค์ผลงานเพลงบรรเลง ถ่ายทอดอารมณ์ความรู้สึกอันประณีตผ่านสายกีตาร์ acoustic',
+  bio: 'กวิน ภูศรีเทศ — มือกีตาร์, นักประพันธ์เพลงบรรเลง และผู้เชี่ยวชาญด้านการสอนกีตาร์ฟิงเกอร์สไตล์ (Fingerstyle Guitar) ผู้พัฒนาระบบการเรียนรู้ Kawin Fingerstyle Studio เพื่อช่วยให้ผู้เรียนทุกคนสามารถพัฒนาทักษะจากระดับเริ่มต้นสู่ระดับมืออาชีพได้อย่างมีแบบแผน',
   shortTagline: 'บรรเลงความรู้สึก... ผ่านเสียงกีตาร์อะคูสติก Kawin Fingerstyle',
   lineId: '@535pcjno',
   lineOaUrl: 'https://lin.ee/yJTzmGpK',
   email: 'tnofingergt@gmail.com',
   storeUrl: 'http://happyhome-music.lnwshop.com/',
   storeName: 'HappyHome Music',
+  education: [
+    '🎓 ปริญญาโท: ดุริยางคศาสตรมหาบัณฑิต (ดย.ม.) มหาวิทยาลัยนเรศวร',
+    '🔬 งานวิจัยและนวัตกรรมการสอน: ผู้สร้างสรรค์งานวิจัยและนวัตกรรมชุดแบบฝึกหัดพัฒนาทักษะกีตาร์ฟิงเกอร์สไตล์ ที่ได้รับการตีพิมพ์เผยแพร่ในวารสารวิชาการระดับประเทศ',
+    '🎸 ประสบการณ์การสอน: มีประสบการณ์การสอนทั้งภาคปฏิบัติ ทฤษฎีดนตรี และการเรียบเรียงเพลงฟิงเกอร์สไตล์มาอย่างยาวนาน',
+  ],
+  worksAndMedia: [
+    '🎵 ผลงานเพลง: ศิลปินเดี่ยวเพลงบรรเลงกีตาร์ฟิงเกอร์สไตล์ เจ้าของซิงเกิล "April" จากอัลบั้ม First Step',
+    '💻 ผู้พัฒนาระบบ: ผู้คิดค้นและออกแบบแพลตฟอร์ม Kawin Fingerstyle Studio ระบบห้องซ้อมและคอร์สเรียนแบบ Interactive',
+    '📚 สื่อการสอน: ผู้เขียนและจัดทำชุดหนังสือ E-Book & แบบฝึกหัดกีตาร์ฟิงเกอร์สไตล์ เพื่อปูพื้นฐานการเล่นอย่างเป็นขั้นเป็นตอน',
+    '📹 คอนเทนต์ครีเอเตอร์: ผู้สร้างสรรค์เนื้อหาสอนเทคนิค การแกะเพลง และการเรียบเรียงกีตาร์ฟิงเกอร์สไตล์ที่มีผู้ติดตามในแวดวงดนตรี',
+  ],
+  teachingPhilosophy: 'การเล่นฟิงเกอร์สไตล์ให้เพราะ ไม่ใช่แค่เรื่องของการจำตำแหน่งนิ้ว แต่คือความเข้าใจในโครงสร้างเสียง ความเป็นอิสระของนิ้ว (Independence) และการมีระบบการฝึกซ้อมที่สม่ำเสมอ',
   socials: {
     spotify: 'https://open.spotify.com/artist/30XG3SaQCced73MWX3zfm3',
     appleMusic: 'https://music.apple.com/th/artist/kawin-phusrithet/1709237335?l=th',
@@ -86,7 +98,7 @@ export const ARTIST_INFO = {
     lineOa: 'https://lin.ee/yJTzmGpK',
     email: 'mailto:tnofingergt@gmail.com',
   },
-  featuredQuote: 'ทุกท่วงทำนองกีตาร์ คือภาษาใจที่สื่อถึงความทรงจำที่อบอุ่นที่สุด',
+  featuredQuote: 'การเล่นฟิงเกอร์สไตล์ให้เพราะ ไม่ใช่แค่เรื่องของการจำตำแหน่งนิ้ว แต่คือความเข้าใจในโครงสร้างเสียง ความเป็นอิสระของนิ้ว (Independence) และการมีระบบการฝึกซ้อมที่สม่ำเสมอ',
 };
 
 export const CHILL_GROOVE_BAND = {

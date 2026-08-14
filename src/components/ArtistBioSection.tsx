@@ -51,10 +51,10 @@ export const ArtistBioSection: React.FC = () => {
         {/* Bio & Techniques Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Bio Story with Kawin's Photo */}
-          <div className="lg:col-span-6 bg-white dark:bg-slate-900/40 border border-stone-200/50 dark:border-none rounded-2xl p-6 shadow-sm dark:shadow-md space-y-4">
+          {/* Bio Story with Kawin's Photo & Qualifications */}
+          <div className="lg:col-span-6 bg-white dark:bg-slate-900/40 border border-stone-200/50 dark:border-none rounded-2xl p-6 shadow-sm dark:shadow-md space-y-5">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-amber-500/10 shadow-lg shadow-amber-950/20 bg-stone-100 dark:bg-slate-950 shrink-0">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-amber-500/20 shadow-lg shadow-amber-950/20 bg-stone-100 dark:bg-slate-950 shrink-0">
                 <img
                   src={ARTIST_INFO.profileImageUrl}
                   alt="Kawin"
@@ -64,23 +64,62 @@ export const ArtistBioSection: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-stone-900 dark:text-white">{ARTIST_INFO.stageName}</h3>
-                <p className="text-xs text-amber-600 dark:text-amber-400/90 font-medium">{ARTIST_INFO.realName}</p>
-                <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded bg-amber-500/10 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold">{ARTIST_INFO.realName}</p>
+                <div className="inline-flex items-center gap-1 mt-1 px-2.5 py-0.5 rounded-full bg-amber-500/10 text-xs font-bold text-amber-700 dark:text-amber-300 border border-amber-500/20">
                   <Award className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-                  <span>Acoustic Fingerstyle Artist</span>
+                  <span>Acoustic Fingerstyle Artist & Educator</span>
                 </div>
               </div>
             </div>
 
-            <p className="text-stone-600 dark:text-slate-300 leading-relaxed text-sm">
+            {/* Bio Introduction */}
+            <p className="text-stone-700 dark:text-slate-200 leading-relaxed text-sm font-medium">
               {ARTIST_INFO.bio}
             </p>
 
-            <div className="pt-3 border-t border-stone-200 dark:border-slate-800/60 flex flex-wrap gap-2 text-xs text-amber-700 dark:text-amber-300/80 font-medium">
+            {/* Education & Qualifications */}
+            <div className="p-4 rounded-xl bg-stone-50 dark:bg-slate-950/80 border border-stone-200/60 dark:border-slate-800 space-y-2">
+              <h4 className="text-xs font-bold text-stone-900 dark:text-amber-400 flex items-center gap-1.5 uppercase tracking-wider">
+                🎓 วุฒิการศึกษาและความเชี่ยวชาญทางดนตรี
+              </h4>
+              <ul className="space-y-1.5 text-xs text-stone-600 dark:text-slate-300 leading-relaxed">
+                {ARTIST_INFO.education?.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-1.5">
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Works & Teaching System */}
+            <div className="p-4 rounded-xl bg-stone-50 dark:bg-slate-950/80 border border-stone-200/60 dark:border-slate-800 space-y-2">
+              <h4 className="text-xs font-bold text-stone-900 dark:text-amber-400 flex items-center gap-1.5 uppercase tracking-wider">
+                🏆 ผลงานด้านดนตรีและสื่อการสอน
+              </h4>
+              <ul className="space-y-1.5 text-xs text-stone-600 dark:text-slate-300 leading-relaxed">
+                {ARTIST_INFO.worksAndMedia?.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-1.5">
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Teaching Philosophy */}
+            <div className="p-4 rounded-xl bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 space-y-1.5">
+              <div className="flex items-center gap-1.5 text-amber-700 dark:text-amber-300 font-bold text-xs">
+                <span>💡 ปรัชญาการสอน</span>
+              </div>
+              <p className="text-xs text-stone-700 dark:text-amber-200/90 italic leading-relaxed">
+                "{ARTIST_INFO.teachingPhilosophy}"
+              </p>
+            </div>
+
+            <div className="pt-2 border-t border-stone-200 dark:border-slate-800/60 flex flex-wrap gap-2 text-xs text-amber-700 dark:text-amber-300/80 font-medium">
               <span className="px-3 py-1 bg-amber-500/5 rounded-lg">#KawinFingerstyle</span>
-              <span className="px-3 py-1 bg-amber-500/5 rounded-lg">#TheCloud</span>
-              <span className="px-3 py-1 bg-amber-500/5 rounded-lg">#ฤดูฝนที่แล้ว</span>
+              <span className="px-3 py-1 bg-amber-500/5 rounded-lg">#KawinFingerstyleStudio</span>
               <span className="px-3 py-1 bg-amber-500/5 rounded-lg">#April</span>
+              <span className="px-3 py-1 bg-amber-500/5 rounded-lg">#FirstStep</span>
             </div>
           </div>
 
