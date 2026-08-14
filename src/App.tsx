@@ -11,6 +11,7 @@ import { MerchSection } from './components/MerchSection';
 import { TourBookingSection } from './components/TourBookingSection';
 import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
+import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { Course, Product, CartItem } from './types';
 
 export default function App() {
@@ -238,6 +239,9 @@ export default function App() {
 
       {/* Global Footer */}
       <Footer onNavigate={setActiveTab} />
+
+      {/* Floating Glassmorphic Scroll To Top Button */}
+      <ScrollToTopButton />
     </div>
   );
 }
