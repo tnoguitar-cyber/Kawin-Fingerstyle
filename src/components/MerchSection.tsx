@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Check, X, Sparkles, ExternalLink, Store, Play, Film } from 'lucide-react';
+import { ShoppingBag, Check, X, Sparkles, ExternalLink, Store, Play, Film, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { PRODUCTS, ARTIST_INFO } from '../data/mockData';
 import { Product } from '../types';
 
 interface MerchSectionProps {
   onAddToCart: (product: Product) => void;
+  isHomepage?: boolean;
+  onNavigate?: (tab: string) => void;
 }
 
-export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
+export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart, isHomepage = false, onNavigate }) => {
   const [detailProduct, setDetailProduct] = useState<Product | null>(null);
   const [activeVideoModal, setActiveVideoModal] = useState<{ title: string; embedUrl: string } | null>(null);
   const [addedNotice, setAddedNotice] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const handleAdd = (product: Product) => {
     onAddToCart(product);
@@ -19,6 +22,9 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
       setAddedNotice(null);
     }, 2000);
   };
+
+  const displayedProducts = isHomepage && !expanded ? PRODUCTS.slice(0, 3) : PRODUCTS;
+  const hasMore = isHomepage && PRODUCTS.length > 3;
 
   return (
     <section className="py-14 bg-stone-50 dark:bg-slate-950 text-stone-900 dark:text-slate-100 transition-colors duration-300">
@@ -63,7 +69,7 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PRODUCTS.map((product) => (
+          {displayedProducts.map((product) => (
             <div
               key={product.id}
               className="bg-white dark:bg-slate-900/40 border border-stone-200/50 dark:border-none rounded-2xl overflow-hidden flex flex-col justify-between hover:bg-stone-50 dark:hover:bg-slate-900/60 transition duration-300 shadow-sm dark:shadow-md"
@@ -153,6 +159,38 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
             </div>
           ))}
         </div>
+
+        {/* See More Buttons on Homepage */}
+        {isHomepage && hasMore && (
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-stone-800 dark:text-slate-200 hover:border-amber-500/50 hover:bg-stone-50 dark:hover:bg-slate-800 text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
+            >
+              {expanded ? (
+                <>
+                  <span>ย่อรายการสินค้า (Show Less)</span>
+                  <ChevronUp className="w-4 h-4" />
+                </>
+              ) : (
+                <>
+                  <span>ดู E-Book เพิ่มเติม (See More +{PRODUCTS.length - 3} เล่ม)</span>
+                  <ChevronDown className="w-4 h-4 text-amber-500" />
+                </>
+              )}
+            </button>
+
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('products')}
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow-md hover:shadow-amber-500/20 cursor-pointer"
+              >
+                <span>ดูร้านค้าและ E-Book ทั้งหมด ({PRODUCTS.length} รายการ)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        )}
 
       </div>
 

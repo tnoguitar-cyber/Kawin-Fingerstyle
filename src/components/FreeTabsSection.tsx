@@ -1,8 +1,15 @@
-import React from 'react';
-import { Gift, Download, Youtube } from 'lucide-react';
+import React, { useState } from 'react';
+import { Gift, Download, Youtube, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { FREE_TABS } from '../data/mockData';
 
-export const FreeTabsSection: React.FC = () => {
+interface FreeTabsSectionProps {
+  isHomepage?: boolean;
+  onNavigate?: (tab: string) => void;
+}
+
+export const FreeTabsSection: React.FC<FreeTabsSectionProps> = ({ isHomepage = false, onNavigate }) => {
+  const [expanded, setExpanded] = useState(false);
+
   const getDifficultyColor = (diff: string) => {
     if (diff.includes('ง่าย')) return 'text-emerald-700 dark:text-emerald-400 bg-emerald-500/10';
     if (diff.includes('ปานกลาง')) return 'text-amber-700 dark:text-amber-400 bg-amber-500/10';
@@ -14,6 +21,9 @@ export const FreeTabsSection: React.FC = () => {
     if (diff.includes('ปานกลาง')) return '★★☆';
     return '★★★';
   };
+
+  const displayedTabs = isHomepage && !expanded ? FREE_TABS.slice(0, 2) : FREE_TABS;
+  const hasMore = isHomepage && FREE_TABS.length > 2;
 
   return (
     <section className="py-12 bg-stone-50 dark:bg-slate-950 text-stone-900 dark:text-slate-100 transition-colors duration-300" id="free-tabs">
@@ -37,7 +47,7 @@ export const FreeTabsSection: React.FC = () => {
 
         {/* TAB Items Grid */}
         <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto md:mx-0">
-          {FREE_TABS.map((tab) => (
+          {displayedTabs.map((tab) => (
             <div
               key={tab.id}
               className="bg-white dark:bg-slate-900/40 border border-stone-200 dark:border-none rounded-2xl p-6 hover:bg-stone-100 dark:hover:bg-slate-900/60 transition duration-300 relative overflow-hidden group shadow-sm dark:shadow-md"
@@ -113,6 +123,38 @@ export const FreeTabsSection: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* See More Buttons on Homepage */}
+        {isHomepage && hasMore && (
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-stone-800 dark:text-slate-200 hover:border-emerald-500/50 hover:bg-stone-50 dark:hover:bg-slate-800 text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
+            >
+              {expanded ? (
+                <>
+                  <span>ย่อรายการ (Show Less)</span>
+                  <ChevronUp className="w-4 h-4" />
+                </>
+              ) : (
+                <>
+                  <span>ดู TAB ฟรีเพิ่มเติม (See More +{FREE_TABS.length - 2} เพลง)</span>
+                  <ChevronDown className="w-4 h-4 text-emerald-500" />
+                </>
+              )}
+            </button>
+
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('freetabs')}
+                className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow-md hover:shadow-emerald-500/20 cursor-pointer"
+              >
+                <span>ดูคลัง TAB ฟรีทั้งหมด ({FREE_TABS.length} เพลง)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        )}
 
       </div>
     </section>

@@ -172,15 +172,56 @@ export default function App() {
         {activeTab === 'home' && (
           <>
             <HeroSection
-              onNavigate={setActiveTab}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
             <ArtistBioSection />
-            <DiscographySection />
-            <OriginalTabsSection />
-            <FreeTabsSection />
-            <CoursesSection onAddToCart={handleAddToCart} />
-            <ArticlesSection />
-            <MerchSection onAddToCart={handleAddToCart} />
+            <DiscographySection
+              isHomepage={true}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+            <OriginalTabsSection
+              isHomepage={true}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+            <FreeTabsSection
+              isHomepage={true}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+            <CoursesSection
+              isHomepage={true}
+              onAddToCart={handleAddToCart}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+            <ArticlesSection
+              isHomepage={true}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+            <MerchSection
+              isHomepage={true}
+              onAddToCart={handleAddToCart}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
             <TourBookingSection />
           </>
         )}

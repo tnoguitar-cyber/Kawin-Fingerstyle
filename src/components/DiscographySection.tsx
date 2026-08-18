@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import { Youtube, ExternalLink, Play, Sparkles } from 'lucide-react';
+import { Youtube, ExternalLink, Play, Sparkles, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { POPULAR_VIDEOS, ARTIST_INFO } from '../data/mockData';
 
-export const DiscographySection: React.FC = () => {
+interface DiscographySectionProps {
+  isHomepage?: boolean;
+  onNavigate?: (tab: string) => void;
+}
+
+export const DiscographySection: React.FC<DiscographySectionProps> = ({ isHomepage = false, onNavigate }) => {
   const [filter, setFilter] = useState<'all' | 'youtube' | 'tiktok'>('all');
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const filteredVideos = POPULAR_VIDEOS.filter((v) => {
     if (filter === 'all') return true;
     return v.platform === filter;
   });
+
+  const displayedVideos = isHomepage && !expanded ? filteredVideos.slice(0, 3) : filteredVideos;
+  const hasMore = isHomepage && filteredVideos.length > 3;
 
   return (
     <section className="py-12 bg-stone-50 dark:bg-slate-950 text-stone-900 dark:text-slate-100 transition-colors duration-300">
@@ -116,7 +125,7 @@ export const DiscographySection: React.FC = () => {
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredVideos.map((video) => (
+          {displayedVideos.map((video) => (
             <div
               key={video.id}
               className="bg-white dark:bg-slate-900/40 rounded-2xl overflow-hidden flex flex-col justify-between hover:bg-stone-50 dark:hover:bg-slate-900/60 border border-stone-200/50 dark:border-none transition duration-300 shadow-sm dark:shadow-md group"
@@ -207,6 +216,38 @@ export const DiscographySection: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* See More Buttons on Homepage */}
+        {isHomepage && hasMore && (
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-stone-800 dark:text-slate-200 hover:border-amber-500/50 hover:bg-stone-50 dark:hover:bg-slate-800 text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
+            >
+              {expanded ? (
+                <>
+                  <span>ย่อวิดีโอ (Show Less)</span>
+                  <ChevronUp className="w-4 h-4" />
+                </>
+              ) : (
+                <>
+                  <span>ดูวิดีโอเพิ่มเติม (See More +{filteredVideos.length - 3} คลิป)</span>
+                  <ChevronDown className="w-4 h-4 text-amber-500" />
+                </>
+              )}
+            </button>
+
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('albums')}
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow-md hover:shadow-amber-500/20 cursor-pointer"
+              >
+                <span>ดูคลังวิดีโอทั้งหมด ({POPULAR_VIDEOS.length} คลิป)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        )}
 
       </div>
     </section>

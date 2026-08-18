@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { BookOpen, CheckCircle, Clock, Video, Sparkles, X, Guitar, Star, Play } from 'lucide-react';
+import { BookOpen, CheckCircle, Clock, Video, Sparkles, X, Guitar, Star, Play, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { COURSES, ARTIST_INFO } from '../data/mockData';
 import { Course } from '../types';
 
 interface CoursesSectionProps {
   onAddToCart: (course: Course) => void;
+  isHomepage?: boolean;
+  onNavigate?: (tab: string) => void;
 }
 
-export const CoursesSection: React.FC<CoursesSectionProps> = ({ onAddToCart }) => {
+export const CoursesSection: React.FC<CoursesSectionProps> = ({ onAddToCart, isHomepage = false, onNavigate }) => {
   const [activeCourseModal, setActiveCourseModal] = useState<Course | null>(null);
   const [enrollSuccessModal, setEnrollSuccessModal] = useState<Course | null>(null);
   const [activeVideoModal, setActiveVideoModal] = useState<{ title: string; embedUrl: string } | null>(null);
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const handleEnrollNow = (course: Course) => {
     onAddToCart(course);
@@ -22,6 +25,9 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onAddToCart }) =
       origin: { y: 0.6 },
     });
   };
+
+  const displayedCourses = isHomepage && !expanded ? COURSES.slice(0, 2) : COURSES;
+  const hasMore = isHomepage && COURSES.length > 2;
 
   return (
     <section className="py-12 bg-stone-50 dark:bg-slate-950 text-stone-900 dark:text-slate-100 transition-colors duration-300">
@@ -43,7 +49,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onAddToCart }) =
         {/* Dynamic Courses Grid */}
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {COURSES.map((course) => (
+            {displayedCourses.map((course) => (
               <div
                 key={course.id}
                 className="group bg-white dark:bg-slate-900/40 border border-stone-200/50 dark:border-none rounded-2xl overflow-hidden hover:bg-stone-50 dark:hover:bg-slate-900/60 transition duration-300 flex flex-col shadow-sm dark:shadow-md"
@@ -161,6 +167,38 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onAddToCart }) =
               </div>
             ))}
           </div>
+
+          {/* See More Buttons on Homepage */}
+          {isHomepage && hasMore && (
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-stone-800 dark:text-slate-200 hover:border-amber-500/50 hover:bg-stone-50 dark:hover:bg-slate-800 text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
+              >
+                {expanded ? (
+                  <>
+                    <span>ย่อคอร์สเรียน (Show Less)</span>
+                    <ChevronUp className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    <span>ดูคอร์สเรียนเพิ่มเติม (See More +{COURSES.length - 2} คอร์ส)</span>
+                    <ChevronDown className="w-4 h-4 text-amber-500" />
+                  </>
+                )}
+              </button>
+
+              {onNavigate && (
+                <button
+                  onClick={() => onNavigate('courses')}
+                  className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow-md hover:shadow-amber-500/20 cursor-pointer"
+                >
+                  <span>ดูคอร์สเรียนทั้งหมด ({COURSES.length} คอร์ส)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

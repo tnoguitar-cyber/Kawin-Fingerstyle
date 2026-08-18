@@ -91,12 +91,18 @@ const DEFAULT_CODES: OneTimeCode[] = [
   },
 ];
 
-export const OriginalTabsSection: React.FC = () => {
+interface OriginalTabsSectionProps {
+  isHomepage?: boolean;
+  onNavigate?: (tab: string) => void;
+}
+
+export const OriginalTabsSection: React.FC<OriginalTabsSectionProps> = ({ isHomepage = false, onNavigate }) => {
   const [selectedTabToUnlock, setSelectedTabToUnlock] = useState<OriginalTabItem | null>(null);
   const [inputCode, setInputCode] = useState('');
   const [codeError, setCodeError] = useState('');
   const [unlockedTabs, setUnlockedTabs] = useState<string[]>([]);
   const [showCodeInputModal, setShowCodeInputModal] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   // Admin Panel States
   const [codesList, setCodesList] = useState<OneTimeCode[]>([]);
@@ -378,7 +384,7 @@ export const OriginalTabsSection: React.FC = () => {
 
         {/* TAB Items Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {ORIGINAL_TABS.map((tab) => {
+          {(isHomepage && !expanded ? ORIGINAL_TABS.slice(0, 3) : ORIGINAL_TABS).map((tab) => {
             const unlocked = isUnlocked(tab.id);
 
             return (
@@ -463,7 +469,6 @@ export const OriginalTabsSection: React.FC = () => {
             );
           })}
         </div>
-
       </div>
 
       {/* Code Input / Unlock Modal */}

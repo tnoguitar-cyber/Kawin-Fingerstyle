@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { BookOpen, Clock, Calendar, ArrowRight, X, Share2, Search, Sparkles, ChevronRight, CheckCircle2, Lightbulb, Music } from 'lucide-react';
+import { BookOpen, Clock, Calendar, ArrowRight, X, Share2, Search, Sparkles, ChevronRight, ChevronUp, ChevronDown, CheckCircle2, Lightbulb, Music } from 'lucide-react';
 import { ARTICLES } from '../data/mockData';
 import { Article } from '../types';
 
-export const ArticlesSection: React.FC = () => {
+interface ArticlesSectionProps {
+  isHomepage?: boolean;
+  onNavigate?: (tab: string) => void;
+}
+
+export const ArticlesSection: React.FC<ArticlesSectionProps> = ({ isHomepage = false, onNavigate }) => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('ทั้งหมด');
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const categories = ['ทั้งหมด', ...Array.from(new Set(ARTICLES.map((a) => a.category)))];
 
@@ -18,6 +24,9 @@ export const ArticlesSection: React.FC = () => {
     const matchesCategory = activeCategory === 'ทั้งหมด' || article.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const displayedArticles = isHomepage && !expanded ? filteredArticles.slice(0, 2) : filteredArticles;
+  const hasMore = isHomepage && filteredArticles.length > 2;
 
   const handleShare = (article: Article) => {
     if (navigator.share) {
@@ -84,7 +93,7 @@ export const ArticlesSection: React.FC = () => {
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredArticles.map((article) => (
+          {displayedArticles.map((article) => (
             <article
               key={article.id}
               onClick={() => setSelectedArticle(article)}
@@ -140,6 +149,38 @@ export const ArticlesSection: React.FC = () => {
             </article>
           ))}
         </div>
+
+        {/* See More Buttons on Homepage */}
+        {isHomepage && hasMore && (
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-stone-800 dark:text-slate-200 hover:border-amber-500/50 hover:bg-stone-50 dark:hover:bg-slate-800 text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
+            >
+              {expanded ? (
+                <>
+                  <span>ย่อบทความ (Show Less)</span>
+                  <ChevronUp className="w-4 h-4" />
+                </>
+              ) : (
+                <>
+                  <span>ดูบทความเพิ่มเติม (See More +{filteredArticles.length - 2} เรื่อง)</span>
+                  <ChevronDown className="w-4 h-4 text-amber-500" />
+                </>
+              )}
+            </button>
+
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('articles')}
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow-md hover:shadow-amber-500/20 cursor-pointer"
+              >
+                <span>ดูคลังบทความทั้งหมด ({ARTICLES.length} บทความ)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        )}
 
         {filteredArticles.length === 0 && (
           <div className="text-center py-16 bg-white dark:bg-slate-900/60 rounded-2xl border border-stone-200 dark:border-slate-800">
