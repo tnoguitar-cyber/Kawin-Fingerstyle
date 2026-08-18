@@ -69,15 +69,15 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
               className="bg-white dark:bg-slate-900/40 border border-stone-200/50 dark:border-none rounded-2xl overflow-hidden flex flex-col justify-between hover:bg-stone-50 dark:hover:bg-slate-900/60 transition duration-300 shadow-sm dark:shadow-md"
             >
               <div>
-                <div className="relative h-60 bg-stone-100 dark:bg-slate-950 overflow-hidden">
+                <div className="relative aspect-[4/5] sm:aspect-[3/4] bg-stone-100/80 dark:bg-slate-950 flex items-center justify-center p-3 overflow-hidden border-b border-stone-200/50 dark:border-slate-800/60 group">
                   <img
                     src={product.imageUrl}
                     alt={product.name}
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                    className="w-full h-full object-contain rounded-lg drop-shadow-md group-hover:scale-105 transition-transform duration-300"
                   />
                   {product.badge && (
-                    <div className="absolute top-3 left-3 px-3 py-1 bg-stone-900/90 dark:bg-slate-950/90 backdrop-blur-md text-amber-300 font-mono text-[10px] font-bold rounded-lg shadow-md">
+                    <div className="absolute top-3 left-3 right-3 sm:right-auto px-2.5 py-1 bg-stone-900/95 dark:bg-slate-950/95 backdrop-blur-md text-amber-300 font-mono text-[10px] font-bold rounded-lg shadow-md border border-amber-500/20 text-center sm:text-left">
                       {product.badge}
                     </div>
                   )}
@@ -87,8 +87,8 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
                   <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider block">
                     {product.category}
                   </span>
-                  <h3 className="text-base font-bold text-stone-900 dark:text-white">{product.thaiName}</h3>
-                  <p className="text-xs text-stone-500 dark:text-slate-400 leading-relaxed line-clamp-2">
+                  <h3 className="text-base font-bold text-stone-900 dark:text-white leading-snug">{product.thaiName}</h3>
+                  <p className="text-xs text-stone-500 dark:text-slate-400 leading-relaxed line-clamp-3 whitespace-pre-line">
                     {product.description}
                   </p>
                 </div>
@@ -171,15 +171,15 @@ export const MerchSection: React.FC<MerchSectionProps> = ({ onAddToCart }) => {
             </div>
 
             <div className="p-6 space-y-4 overflow-y-auto">
-              <div className="h-52 rounded-xl overflow-hidden bg-stone-100 dark:bg-slate-950 shadow-md relative">
+              <div className="h-64 sm:h-72 rounded-xl overflow-hidden bg-stone-100/90 dark:bg-slate-950 flex items-center justify-center p-3 border border-stone-200/60 dark:border-slate-800 shadow-inner relative">
                 <img
                   src={detailProduct.imageUrl}
                   alt={detailProduct.name}
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover"
+                  className="max-h-full w-auto object-contain rounded-lg drop-shadow-xl"
                 />
                 {detailProduct.badge && (
-                  <div className="absolute top-3 left-3 px-3 py-1 bg-stone-900/90 dark:bg-slate-950/90 backdrop-blur-md text-amber-300 font-mono text-[10px] font-bold rounded-lg shadow-md">
+                  <div className="absolute top-3 left-3 px-3 py-1 bg-stone-900/95 dark:bg-slate-950/95 backdrop-blur-md text-amber-300 font-mono text-[10px] font-bold rounded-lg shadow-md border border-amber-500/20">
                     {detailProduct.badge}
                   </div>
                 )}

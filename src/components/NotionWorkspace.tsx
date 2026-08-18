@@ -578,11 +578,11 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {PRODUCTS.filter(p => p.category.includes('TAB')).map((item) => (
                       <div key={item.id} className="bg-white border border-[#E9E9E6] rounded-xl overflow-hidden p-4 shadow-sm hover:shadow-md transition flex gap-4">
-                        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-[#F7F7F5] border border-[#E9E9E6] flex-shrink-0">
+                        <div className="w-24 h-32 sm:w-28 sm:h-36 rounded-lg overflow-hidden bg-[#F7F7F5] border border-[#E9E9E6] p-1.5 flex-shrink-0 flex items-center justify-center">
                           <img 
                             src={item.imageUrl} 
                             alt={item.thaiName} 
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain drop-shadow-sm"
                           />
                         </div>
                         <div className="flex-1 flex flex-col justify-between">
@@ -739,15 +739,20 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
             <div className="space-y-6">
               
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                {PRODUCTS.filter(p => !p.category.includes('TAB')).map((item) => (
+                {PRODUCTS.map((item) => (
                   <div key={item.id} className="bg-white border border-[#E9E9E6] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
                     <div>
-                      <div className="relative aspect-square bg-[#F7F7F5] border-b border-[#E9E9E6]">
+                      <div className="relative aspect-[3/4] bg-[#F7F7F5] border-b border-[#E9E9E6] p-3 flex items-center justify-center">
                         <img 
                           src={item.imageUrl} 
                           alt={item.thaiName} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain rounded-lg drop-shadow-sm"
                         />
+                        {item.badge && (
+                          <div className="absolute top-2 left-2 right-2 px-2 py-0.5 bg-[#191919]/90 backdrop-blur-md text-amber-300 font-mono text-[9px] font-bold rounded shadow text-center">
+                            {item.badge}
+                          </div>
+                        )}
                         {!item.inStock && (
                           <span className="absolute inset-0 bg-white/70 flex items-center justify-center font-bold text-[#9B9A97]">
                             สินค้าหมดชั่วคราว
@@ -758,25 +763,30 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
                       <div className="p-4 space-y-2">
                         <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{item.category}</span>
                         <h4 className="text-sm font-bold text-[#191919] leading-tight">{item.thaiName}</h4>
-                        <p className="text-xs text-[#5F5E5B] line-clamp-2 leading-relaxed">{item.description}</p>
+                        <p className="text-xs text-[#5F5E5B] line-clamp-3 leading-relaxed whitespace-pre-line">{item.description}</p>
 
                         {item.youtubeEmbedUrl && (
                           <button
                             onClick={() => setActiveVideoModal({
-                              title: '🎬 วิดีโอแนะนำเว็บไซต์ ChordScale Master',
+                              title: `🎬 วิดีโอตัวอย่าง ${item.thaiName}`,
                               embedUrl: item.youtubeEmbedUrl!
                             })}
                             className="mt-2 w-full px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold flex items-center justify-center gap-1 transition cursor-pointer"
                           >
                             <Play className="w-3.5 h-3.5 fill-current" />
-                            <span>🎬 ดูวิดีโอแนะนำเว็บไซต์</span>
+                            <span>🎬 ดูวิดีโอตัวอย่างประกอบ</span>
                           </button>
                         )}
                       </div>
                     </div>
 
                     <div className="px-4 py-3 border-t border-[#E9E9E6] bg-[#F7F7F5] flex justify-between items-center">
-                      <span className="font-extrabold text-[#191919] text-base">{item.price} ฿</span>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="font-extrabold text-[#191919] text-base">{item.price} ฿</span>
+                        {item.originalPrice && (
+                          <span className="text-xs text-stone-400 line-through">{item.originalPrice} ฿</span>
+                        )}
+                      </div>
                       <button 
                         onClick={() => onAddToCart(item)}
                         disabled={!item.inStock}
@@ -786,7 +796,7 @@ export const NotionWorkspace: React.FC<NotionWorkspaceProps> = ({
                             : 'bg-[#ECECED] text-[#9B9A97] cursor-not-allowed'
                         }`}
                       >
-                        <span>หยิบใส่รถเข็น</span>
+                        <span>หยิบลงตะกร้า</span>
                       </button>
                     </div>
                   </div>

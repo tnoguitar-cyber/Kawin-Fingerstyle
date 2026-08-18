@@ -438,48 +438,239 @@ export const COURSES: Course[] = [
 export const PRODUCTS: Product[] = [
   {
     id: 'prod-ebook-vol1',
-    name: 'Vol.1 Fingerstyle Shortcut The Essential Foundations - Kawin Fingerstyle Studio',
-    thaiName: 'Vol.1 Fingerstyle Shortcut The Essential Foundations',
-    category: 'E-Book & หนังสือ TAB (E-Books & Tab Books)',
+    name: 'VOLUME 1 — Fingerstyle Shortcut: The Essential Foundations',
+    thaiName: 'VOLUME 1 — Fingerstyle Shortcut: The Essential Foundations',
+    category: 'E-Book & หนังสือ TAB',
     price: 199,
     originalPrice: 350,
-    imageUrl: 'https://lh3.googleusercontent.com/d/1PWoHAtgTJUJWIg1GQSkEzKl9IhDF24Gb',
-    badge: '🔥 ลดพิเศษ 199฿ (จาก 350฿) เฉพาะ 50 ท่านแรก',
-    description: `📖 รายละเอียด E-Book: Fingerstyle Shortcut Volume 1: Foundations
+    imageUrl: 'https://lh3.googleusercontent.com/d/1ONYe-7TMyKIXy04S9Xl11Vury0qV7zm2',
+    badge: '🔥 ลดเหลือ 199฿ (จาก 350฿) ถึงสิ้นเดือนนี้',
+    description: `📕 VOLUME 1 — Fingerstyle Shortcut
+The Essential Foundations
 
-• 🎸 5 บทเรียนพื้นฐาน วางรากฐานการเล่น Fingerstyle อย่างเป็นระบบ
-• 🎼 เน้นพื้นฐาน การแยกประสาทนิ้ว การเดินเบส และการควบคุมมือขวา
-• 📑 Standard 6-Line TAB รูปแบบมาตรฐาน อ่านง่าย
-• 🖨️ จัดรูปแบบสำหรับ พิมพ์ A4
-• 🔊 Interactive Audio Simulator สำหรับเปิดฟังเสียงตัวอย่างประกอบการฝึก
-• 💻 รูปแบบ Interactive E-Book สามารถเรียนและฝึกตามเนื้อหาได้
+วางรากฐานให้ถูกตั้งแต่เริ่มต้น
+• P-I-M-A Mechanics
+• การควบคุมนิ้วโป้งและเบส
+• Fingerpicking พื้นฐาน
+• แบบฝึกหัดสร้างความเป็นอิสระของนิ้ว
+• TAB พร้อมแบบฝึกฝนอย่างเป็นระบบ
 
-เหมาะสำหรับ: ผู้เริ่มต้น Fingerstyle และผู้ที่ต้องการจัดระบบพื้นฐานการฝึกให้ถูกต้อง
-รูปแบบ: E-Book • A4 • Standard TAB • Interactive Audio`,
+เหมาะสำหรับ: คนที่กำลังเริ่มต้น Fingerstyle และคนที่อยากกลับมาจัดระเบียบพื้นฐานใหม่
+รูปแบบ: E-Book • Standard TAB • Interactive Audio`,
     youtubeVideoUrl: 'https://youtube.com/shorts/H99-wdGqNnM?feature=share',
     youtubeEmbedUrl: 'https://www.youtube.com/embed/H99-wdGqNnM',
     inStock: true,
     rating: 5.0,
-    reviewsCount: 50,
+    reviewsCount: 120,
     specifications: [
-      '🎸 5 บทเรียนพื้นฐาน วางรากฐานการเล่น Fingerstyle อย่างเป็นระบบ',
-      '🎼 เน้นพื้นฐาน การแยกประสาทนิ้ว การเดินเบส และการควบคุมมือขวา',
-      '📑 Standard 6-Line TAB รูปแบบมาตรฐาน อ่านง่าย',
-      '🖨️ จัดรูปแบบสำหรับ พิมพ์ A4',
-      '🔊 Interactive Audio Simulator สำหรับเปิดฟังเสียงตัวอย่างประกอบการฝึก',
-      '💻 รูปแบบ Interactive E-Book สามารถเรียนและฝึกตามเนื้อหาได้',
-      '🎯 เหมาะสำหรับ: ผู้เริ่มต้น Fingerstyle และผู้ที่ต้องการจัดระบบพื้นฐานการฝึกให้ถูกต้อง',
-      '📄 รูปแบบ: E-Book • A4 • Standard TAB • Interactive Audio'
+      '📕 VOLUME 1 — Fingerstyle Shortcut (The Essential Foundations)',
+      '🎯 วางรากฐานให้ถูกตั้งแต่เริ่มต้น',
+      '• P-I-M-A Mechanics',
+      '• การควบคุมนิ้วโป้งและเบส',
+      '• Fingerpicking พื้นฐาน',
+      '• แบบฝึกหัดสร้างความเป็นอิสระของนิ้ว',
+      '• TAB พร้อมแบบฝึกฝนอย่างเป็นระบบ',
+      '🎯 เหมาะสำหรับ: คนที่กำลังเริ่มต้น Fingerstyle และคนที่อยากกลับมาจัดระเบียบพื้นฐานใหม่',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
     ],
     details: [
-      '🎸 5 บทเรียนพื้นฐาน วางรากฐานการเล่น Fingerstyle อย่างเป็นระบบ',
-      '🎼 เน้นพื้นฐาน การแยกประสาทนิ้ว การเดินเบส และการควบคุมมือขวา',
-      '📑 Standard 6-Line TAB รูปแบบมาตรฐาน อ่านง่าย',
-      '🖨️ จัดรูปแบบสำหรับ พิมพ์ A4',
-      '🔊 Interactive Audio Simulator สำหรับเปิดฟังเสียงตัวอย่างประกอบการฝึก',
-      '💻 รูปแบบ Interactive E-Book สามารถเรียนและฝึกตามเนื้อหาได้',
-      '🎯 เหมาะสำหรับ: ผู้เริ่มต้น Fingerstyle และผู้ที่ต้องการจัดระบบพื้นฐานการฝึกให้ถูกต้อง',
-      '📄 รูปแบบ: E-Book • A4 • Standard TAB • Interactive Audio'
+      '📕 VOLUME 1 — Fingerstyle Shortcut (The Essential Foundations)',
+      '🎯 วางรากฐานให้ถูกตั้งแต่เริ่มต้น',
+      '• P-I-M-A Mechanics',
+      '• การควบคุมนิ้วโป้งและเบส',
+      '• Fingerpicking พื้นฐาน',
+      '• แบบฝึกหัดสร้างความเป็นอิสระของนิ้ว',
+      '• TAB พร้อมแบบฝึกฝนอย่างเป็นระบบ',
+      '🎯 เหมาะสำหรับ: คนที่กำลังเริ่มต้น Fingerstyle และคนที่อยากกลับมาจัดระเบียบพื้นฐานใหม่',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ]
+  },
+  {
+    id: 'prod-ebook-vol2',
+    name: 'VOLUME 2 — Advanced Fingerpicking Patterns, Time Signatures & Melodic Phrasing',
+    thaiName: 'VOLUME 2 — Advanced Fingerpicking: Patterns & Melodic Phrasing',
+    category: 'E-Book & หนังสือ TAB',
+    price: 199,
+    originalPrice: 350,
+    imageUrl: 'https://lh3.googleusercontent.com/d/1SgQiqLgYLbpkrI_nhRyWr6z_Bq4IH-rX',
+    badge: '🔥 ลดเหลือ 199฿ (จาก 350฿) ถึงสิ้นเดือนนี้',
+    description: `📘 VOLUME 2 — Advanced Fingerpicking
+Patterns, Time Signatures & Melodic Phrasing
+
+เมื่อ Pattern เดิม ๆ ไม่เพียงพออีกต่อไป
+เรียนรู้การสร้างรูปแบบการเกาที่หลากหลาย พร้อมพัฒนาจังหวะและการควบคุมเสียงเมโลดี้
+• Inside-Out / Outside-In Picking
+• Travis Picking Variations
+• 3/4 Waltz & 6/8 Ballad
+• Voice Separation (70/30)
+• Syncopation & Ghost Notes
+
+ทำให้การเล่นมี จังหวะ มีมิติ และมี Musical Phrasing มากขึ้น
+รูปแบบ: E-Book • Standard TAB • Interactive Audio`,
+    inStock: true,
+    rating: 5.0,
+    reviewsCount: 95,
+    specifications: [
+      '📘 VOLUME 2 — Advanced Fingerpicking',
+      '🎯 เมื่อ Pattern เดิม ๆ ไม่เพียงพออีกต่อไป',
+      '• เรียนรู้การสร้างรูปแบบการเกาที่หลากหลาย พร้อมพัฒนาจังหวะและการควบคุมเสียงเมโลดี้',
+      '• Inside-Out / Outside-In Picking',
+      '• Travis Picking Variations',
+      '• 3/4 Waltz & 6/8 Ballad',
+      '• Voice Separation (70/30)',
+      '• Syncopation & Ghost Notes',
+      '🎯 ทำให้การเล่นมี จังหวะ มีมิติ และมี Musical Phrasing มากขึ้น',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ],
+    details: [
+      '📘 VOLUME 2 — Advanced Fingerpicking',
+      '🎯 เมื่อ Pattern เดิม ๆ ไม่เพียงพออีกต่อไป',
+      '• เรียนรู้การสร้างรูปแบบการเกาที่หลากหลาย พร้อมพัฒนาจังหวะและการควบคุมเสียงเมโลดี้',
+      '• Inside-Out / Outside-In Picking',
+      '• Travis Picking Variations',
+      '• 3/4 Waltz & 6/8 Ballad',
+      '• Voice Separation (70/30)',
+      '• Syncopation & Ghost Notes',
+      '🎯 ทำให้การเล่นมี จังหวะ มีมิติ และมี Musical Phrasing มากขึ้น',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ]
+  },
+  {
+    id: 'prod-ebook-vol3',
+    name: 'VOLUME 3 — Subdivisions, Campanella Scales, Walking Bass & Articulations',
+    thaiName: 'VOLUME 3 — Subdivisions, Campanella Scales & Walking Bass',
+    category: 'E-Book & หนังสือ TAB',
+    price: 199,
+    originalPrice: 350,
+    imageUrl: 'https://lh3.googleusercontent.com/d/1khYO4_Fo1l5BmfTFne6xDy-UGYxSPjq0',
+    badge: '🔥 ลดเหลือ 199฿ (จาก 350฿) ถึงสิ้นเดือนนี้',
+    description: `📗 VOLUME 3 — Subdivisions, Campanella Scales, Walking Bass & Articulations
+
+ก้าวเข้าสู่การควบคุมรายละเอียดของเสียงและจังหวะในระดับที่สูงขึ้น
+• 16th Notes & Triplets
+• Campanella Scales & Arpeggios
+• Walking Bass & Stepwise Bass Motion
+• Hammer-on / Pull-off / Slide
+
+เหมาะสำหรับ: คนที่ต้องการพัฒนาทั้ง ความแม่นยำ ความลื่นไหล และการเรียบเรียง Fingerstyle
+รูปแบบ: E-Book • Standard TAB • Interactive Audio`,
+    inStock: true,
+    rating: 5.0,
+    reviewsCount: 88,
+    specifications: [
+      '📗 VOLUME 3 — Subdivisions, Campanella Scales, Walking Bass & Articulations',
+      '🎯 ก้าวเข้าสู่การควบคุมรายละเอียดของเสียงและจังหวะในระดับที่สูงขึ้น',
+      '• 16th Notes & Triplets',
+      '• Campanella Scales & Arpeggios',
+      '• Walking Bass & Stepwise Bass Motion',
+      '• Hammer-on / Pull-off / Slide',
+      '🎯 เหมาะสำหรับ: คนที่ต้องการพัฒนาทั้ง ความแม่นยำ ความลื่นไหล และการเรียบเรียง Fingerstyle',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ],
+    details: [
+      '📗 VOLUME 3 — Subdivisions, Campanella Scales, Walking Bass & Articulations',
+      '🎯 ก้าวเข้าสู่การควบคุมรายละเอียดของเสียงและจังหวะในระดับที่สูงขึ้น',
+      '• 16th Notes & Triplets',
+      '• Campanella Scales & Arpeggios',
+      '• Walking Bass & Stepwise Bass Motion',
+      '• Hammer-on / Pull-off / Slide',
+      '🎯 เหมาะสำหรับ: คนที่ต้องการพัฒนาทั้ง ความแม่นยำ ความลื่นไหล และการเรียบเรียง Fingerstyle',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ]
+  },
+  {
+    id: 'prod-ebook-vol4',
+    name: 'VOLUME 4 — Percussive Acoustic Groove',
+    thaiName: 'VOLUME 4 — Percussive Acoustic Groove',
+    category: 'E-Book & หนังสือ TAB',
+    price: 199,
+    originalPrice: 350,
+    imageUrl: 'https://lh3.googleusercontent.com/d/1DmNTG0xcUPkGukbXekBDZCBTH-pQ9bg4',
+    badge: '🔥 ลดเหลือ 199฿ (จาก 350฿) ถึงสิ้นเดือนนี้',
+    description: `📙 VOLUME 4 — Percussive Acoustic Groove
+
+🎸 กีตาร์หนึ่งตัว ไม่ได้มีแค่เสียงสาย
+เรียนรู้การสร้าง Groove และ Percussion บนกีตาร์โปร่ง
+• Thumb Slap (Snare Sound)
+• Palm Kick (Bass Drum)
+• Nail Attack (Slap-Strum)
+• Percussive Integration
+• การผสาน Melody + Chord + Bass + Percussion
+
+เปลี่ยนการเล่น Fingerstyle ให้มี จังหวะและพลัง มากขึ้น
+รูปแบบ: E-Book • Standard TAB • Interactive Audio`,
+    inStock: true,
+    rating: 5.0,
+    reviewsCount: 110,
+    specifications: [
+      '📙 VOLUME 4 — Percussive Acoustic Groove',
+      '🎸 กีตาร์หนึ่งตัว ไม่ได้มีแค่เสียงสาย',
+      '• เรียนรู้การสร้าง Groove และ Percussion บนกีตาร์โปร่ง',
+      '• Thumb Slap (Snare Sound)',
+      '• Palm Kick (Bass Drum)',
+      '• Nail Attack (Slap-Strum)',
+      '• Percussive Integration',
+      '• การผสาน Melody + Chord + Bass + Percussion',
+      '🎯 เปลี่ยนการเล่น Fingerstyle ให้มี จังหวะและพลัง มากขึ้น',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ],
+    details: [
+      '📙 VOLUME 4 — Percussive Acoustic Groove',
+      '🎸 กีตาร์หนึ่งตัว ไม่ได้มีแค่เสียงสาย',
+      '• เรียนรู้การสร้าง Groove และ Percussion บนกีตาร์โปร่ง',
+      '• Thumb Slap (Snare Sound)',
+      '• Palm Kick (Bass Drum)',
+      '• Nail Attack (Slap-Strum)',
+      '• Percussive Integration',
+      '• การผสาน Melody + Chord + Bass + Percussion',
+      '🎯 เปลี่ยนการเล่น Fingerstyle ให้มี จังหวะและพลัง มากขึ้น',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ]
+  },
+  {
+    id: 'prod-ebook-vol5',
+    name: 'VOLUME 5 — Ultimate Fingerstyle',
+    thaiName: 'VOLUME 5 — Ultimate Fingerstyle',
+    category: 'E-Book & หนังสือ TAB',
+    price: 199,
+    originalPrice: 350,
+    imageUrl: 'https://lh3.googleusercontent.com/d/1IzZ5wqD9mJzzdefa70NA2yA7ruHajoWz',
+    badge: '🔥 ลดเหลือ 199฿ (จาก 350฿) ถึงสิ้นเดือนนี้',
+    description: `🟪 VOLUME 5 — Ultimate Fingerstyle
+
+รวมเทคนิคขั้นสูงสำหรับการเล่นและการสร้างสีสันบนกีตาร์
+• Natural, Artificial, Slap & Waterfall Harmonics
+• Two-Hand Tapping
+• DADGAD Tuning
+• Slap-Pop Funk Techniques
+• Masterpiece Arrangement & Solo Performance
+
+เหมาะสำหรับ: คนที่ต้องการก้าวข้าม Fingerstyle แบบเดิม ๆ และสร้างสไตล์การเล่นของตัวเอง
+รูปแบบ: E-Book • Standard TAB • Interactive Audio`,
+    inStock: true,
+    rating: 5.0,
+    reviewsCount: 140,
+    specifications: [
+      '🟪 VOLUME 5 — Ultimate Fingerstyle',
+      '🎯 รวมเทคนิคขั้นสูงสำหรับการเล่นและการสร้างสีสันบนกีตาร์',
+      '• Natural, Artificial, Slap & Waterfall Harmonics',
+      '• Two-Hand Tapping',
+      '• DADGAD Tuning',
+      '• Slap-Pop Funk Techniques',
+      '• Masterpiece Arrangement & Solo Performance',
+      '🎯 เหมาะสำหรับ: คนที่ต้องการก้าวข้าม Fingerstyle แบบเดิม ๆ และสร้างสไตล์การเล่นของตัวเอง',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
+    ],
+    details: [
+      '🟪 VOLUME 5 — Ultimate Fingerstyle',
+      '🎯 รวมเทคนิคขั้นสูงสำหรับการเล่นและการสร้างสีสันบนกีตาร์',
+      '• Natural, Artificial, Slap & Waterfall Harmonics',
+      '• Two-Hand Tapping',
+      '• DADGAD Tuning',
+      '• Slap-Pop Funk Techniques',
+      '• Masterpiece Arrangement & Solo Performance',
+      '🎯 เหมาะสำหรับ: คนที่ต้องการก้าวข้าม Fingerstyle แบบเดิม ๆ และสร้างสไตล์การเล่นของตัวเอง',
+      '📄 รูปแบบ: E-Book • Standard TAB • Interactive Audio'
     ]
   }
 ];

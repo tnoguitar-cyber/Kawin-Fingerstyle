@@ -88,7 +88,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         src={item.imageUrl}
                         alt={item.title}
                         referrerPolicy="no-referrer"
-                        className="w-12 h-12 rounded-lg object-cover shrink-0 border border-stone-200 dark:border-slate-800 bg-black"
+                        className="w-12 h-14 rounded-lg object-contain p-0.5 shrink-0 border border-stone-200 dark:border-slate-800 bg-stone-100 dark:bg-slate-900"
                       />
                       <div className="flex-1 overflow-hidden">
                         <h4 className="text-xs font-bold text-stone-900 dark:text-white truncate">{item.title}</h4>
